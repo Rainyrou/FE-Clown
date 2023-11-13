@@ -151,6 +151,3 @@ print extra parameter extra parameter2
 - 同理 `eventBus.subscribe('test', fn2)` 调用时，`fn2` 同样被添加，并被分配了一个唯一的 ID
 - 当 `unSubscribe()` 被调用时，它使用闭包（closure）中保存的 `thisCallbackId` 来删除特定的事件监听器（在这个例子中是 `fn2`），而不影响其他监听器
 - 最后当 `eventBus.emit('test', 'extra parameter2')`被调用时，它只会触发剩下的监听器（`fn1`），因为`fn2` 已经被取消订阅了
-
-
-US,I can speak English and Chinese.I'm a Front-end engineer.I like coding.I'm preparing for an interview related to front-end.

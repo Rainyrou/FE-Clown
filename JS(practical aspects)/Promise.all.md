@@ -18,7 +18,7 @@ Promise.all(iterable)
 Promise._all = function(promises) {
     return new Promise((resolve, reject) => {
         if(promises == null || typeof promises[Symbol.iterator] !== 'function') {
-            throw new TypeError(`${promises} is not a iterator`);
+            throw new TypeError(`${promises} is not an iterator`);
         }
         promises = [...promises];
         if(promises.length === 0) {
@@ -105,13 +105,13 @@ promises = [...promises];
 
 ###### 关于 `typeof promises[Symbol.iterator] !== 'function'`
 
-JavaScript的迭代指的是遍历集合中的每个元素。为了支持这种迭代操作，ES6 引入了迭代协议和迭代器协议
+JavaScript 的迭代指的是遍历集合中的每个元素。为了支持这种迭代操作，ES6 引入了迭代协议和迭代器协议
 
 如果一个对象可迭代，它必须实现迭代协议。这意味着对象应该有一个名为 `Symbol.iterator` 的属性
 
-`Symbol.iterator` 属性对应的值是一个函数，该函数返回一个遵循迭代器协议的对象。大多数内置的可迭代类型，如Array、String、Map 和 Set，都已实现了该符号，因此它们都是可迭代的。迭代器对象必须具有一个 `next()` 方法，当调用时，返回一个包含两个属性（`value` 和 `done`）的对象
+`Symbol.iterator` 属性对应的值是一个函数，该函数返回一个遵循迭代器协议的对象。大多数内置的可迭代类型，如 Array、String、Map 和 Set，都已实现了该符号，因此它们都是可迭代的。迭代器对象必须具有一个 `next()` 方法，当调用时，返回一个包含两个属性（`value` 和 `done`）的对象
 
-在JavaScript中，`Symbol.iterator` 是一个特殊的内建 Symbol。Symbols 是JavaScript中的新原始数据类型，每个 Symbol 都是唯一的
+在 JavaScript 中，`Symbol.iterator` 是一个特殊的内建 Symbol。Symbols 是 JavaScript 中的新原始数据类型，每个 Symbol 都是唯一的
 
 当你这样写 `promises[Symbol.iterator]`，你实际上是在访问该对象的默认迭代器方法
 
@@ -187,4 +187,3 @@ function test() {
 
 test();
 ```
-

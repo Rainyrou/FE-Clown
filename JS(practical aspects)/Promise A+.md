@@ -216,6 +216,34 @@ Microtasks：Promise 的 then 方法、process.nextTick、MutationObserver
 
 ##### constructor 部分
 
+###### constructor 传入 func 作为参数
+
+Promise 的核心是延迟执行和状态管理
+
+1. 当创建一个 Promise 实例时，传入的函数 `func` 包含某个时刻要执行的异步操作。这个函数不会立即执行，而是在 Promise 内部被保存下来，直到 Promise 实例被 resolved 或 rejected
+2. Promise 的状态管理需要在异步操作完成后进行。传入的函数 `func` 提供了两个函数：`resolve` 和 `reject`，这两个函数分别用于在异步操作成功完成时 resolve Promise 或在发生错误时 reject Promise
+
+```JavaScript
+const myAsyncTask = new myPromise((resolve, reject) => {
+    // ...
+    setTimeout(() => {
+        if(...) {
+            resolve("result");
+        } else {
+            reject("reason");
+        }
+    }, 1000);
+});
+
+myAsyncTask.then(result => {
+    console.log(result);
+}).catch(reason => {
+    console.log(reason);
+});
+```
+
+###### 关于 bind
+
 `this.resolve.bind(this)` 和 `this.reject.bind(this)` 中的 `.bind(this)` 部分确保 `resolve` 和 `reject` 函数在被调用时使用的是 Promise 实例的上下文（即 `this`）。在 JavaScript 中，函数的上下文通常是由调用它的对象决定的。通过使用 `.bind(this)`，我们确保这两个函数不管在哪里被调用，它们都将引用原始 Promise 对象，这样它们可以正确地更改 Promise 的状态和值
 
 `call`、`apply` 和 `bind` 都可以改变函数体内部 this 的指向，但 `bind` 和 `call/apply` 有一个很重要的区别：一个函数被 `call/apply` 时，会立即执行函数；但 `bind` 只创建一个新函数，不会立即执行
@@ -250,7 +278,7 @@ this.onFulfilledCallbacks.push(() => { ... });
 x instanceof myPromise
 ```
 
-`instanceof` 用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。这里我们检查 x 是否是通过`myPromise` 构造函数创建的。如果是，那么 x 就是一个 `myPromise` 实例
+`instanceof` 用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。这里我们检查 x 是否是通过 `myPromise` 构造函数创建的。如果是，那么 x 就是一个 `myPromise` 实例
 
 ```JavaScript
 resolvePromise(promise2, y, resolve, reject);

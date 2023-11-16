@@ -8,8 +8,8 @@
 4. 删除属性 `deleteProperty`
 5. 检查属性 `has`
 6. 获取对象的自有属性键 `Object.getOwnPropertyNames`
-7. 获取属性描述符 `Object.getOwnPropertyDescriptor`
-8. 获取原型 `Object.getPrototypeOf``
+7. 获取对象的属性描述符 `Object.getOwnPropertyDescriptor`
+8. 获取原型 `Object.getPrototypeOf`
 9. 设置原型 `Object.setPrototypeOf`
 10. 调用函数 `apply`
 

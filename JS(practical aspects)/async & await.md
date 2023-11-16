@@ -12,9 +12,9 @@
 
 2. Event Listeners：一些对象（如 DOM 元素或 Node.js 中的某些对象）允许你添加事件监听器来监听并响应异步事件
 
-3. Pub/Sub or Observer pattern：这是一种对象间的通信模式，其中一个对象（发布者）将事件的发生通知给多个其他对象（订阅者）
+3. Timers：使用 `setTimeout` 和 `setInterval` 延迟或定期执行代码
 
-4. Timers：使用 `setTimeout` 和 `setInterval` 可以延迟执行或定期执行代码
+4. Pub/Sub or Observer pattern：这是一种对象间的通信模式，其中一个对象（发布者）将事件的发生通知给多个其他对象（订阅者）
 
 5. Streams in Node.js：在 Node.js 中，流是处理数据的异步方式，特别是当数据量大到无法一次性加载到内存中时
 
@@ -26,7 +26,7 @@ Generator 函数是协程在 ES6 的实现，最大特点就是可以交出函�
 
 调用 Generator 函数不会返回结果，返回的是指针对象。`next` 方法的作用是分阶段执行 Generator 函数。每次调用 `next` 方法，会返回一个对象，表示当前阶段的信息（ `value` 属性和 `done` 属性）。`value` 属性是 `yield` 语句后面表达式的值，表示当前阶段的值；`done` 属性是一个布尔值，表示 Generator 函数是否执行完毕，即是否还有下一个阶段
 
-`next` 方法返回值的 `value` 属性，是 Generator 函数向外输出数据；next 方法可以接受参数，这是向 Generator 函数体内输入数据
+`next` 方法返回值的 `value` 属性，是 Generator 函数向外输出数据；`next` 方法可以接受参数，这是向 Generator 函数体内输入数据
 
 ```JavaScript
 function* gen(x) {
@@ -83,13 +83,13 @@ next2.value.then(res2 => {
 
 #### async/await 剖析
 
-`JavaScript` 是单线程的，为避免同步阻塞可能会带来的一些负面影响，引入了异步非阻塞机制，而对于异步执行的解决方案从最早的回调函数，到 `ES6` 的 `Promise` 对象以及 `Generator` 函数，每次都有所改进，但却又美中不足，他们都有额外的复杂性，需要理解抽象的底层运行机制，直到在 `ES7` 中引入了 `async/await`，它可以简化使用多个 `Promise` 时的同步行为，在编程时甚至不需要关心这个操作是否为异步操作
+`JavaScript` 是单线程的，为避免同步阻塞可能会带来的一些负面影响，引入了异步非阻塞机制，而对于异步执行的解决方案从最早的回调函数，到 `ES6` 的 `Promise` 对象以及 `Generator` 函数，每次都有所改进，但却又美中不足，它们都有额外的复杂性，需要深刻理解抽象的底层运行机制，直到在 `ES7` 中引入了 `async/await`，它可以简化使用多个 `Promise` 时的同步行为，在编程时甚至不需要关心这个操作是否为异步操作
 
-`async/await` 实际上是 `Generator` 函数的语法糖，如 `Promises` 类似于结构化回调，`async/await` 在实现上结合了`Generator` 函数与 `Promise` 函数
+`async/await` 实际上是 `Generator` 函数的语法糖，如 `Promise` 类似于结构化回调，`async/await` 在实现上结合了 `Generator` 函数与 `Promise` 函数
 
 #### 手写 async/await
 
-`async/await` 在实现上结合了`Generator` 函数与 `Promise` 函数，区别在于：
+`async/await` 在实现上结合了 `Generator` 函数与 `Promise` 函数，区别在于：
 
 - gen 函数执行返回值不是 Promise，asyncFn 执行返回值是 Promise
 - gen 函数需要执行相应的操作，才能等同于 asyncFn 的排队效果

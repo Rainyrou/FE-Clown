@@ -12,5 +12,6 @@
 
 ###### ES7
 
-1. `Array.prototype.includes`
-2. 指数操作符 `**`：用于数学的幂运算
+1. async/await
+2. `Array.prototype.includes`
+3. 指数操作符 `**`：用于数学的幂运算

@@ -24,7 +24,7 @@ Generator 函数是协程在 ES6 的实现，最大特点就是可以交出函�
 
 整个 Generator 函数就是一个封装的异步任务，或者说是异步任务的容器。异步操作需要暂停的地方，都用 `yield` 语句注明
 
-调用 Generator 函数不会返回结果，返回的是指针对象。`next` 方法的作用是分阶段执行 Generator 函数。每次调用 `next` 方法，会返回一个对象，表示当前阶段的信息（ `value` 属性和 `done` 属性）。`value` 属性是 `yield` 语句后面表达式的值，表示当前阶段的值；`done` 属性是一个布尔值，表示 Generator 函数是否执行完毕，即是否还有下一个阶段
+调用 Generator 函数不会返回结果，返回的是指针对象，即当调用 Generator 函数时，它不会立即执行函数体中的代码，而是返回一个 Generator 对象。Generator 对象是一个特殊的迭代器对象，遵循迭代器协议。它实现了一个 `next` 方法，用于遍历 Generator 函数内部的 `yield` 表达式，即分阶段执行 Generator 函数。每次调用 `next` 方法，会返回一个对象，表示当前阶段的信息（ `value` 属性和 `done` 属性）。`value` 属性是 `yield` 语句后面表达式的值，表示当前阶段的值；`done` 属性是一个布尔值，表示 Generator 函数是否执行完毕，即是否还有下一个阶段
 
 `next` 方法返回值的 `value` 属性，是 Generator 函数向外输出数据；`next` 方法可以接受参数，这是向 Generator 函数体内输入数据
 
@@ -99,13 +99,14 @@ next2.value.then(res2 => {
 
 ```JavaScript
 // `generatorToAsync` 是一个高阶函数
-// 接收一个生成器函数
+// 接收一个 Generator 函数
 function generatorToAsync(generatorFn) {
     return function() {
-	    // 首先执行 `generatorFn` 并返回一个迭代器 `gen`
+	    // 执行 `generatorFn` 并返回一个迭代器 `gen`	   
         const gen = generatorFn.apply(this, arguments);
         // 返回一个 Promise
         return new Promise((resolve, reject) => {
+	        // `go` 用于递归 `gen`
 	        // `key` 可以是 'next' 或 'throw'，而 `arg` 是传递给生成器的值
             function go(key, arg) {
                 let res;

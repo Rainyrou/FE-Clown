@@ -14,7 +14,7 @@
 ###### 4. TypeScript 支持
 
 - Vue3 是用 TypeScript 编写的，因此它提供了更好的 TypeScript 支持
-- Vue2 对 TypeScript 的支持有限，虽然它也可以使用 TypeScript 编写，但并不是所有的 Vue2 代码基都能很好地与 TypeScript 集成
+- Vue2 对 TypeScript 的支持有限，虽然它也可以使用 TypeScript 编写，但并不是所有的 Vue2 代码都能很好地与 TypeScript 集成
 
 ###### 5. Fragment & Teleport & Suspense
 
@@ -40,7 +40,7 @@
 
 - Vue3 允许 SFC 有多个根节点，而在 Vue2 中，每个组件只能有一个根节点
 
-###### 11. V-model 的变化
+###### 11. v-model 的变化
 
 - 在 Vue3 中，`v-model` 语法更加灵活，支持自定义事件名称和修饰符，这让它在处理表单时更加强大
 - 相比之下，Vue2 的 `v-model` 是固定的，主要用于简单的双向数据绑定

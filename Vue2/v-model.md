@@ -55,9 +55,7 @@ new Vue({
 <input v-model.trim="msg">
 ```
 
-[自定义事件 — Vue.js](https://v2.cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model)
-
-在 Vue 2 中使用 `v-model` 指令时，Vue 自动尝试将该指令绑定到组件的 `value` prop，并侦听名为 `input` 的事件。但是像单选框、复选框等类型的输入控件可能会将  `value` attribute 用于[不同的目的](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#Value)。使用 `model`  选项可以避免这样的冲突：
+在 Vue 2 中使用 `v-model` 指令时，Vue 自动尝试将该指令绑定到组件的 `value` prop，并侦听名为 `input` 的事件。但是像单选框、复选框等类型的输入控件可能会将  `value` attribute 用于其他目的。使用 `model` 选项可以避免这样的冲突：
 
 ```JavaScript
 Vue.component('base-checkbox', {
@@ -84,10 +82,6 @@ Vue.component('base-checkbox', {
 * `props: { checked: Boolean }`: 由于 `model` 选项已将 `v-model` 指令映射到名为 `checked` 的 prop，所以父组件可以通过 `v-model` 控制复选框的选中状态
 * `v-bind:checked="checked"`: 将 `input` 元素的 `checked` attribute 绑定到 prop 的值，从而反映复选框的选中状态
 * `v-on:change="$emit('change', $event.target.checked)"`: 当用户更改复选框的状态时，这将触发一个 `change` 事件，并传递新的选中状态。由于 `model` 选项已将该事件映射到 `v-model`，因此父组件将自动更新其绑定值
-
-[HTML label](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/label)
-
-[event.preventDefault - Web API 接口参考 | MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/preventDefault)
 
 ###### 为什么将 `<label>` 元素与 `<input>` 元素关联起来?
 

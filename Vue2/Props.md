@@ -29,9 +29,9 @@
 
 - 组件可被视为扩展的 Vue 实例，它们有很多相同的选项和功能。`new Vue ({ el: '#component-demo'})` 创建一个新的 Vue 根实例，并附加到 id 为 `components-demo` 的元素上，Vue 将在此元素内部进行编译，将自定义组件解析为其定义的结构
 
-- `el`选项用于指定 Vue 实例挂载的元素。它可以是一个 CSS 选择器，也可以是一个实际的 HTML 元素
+- `el` 选项用于指定 Vue 实例挂载的元素。它可以是一个 CSS 选择器，也可以是一个实际的 HTML 元素
 
-\*\*底层原理
+###### 底层原理
 
 当 Vue 编译组件时：
 
@@ -184,10 +184,7 @@ Vue.component('blog-post', {
 - `v-for="post in posts"`: 遍历 `posts` 数组，并为每个 `post` 对象创建一个 `blog-post` 组件实例
 - `v-bind:key="post.id"`: 唯一键，用于跟踪每个组件实例的身份
 - `v-bind:post="post"`: 将当前循环的 `post` 对象（右侧的 `post`）绑定到组件的 `post` 属性（左侧的 `post`）上，`props: ['post']` 定义了 `post` 属性
-
 * `template` 是一个字符串，包含静态 HTML、Vue 指令、插值语法、动态数据绑定
-
-[API — Vue.js](https://v2.cn.vuejs.org/v2/api/#template)
 
 ###### 使用事件抛出一个值
 

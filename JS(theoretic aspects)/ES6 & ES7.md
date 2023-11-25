@@ -8,7 +8,7 @@
 6. 扩展操作符 `...`：用于函数调用和数组字面量中，可用来扩展或收集元素
 7. 类：提供了基于类的面向对象编程的语法
 8. 模块系统 `import/export`：允许模块化的代码组织和模块的导入/导出
-9. 生成器、代理、`Map`、`Set`、`WeakMap`、`WeakSet`、`Symbol` 等
+9. 生成器、`Proxy`、`Map`、`Set`、`WeakMap`、`WeakSet`、`Symbol` 等
 
 ###### ES7
 

@@ -1,5 +1,9 @@
->[!todo] To do 
->全文背诵
+> [!todo] To do
+> 全文背诵
+
+##### 集成 Vite + ESLint + Prettier + husky + lint-staged 的目的是什么？你是如何集成的？它们如何提升代码质量的？
+
+集成方式：在 npm 或 pnpm 安装相应东东及依赖，配置 `vite.config.js` + `.eslintrc.js` + `.eslintignore` + `.prettierrc.js` + `.prettierignore` + `pre-commit` 并在命令行执行相应命令
 
 在多人协作的大型项目中，不同的人有不同的代码风格。为提高代码的可读性和可维护性，团队通常会制定一套代码规范，用来统一团队代码风格，提高代码质量，甚至可以在开发阶段提前规避掉一些语法错误。但仅有规范本身不够，我们需要自动化工具来保证规范的落地，把代码规范检查这件事情交由机器完成，开发者只需要专注应用逻辑本身
 
@@ -7,8 +11,8 @@
 - Prettier：一个代码格式化工具，可以自动格式化代码以满足特定的风格
 - Stylelint：一个用于检查 CSS/SCSS/Less 代码的工具，确保样式代码的一致性
 - Commitlint：检查 git 提交消息的工具，确保它们遵循一致的格式
-- husky：允许开发者在 git 钩子中运行自定义脚本，如在提交之前运行 lint 工具
-- lint-staged：只检查 git 暂存区中的文件，这意味着只有实际修改的文件会被 lint，而不是整个代码库
+- husky：允许开发者在 git 钩子中运行自定义脚本，如在提交之前运行 lint 工具，确保只有符合规范的代码才能被提交
+- lint-staged：在提交代码之前只检查 git 暂存区中的文件，只有实际修改的文件会被 lint，而不是整个代码库
 - VSCode 插件：可以在你写代码时自动运行 Lint 工具，从而实时提示问题
 - Vite 生态：与 Vite 结合，确保开发过程中代码的质量
 
@@ -387,4 +391,3 @@ npx husky add .husky/commit-msg "npx --no-install commitlint -e $HUSKY_GIT_PARAM
 ```
 
 你可以发现在 `.husky` 目录下多了 `commit-msg` 文件，表示 commitlint 命令已经成功接入到 husky 的钩子当中
-

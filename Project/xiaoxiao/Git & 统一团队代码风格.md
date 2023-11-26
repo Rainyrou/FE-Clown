@@ -28,6 +28,14 @@ git status
 git pull origin gdx/gdx_feature
 ```
 
+然后就是三件套
+
+```
+git add .
+git commit -m ""
+git push origin main
+```
+
 ###### 为什么我桌面的东西会和 git 联系起来？
 
 如果在桌面 git clone 一个远程仓库，那么该目录及其子目录将被 git 跟踪。即在该目录中进行的任何更改（包括增删修改文件）都会被 Git 检测到
@@ -39,3 +47,23 @@ rm -rf ~/Desktop/.git
 ```
 
 这会删除桌面的 git 仓库信息
+
+##### 统一团队代码风格
+
+1. 为项目瘦身，手动删除屎山和 dead code，反正我删除的无用代码挺多的
+
+2. 文档
+
+- 文件 & 函数命名、文件结构 & 组织方式、注释、git 提交规范
+
+3. 配置 `.eslintrc.js` + `.eslintignore` + `.prettierrc.js` + `.prettierignore`
+
+- 这又涉及到业务逻辑与技术难点的权衡了，出门右转(｡･∀･)ﾉﾞ嗨
+
+4. Code Review
+
+- 校校团队成员是协同开发的，一个人一个分支，在代码合并到主分支前由师兄们 Code Review，我也会给点评
+
+5. 团队沟通：和新成员我有时会提一嘴
+
+6. 定期审查并更新规范

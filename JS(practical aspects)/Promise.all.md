@@ -15,28 +15,24 @@ Promise.all(iterable)
 - asynchronously rejected：如果给定的  `iterable`  中的任意 promise 被拒绝。拒绝原因是第一个拒绝的 promise 的拒绝原因
 
 ```JavaScript
-Promise._all = function(promises) {
-    return new Promise((resolve, reject) => {
-        if(promises == null || typeof promises[Symbol.iterator] !== 'function') {
-            throw new TypeError(`${promises} is not an iterator`);
-        }
-        promises = [...promises];
-        if(promises.length === 0) {
-            resolve([]);
-        }
-        let count = 0;
-        const values = [];
-        promises.forEach((promise, index) => {
-            Promise.resolve(promise)
-            .then(res => {
-                values[index] = res;
-                if(++count === promises.length) {
-                    resolve(values);
-                }
-            })
-            .catch(reject);
-        });
+Promise._all = function (promises) {
+  return new Promise((resolve, reject) => {
+    if (promises == null || typeof promises[Symbol.iterator] !== "function") {
+      throw new TypeError(`${promises} is not an iterator`);
+    }
+    promises = [...promises];
+    if (promises.length === 0) resolve([]);
+    let count = 0;
+    const values = [];
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((res) => {
+          values[index] = res;
+          if (++count === promises.length) resolve(values);
+        })
+        .catch(reject);
     });
+  });
 };
 ```
 

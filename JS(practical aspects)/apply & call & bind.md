@@ -24,7 +24,7 @@ Function.prototype._mycall = function(thisArg, ...args) {
     // 而不用担心覆盖`thisArg`上已有的属性或方法
     // 这样我们可以通过`thisArg[fn]()`来调用它
     thisArg[fn] = this;
-    const res = thisArg[fn](...args);
+    const res = thisArg[fn](args);
     // 在函数调用完成后，我们不再需要`thisArg`上的`fn`属性
     // 避免内存泄漏，并保持`thisArg`的原始状态
     delete(thisArg[fn]);
@@ -61,7 +61,7 @@ Function.prototype._myapply = function(thisArg, args = []) {
     thisArg = thisArg !== null && thisArg !== undefined ? Object(thisArg) : window;
     const fn = Symbol();
     thisArg[fn] = this;
-    const res = thisArg[fn](...args);
+    const res = thisArg[fn](args);
     delete(thisArg[fn]);
     return res;
 };
@@ -112,7 +112,7 @@ Function.prototype._mybind = function(thisArg, ...args) {
 
 ###### 为什么这里需要传入一些新的参数 `...newArgs` ？
 
-`bind` 的核心功能是允许你设置函数被调用时的 `this` 上下文，并允许你预先提供一些参数。但当绑定后的函数被调用时，仍可以为其传递更多参数
+`bind` 的核心功能是允许你设置函数被调用时的 `this` 上下文，并允许你预先提供一些参数。但当绑定后的函数被调用时，仍可为其传递更多参数
 
 ##### 官方文档解读
 

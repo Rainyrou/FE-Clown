@@ -21,7 +21,7 @@ Promise._race([
   new Promise((_, reject) => setTimeout(() => reject("A"), 100)),
   new Promise((resolve) => setTimeout(() => resolve("B"), 200)),
   new Promise((resolve) => setTimeout(() => resolve("C"), 300)),
-]).catch((reason) => 
+]).catch((reason) => {
   console.log(reason); // A
 });
 ```

@@ -128,19 +128,11 @@ TCP 首部的|序号|字段中，其次把 TCP 首部的|确认应答号|字段�
   - `<style>` 标签内的样式（内联）
   - 元素的 style 属性内嵌的 CSS（行内样式）
 
-**开始介绍**
+###### 工作流程
 
-1. 渲染进程将 HTML 内容转换为能够读懂的 DOM 树结构
-2. 渲染引擎将 CSS 样式表转化为浏览器可以理解的 StyleSheets，并计算出 DOM 节点样式后，生成 CSS 树
-3. 浏览器根据 DOM 树与 CSS 树生成 render 树
-4. 布局阶段（layout）：浏览器根据 render 树生成 layout tree，在布局树中，DOM 树上所有不可见节点都没加上去（比如 display: none 元素）。layout tree 上会显示出各个节点的坐标位置以及宽高
-5. 绘制阶段（painting）：接着会根据 layout tree 生成 layer tree（图层树），它是根据你的不同节点所对应的层级关系来生成的。并根据你的 layer tree 去生成 painting 表，它记录了绘制图层的指令和步骤
-
-![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f14b5adaeecf4a7e81d6b5760fa976a4~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
-
-6. 光栅化操作：此时会将 paint 表 commit 到渲染进程的合成线程中去操作
-
-![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/617082bb59c747a59ba3e67954714cff~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
-
-7. 接着浏览器会合并合各个图层，将数据由 CPU 输出给 GPU 最终绘制在屏幕上
-8. 合成完后，合成线程会发送一个指令给浏览器，告诉它已完成，让浏览器显示页面
+- 浏览器解析 HTML 文档，构建 DOM 树。DOM 树是文档的对象表示，它包含页面所有元素及其属性和层次结构
+* 浏览器解析 CSS 样式，解析后构建 CSSOM（CSS Object Model）树
+- 浏览器结合 DOM 树和 CSSOM 树构建 Render 树。渲染树只包含需要渲染的节点及其样式。隐藏的元素如 `display: none` 不包含在渲染树中
+* 布局阶段，浏览器计算出渲染树中每个节点的确切位置和大小
+* 浏览器对渲染树的每个节点进行绘制，包括文本图像内容、颜色、边框、阴影等
+- 页面的某些部分可能在单独的图层上进行绘制，浏览器合并这些图层，生成最终图像

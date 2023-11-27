@@ -10,7 +10,7 @@ function _mycurry(fn) {
         if(args.length >= fn.length) {
             return fn.apply(this, args);
         } else {
-	        // 调用这个匿名函数会累积参数，直到参数数量满足 `fn` 的需求
+	        // 调用这个匿名函数会累积参数,直到参数数量满足 `fn` 的需求
             return function(...args2) {
                 return curried.apply(this, args.concat(args2));
             }

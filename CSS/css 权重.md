@@ -1,1 +1,1 @@
-CSS 权重：!important > Inline Styles > ID Selectors > Class Selectors === Pseudo-Class Selectors === Attribute Selectors > Element Selectors === Pseudo-Element Selectors > Universal Selectors === Combinator Selectors
+CSS 权重：!important > Inline Styles > ID Selectors -Class Select> Class Selectors === Pseudoors === Attribute Selectors > Element Selectors === Pseudo-Element Selectors > Universal Selectors === Combinator Selectors

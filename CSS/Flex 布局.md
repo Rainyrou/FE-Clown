@@ -55,3 +55,8 @@ Flex 布局是 CSS3 新增的一种布局模式，它用于设计复杂的布局
 4. `flex-basis` 定义了在分配多余空间之前，项目占据的主轴空间。浏览器根据这个属性，计算主轴是否有多余空间。默认值为 `auto`
 5. `flex` 是 `flex-grow`, `flex-shrink` 和 `flex-basis` 的简写，默认值为 `0 1 auto`
 6. `align-self` 允许单个项目有与其他项目不一样的对齐方式，可覆盖 `align-items` 属性。默认值为 `auto`，表示继承父元素的 `align-items` 属性，如果没有父元素，则等同于 `stretch`
+
+`flex: 1` = `flex-grow: 1` + `flex-shrink: 1` + `flex-basis: 0%` 或 `flex-basis: 0px`
+* `flex-grow: 1` 表示该子项允许按比例增长以填充额外空间
+* `flex-shrink: 1` 表示该子项允许按比例缩小以适应容器空间
+* `flex-basis: 0%` 或 `flex-basis: 0px` 表示该子项的初始大小不基于其内容大小，而是完全依赖于容器可用空间和它的 `flex-grow` 值

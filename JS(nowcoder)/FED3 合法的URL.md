@@ -3,19 +3,17 @@
 
 1. 协议仅为 HTTP(S)
 
-![[1692532170550.png]]
+```JavaScript
+const isUrl = url => /^((https|http|ftp|rtsp|mms)?:\/\/)(([A-Za-z0-9]+-[A-Za-z0-9]+|[A-Za-z0-9]+)\.)+([A-Za-z]{2,6})(:\d+)?(\/.*)?(\?.*)?(#.*)?$/.test(url);
+```
 
-* 以协议 http(s)开头并且可以不包含协议头部信息
+* 协议部分可选
 
 * 主机名可以使用"-"符号，所以两种情况都要判断，包含"-"或不包含"-"
 
 * 顶级域名为2-6位 `
 
 * 端口、请求路径、传参及哈希值
-
-[正则表达式 - JavaScript | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_expressions)
-
-[GitHub - ziishaned/learn-regex: Learn regex the easy way](https://github.com/ziishaned/learn-regex/tree/master)
 
 正则表达式是用于匹配字符串中字符组合的模式，这些模式可以用来检测字符串中的某些字符组合，替换匹配到的部分，或者将字符串拆分为多个部分。在 JavaScript 中，正则表达式也是对象
 
@@ -191,3 +189,9 @@ on the **mat.**
 ##### 底层原理
 
 JavaScript 的正则表达式是通过内部的有限自动机来实现的。有限自动机是一种计算模型，可识别并处理正则语言。当你执行一个正则表达式操作时，JavaScript 首先编译这个表达式，然后在给定的字符串上运行生成的有限自动机
+
+#### 参考
+
+[正则表达式 - JavaScript | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_expressions)
+
+[GitHub - ziishaned/learn-regex: Learn regex the easy way](https://github.com/ziishaned/learn-regex/tree/master)

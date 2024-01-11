@@ -12,7 +12,7 @@ Vue 和 React 的核心理念差异定义了它们的发展轨迹。React 从一
 
 2. **响应式**：
 
-- Vue2 响应式的特点是依赖收集，数据可变，自动派发更新，初始化时通过 `Object.defineProperty` 递归劫持  `data` 所有属性，为其添加 `getter` 和 `setter`。每个组件实例关联一个 `watcher` 实例，在组件渲染时进行依赖收集，并在依赖项的 `setter` 被调用时通知 `watcher` 重新渲染组件
+- Vue2 响应式的特点是依赖收集，数据可变，自动派发更新，初始化时通过 `Object.defineProperty` 递归劫持  `data` 所有属性，为其添加 `getter` 和 `setter`。每个组件实例关联一个 `watcher` 实例，在组件渲染时进行依赖收集，并在依赖项的 `setter` 被调用时通知 `watcher` 重新渲染
 - Vue3 使用原生 `Proxy` 重构响应式，`Proxy` 修复 Vue2 响应式存在的缺陷，它可以拦截对象的任意操作，支持更多数据结构，且不再一开始就递归劫持对象属性，而是代理第一层对象本身，运行时才递归，按需代理，用 `effect` 副作用来代替 Vue2 里的 `watcher`，用 `trackMap` 代替 Vue2 中的 `Dep` 统一管理依赖，无需再维护大量依赖关系，性能显著提升
 - React 的响应式不是自动的，它基于状态，单向数据流，数据不可变，需要手动 `setState` 来显式触发更新，且当数据改变时会以根组件为目录，默认重新渲染整个组件树，需要额外使用 `pureComponent` 和 `shouldComponentUpdate` 等防止不必要的渲染，更新粒度更大一些。React16 之后通过引入 Fiber 架构，性能显著提升
 

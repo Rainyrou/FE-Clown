@@ -14,5 +14,3 @@ Array.prototype._myfill = function(value, start = 0, end = this.length) {
     return this;
 };
 ```
-
-	

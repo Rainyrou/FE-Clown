@@ -1,18 +1,16 @@
-localStorage 和 sessionStorage 都是 Web 存储的两种形式，它们允许我们在用户的浏览器上存储键-值对。这两种存储方式与 cookies 相似，但它们的容量更大，且对于大多数应用场景来说，API 使用起来更简单
+localStorage 和 sessionStorage 都是 Web 存储的两种形式，它们允许我们在用户浏览器上存储键-值对。它们的存储方式与 cookies 相似，但其容量更大，且对于大多数应用场景来说，API 更易用
 
 localStorage 数据持久化本地存储（除非主动删除），即使浏览器关闭和重新打开也不会消失。sessionStorage 数据只在一个会话期间存储
 
-- `localStorage` 是一个只读属性，你不能为它赋予一个新值，但你可以访问和修改其内容
-* Document 源（origin）是指一个特定的组合：协议、域名以及端口。`localStorage` 是特定于 origin 的，不同的 origin 之间不能互相访问各自的 `localStorage` 数据
-* `localStorage` 的键值对总是以字符串的形式存储
-* 从底层来看，`localStorage` 和 `sessionStorage` 都是浏览器提供的 Web Storage API 的一部分。这些存储在客户端的 Web 存储方案为网页提供了比传统的 cookies 更为强大、更安全的存储能力
+- `localStorage` 和 `sessionStorage` 都是只读属性，你不能为它们赋予一个新值，但你可以访问和修改其内容
+* Document 源（origin）是指一个特定的组合：协议、域名、端口。`localStorage` 是特定于 origin 的，不同的 origin 之间不能互相访问各自的 `localStorage` 数据
 
 ###### 相同点
 
-- 都与 HTTP 无关，是 HTML5 提供的标准，当发起 HTTP 请求时不会像 Cookie 一样自动携带
+- 与 HTTP 无关，是 HTML5 标准，当发起 HTTP 请求时不会像 Cookie 一样自动携带
 - 存储类型都是 String 类型
-- 通常为每个域名分配 5-10MB 的空间（取决于浏览器）
-- 作用域仅限于文档源（同源策略）
+- 只读属性，不能为它们赋予一个新值，但可访问和修改其内容
+- 基于同源策略
 
 ###### 底层原理
 

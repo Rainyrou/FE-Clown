@@ -1,4 +1,4 @@
-出于安全原因，Web 浏览器采用同源策略（Same-Origin Policy, SOP），禁止一个源的 HTML 或 JS 访问获取另一个源的资源，这可以防止 XSS 攻击。但它也限制了合法的跨域请求，例如 API 调用。CORS 是一个 HTTP 头部驱动的机制，由大多数现代浏览器实现，它允许服务器声明哪些源（即哪些域、协议或端口）是被允许与其进行交互的，用于控制哪些 Web 页面可以请求跨域的资源
+出于安全原因，Web 浏览器采用同源策略（Same-Origin Policy, SOP），禁止一个源的 HTML 或 JS 获取另一个源的资源，这可以防止 XSS 攻击。但它也限制了合法的跨域请求，例如 API 调用。CORS 是一个 HTTP 头部驱动的机制，由大多数现代浏览器实现，它允许服务器声明哪些源（即哪些域、协议或端口）是被允许与其进行交互的，用于控制哪些 Web 页面可以请求跨域的资源
 
 ###### 工作流程
 
@@ -22,7 +22,7 @@
 
 - 响应头：
 
-1. Access-Control-Allow-Origin：服务器对 CORS 请求的回应中必须包含此头部，它的值要么是请求 `Origin` 头部的确切值，要么是一个 `*`，表示接受任何域的请求
+1. Access-Control-Allow-Origin：服务器对 CORS 请求的响应中必须包含的，它的值是请求 `Origin` 头部的确切值或`*`
 2. Access-Control-Allow-Methods: 仅在预检请求中出现，表示服务器允许的 HTTP 请求方法
 3. Access-Control-Allow-Headers: 仅在预检请求中出现，表示服务器允许的 HTTP 头部字段
 4. Access-Control-Allow-Credentials: 一个布尔值，表示是否允许发送 cookies。如果其值为 `true`，表示允许发送 cookies，但此时 `Access-Control-Allow-Origin` 不能为 `*`

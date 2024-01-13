@@ -1,3 +1,59 @@
+手写 `v-model`
+
+```HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <button id="myBtn">change</button>
+        <input type="text" id="myInput">
+        <h1 id="myTitle"></h1>
+    </div>
+    <script>
+        let userInfo = { username: 'clown' };
+
+        const inputElement = document.querySelector('#myInput');
+        const titleElement = document.querySelector('#myTitle');
+
+        function watcher() {
+            Object.defineProperty(userInfo, 'username', {
+                set(value) {
+                    inputElement.value = value;
+                    titleElement.innerHTML = value;
+                }
+                get() {
+                    return this.username;
+                }
+            })
+        }
+
+        watcher();
+        userInfo.username = 'clown';
+
+        inputElement.oninput = e => userInfo.username = e.target.value;
+        document.querySelector('#myBtn').onclick = () => userInfo.username = 'clown';
+    </script>
+</body>
+</html>
+```
+
+当数据变化时，视图更新；当用户输入时，数据也相应更新
+
+1. `querySelector` 是一个 DOM 方法，用于在文档中查找与指定的 CSS 选择器匹配的第一个元素
+2. `innerHTML` 是一个元素属性，用于获取或设置元素内部的 HTML 内容
+3. `oninput` 是一个事件处理属性，当元素的值发生变化时触发
+
+`Object.defineProperty` 方法使 `userInfo` 对象的 `username` 属性进成为一个带有 getter 和 setter 的响应式属性
+
+当 `userInfo.username` 的值被改变时，setter 函数被触发，实现了数据到视图的同步更新
+
+`inputElement.oninput` 为输入框绑定了 `input` 事件的监听器。当用户在输入框中输入时，这个事件监听器被触发，并更新 `userInfo.username` 的值，这反过来又通过 setter 更新了 DOM
+
 你可以用  `v-model`  指令在表单  `<input>`、`<textarea>`  及  `<select>`  元素上创建双向数据绑定，它会根据控件类型自动选取正确的方法来更新元素。尽管有些神奇，但  `v-model`  本质上不过是语法糖。它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理
 
 `v-model`  会忽略所有表单元素的  `value`、`checked`、`selected` attribute 的初始值而总是将 Vue 实例的数据作为数据来源。你应该通过 JavaScript 在组件的  `data`  选项中声明初始值
@@ -49,13 +105,13 @@ new Vue({
 
 上述转换过程是通过 JavaScript 的 `parseFloat()` 函数实现的，在 HTML 中，无论是何种类型的输入元素，其值都是字符串类型。即使在 `<input>` 元素上设置 `type="number"`，其值仍为字符串
 
-* 如果想自动过滤用户输入的首尾空白字符，可以给 `v-model` 添加 `trim` 修饰符：
+- 如果想自动过滤用户输入的首尾空白字符，可以给  `v-model`  添加  `trim`  修饰符：
 
 ```html
 <input v-model.trim="msg">
 ```
 
-在 Vue 2 中使用 `v-model` 指令时，Vue 自动尝试将该指令绑定到组件的 `value` prop，并侦听名为 `input` 的事件。但是像单选框、复选框等类型的输入控件可能会将  `value` attribute 用于其他目的。使用 `model` 选项可以避免这样的冲突：
+在 Vue 2 中使用 `v-model` 指令时，Vue 自动尝试将该指令绑定到组件的 `value` prop，并侦听名为 `input` 的事件。但是像单选框、复选框等类型的输入控件可能会将  `value` attribute 用于其他目的。使用 `model`  选项可以避免这样的冲突：
 
 ```JavaScript
 Vue.component('base-checkbox', {

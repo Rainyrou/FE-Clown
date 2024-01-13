@@ -98,57 +98,55 @@ next2.value.then(res2 => {
 据此有：
 
 ```JavaScript
-// `generatorToAsync` 是一个高阶函数
-// 接收一个 Generator 函数
+// `generatorToAsync` 是一个高阶函数，它接收一个 Generator 函数
 function generatorToAsync(generatorFn) {
-    return function() {
-	    // 执行 `generatorFn` 并返回一个迭代器 `gen`	   
-        const gen = generatorFn.apply(this, arguments);
-        // 返回一个 Promise
-        return new Promise((resolve, reject) => {
-	        // `go` 用于递归 `gen`
+  return function () {
+	 // 执行 `generatorFn` 并返回一个迭代器 `gen`	 
+    const gen = generatorFn.apply(this, arguments);
+    // 返回一个 Promise
+    return new Promise((resolve, reject) => {
+		    // `go` 用于递归 `gen`
 	        // `key` 可以是 'next' 或 'throw'，而 `arg` 是传递给生成器的值
-            function go(key, arg) {
-                let res;
-                try {
-                    res = gen[key](arg);
-                } catch(err) {
-                    return reject(err);
-                }
-                const { value, done } = res;
-                if(done) {
-                    return resolve(value);
-                } else {
-	                // 使用 `Promise.resolve(value)` 确保返回的值是一个 Promise
-	                // 这允许在 `yield` 表达式后面使用非 Promise 值
-                    return Promise.resolve(value).then(val => go('next', val), err => go('throw', err));
-                }
-            }
-            // 第一次执行
-            go('next');
-        })
-    }
-};
+      function go(key, arg) {
+        let res;
+        try {
+          res = gen[key](arg);
+        } catch (err) {
+          return reject(err);
+        }
+        const { value, done } = res;
+         // 使用 `Promise.resolve(value)` 确保返回的值是一个 Promise
+	     // 允许在 `yield` 表达式后面使用非 Promise 值
+        return done
+          ? resolve(value)
+          : Promise.resolve(value).then(
+              (val) => go("next", val),
+              (err) => go("throw", err)
+            );
+      }
+      // 首次执行
+      go("next");
+    });
+  };
+}
 
 function fn(num) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(num * 2);
-        }, 1000);
-    })
-};
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(num * 2);
+    }, 1000);
+  });
+}
 
 function* gen() {
-    const num1 = yield fn(1);
-    console.log(num1);
-    const num2 = yield fn(num1);
-    console.log(num2);
-    const num3 = yield fn(num2);
-    console.log(num3);
-    return num3;
-};
+  const num1 = yield fn(1);
+  console.log(num1);
+  const num2 = yield fn(num1);
+  console.log(num2);
+  const num3 = yield fn(num2);
+  console.log(num3);
+  return num3;
+}
 
-const asyncFn = generatorToAsync(gen);
-
-asyncFn().then(res => console.log(res));
+generatorToAsync(gen)().then((res) => console.log(res));
 ```

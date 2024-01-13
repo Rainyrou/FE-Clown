@@ -20,7 +20,6 @@ axios 官方文档，全局默认配置，其对于所有 axios 请求均生效�
 ###### baseURL
 
 - 环境变量用于判断当前的运行环境是开发 or 生产环境
-
 - baseURL 字如其名
 
 ###### withCredentials

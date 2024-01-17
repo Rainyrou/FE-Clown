@@ -33,7 +33,7 @@ Cookie 实质上是一小段文本信息，服务端将 Cookie 发送到客户�
 
 5. Secure：指定 `Cookie` 只能通过安全的 HTTPS 连接发送
 
-6. HttpOnly：当设置了这个属性，JavaScript 和其他脚本将无法访问该 `Cookie`。防止 XSS 攻击，即使攻击者可以执行某些恶意脚本，他们也无法访问带有此标志的 `Cookie`
+6. HttpOnly：当设置了这个属性，JavaScript 和其他脚本将无法访问该 `Cookie`，防止 XSS 攻击
 
 7. SameSite：用于防止 CSRF。它可以有三个值：
    - `Strict`：`Cookie` 仅在同一站点请求中发送

@@ -1,58 +1,38 @@
-###### 1. 性能提升
+###### 1. 响应式原理
 
-- Vue3 提供了更好的性能，特别是在虚拟 DOM 重写和树的更新算法方面。Vue3 通过使用 `Proxy` 代理而不是`Object.defineProperty` 实现了更快的组件初始化和更新。它比 Vue2 快 20%，且内存减半
+- Vue2  响应式的特点是依赖收集，数据可变，自动派发更新，初始化时通过 `Object.defineProperty`  递归劫持  `data` 所有属性，为其添加 `getter` 和 `setter`。每个组件实例关联一个 `watcher` 实例，在组件渲染时进行依赖收集，并在依赖项的 `setter` 被调用时通知 `watcher` 重新渲染
+- Vue3 使用原生 `Proxy`  重构响应式，`Proxy`  修复 Vue2 响应式存在的缺陷，它可以拦截对象的任意操作，支持更多数据结构，且不再一开始就递归劫持对象属性，而是代理第一层对象本身，运行时才递归，按需代理，用 `effect`  副作用来代替 Vue2  里的 `watcher`，用 `trackMap`  代替 Vue2  中的 `Dep` 统一管理依赖，无需再维护大量依赖关系，性能显著提升
 
-###### 2. 组合式 API
+###### 2. Diff 算法
 
-- Vue3 引入了 Composition API，允许开发者更灵活地组织组件逻辑。而 Vue2 使用的是 Option API，所有的组件逻辑都放在一个对象里，按照不同的选项（如 `data`、`methods`、`computed` 等）分类
+- Vue 2 的 diff 算法采用双指针比较新旧虚拟节点的子节点列表。同层级 vnode 进行比较，如果新的 vnode 存在而旧的不存在，则创建新节点；反之，则删除旧节点。在处理子节点时，使用了四个指针（旧前、旧后、新前、新后）进行头尾和尾头的比对，尽可能地复用现有节点，避免不必要的 DOM 操作。移动节点时通过 `splice`  进行数组操作
+- Vue 3 对 diff 算法进行了优化，增加了更多的静态标记。在编译阶段，Vue 3 能够检测并标记出静态的根节点，这些节点在 diff 过程中可以被直接跳过。对于动态子节点的比较，Vue 3 使用了 `Map` 数据结构来跟踪节点的索引。Vue 3 还引入了最长递增子序列算法来优化比对过程，它通过比较 `source` 数组记录的位置信息来实现
 
-###### 3. 响应式原理
+###### 3. Option API & Composition API
 
-- Vue3 使用 `Proxy` 作为其响应式系统的基础，不仅改善了性能，还增加了对集合类型的响应式支持，如 `Map` 和 `Set`。
-- Vue2 使用 `Object.defineProperty` 作为其响应式系统的基础，这限制了某些响应式操作，且不支持集合类型的响应式变化
+- Vue2 引入 Option API，所有组件逻辑都放在一个对象里，按照不同选项（如 `data`、`methods`、`computed` 等）进行分类
+
+* Vue3 引入 Composition API，允许开发者以更强大且灵活地方式组织组件逻辑
 
 ###### 4. TypeScript 支持
 
-- Vue3 是用 TypeScript 编写的，因此它提供了更好的 TypeScript 支持
-- Vue2 对 TypeScript 的支持有限，虽然它也可以使用 TypeScript 编写，但并不是所有的 Vue2 代码都能很好地与 TypeScript 集成
+- Vue2 对 TypeScript 的支持有限，并不是所有的 Vue2 代码都能很好地与 TypeScript 集成
+- Vue3 是用 TypeScript 重写的，它提供了更好的 TypeScript 支持
 
 ###### 5. Fragment & Teleport & Suspense
 
-- Vue3 引入了几个新的内置组件，比如 Fragment（让组件返回多个根节点）、Teleport（允许将子节点传送到 DOM 的其他部分）和 Suspense（用于异步组件的数据获取和等待）
+- Vue3 引入了几个新的内置组件，如 Fragment（让组件返回多个根节点）、Teleport（允许将子节点传送到 DOM 的其他部分）和 Suspense（用于异步组件的数据获取和等待）
+
+###### 6. 新的生命周期钩子
+
+- Vue3 引入了几个新的生命周期钩子，如 `onBeforeMount`、`onMounted`、`onBeforeUpdate`、`onUpdated`、`onBeforeUnmount`、`onUnmounted` 等，使得组件的生命周期管理更加直观
 
 ###### 6. Tree-shaking
 
-- Vue3 提供了 Tree-shaking 支持，如果你没有使用 Vue 的某些功能，它们就不会被打包到最终的构建中，从而减小了包的大小
+- Vue3 提供了 Tree-shaking 支持，若在项目中没有使用 Vue 的某些功能，它们就不会被打包最终的构建产物，减小包的体积大小
 
-###### 7. 自定义渲染器 API
+###### 7. 多个根节点的组件
 
-- Vue3 提供了创建自定义渲染器的 API，使得 Vue 更容易地与不同平台集成，如原生移动开发或小程序
+- 在 Vue2 中，每个组件仅有一个根节点
 
-###### 8. 更详细的警告和错误堆栈
-
-- Vue3 在开发模式下提供了更详细的警告和错误堆栈，以帮助开发者定位问题
-
-###### 9. 更灵活的组件实例
-
-- Vue3 允许开发者使用 `setup()` 函数访问组件实例，这提供了更多操作组件实例的灵活性
-
-###### 10. 多个根节点的组件
-
-- Vue3 允许 SFC 有多个根节点，而在 Vue2 中，每个组件只能有一个根节点
-
-###### 11. v-model 的变化
-
-- 在 Vue3 中，`v-model` 语法更加灵活，支持自定义事件名称和修饰符，这让它在处理表单时更加强大
-- 相比之下，Vue2 的 `v-model` 是固定的，主要用于简单的双向数据绑定
-
-###### 12. 组件的 v-if 优先级
-
-- Vue3 改变了模板中的 `v-if` 和 `v-for` 的优先级，`v-if` 现在有比 `v-for` 更高的优先级
-
-###### 13. 更多的动画和过渡选项
-
-- Vue3 对动画和过渡的支持进行了增强，提供了更多选项和钩子，使得动画实现更加丰富和可控
-
-###### 14. 新的生命周期钩子
-
-- Vue3 引入了几个新的生命周期钩子，如 `onBeforeMount`、`onMounted`、`onBeforeUpdate`、`onUpdated`、`onBeforeUnmount`、`onUnmounted` 等，这使得组件的生命周期管理更加直观和易于理解
+* Vue3 允许有多个根节点

@@ -117,9 +117,9 @@
 
 `avatarCache/index.js`
 
-1. 生成本地缓存路径：对网络头像 URL 进行哈希，生成唯一文件名，确保缓存的唯一性和安全性，根据 wx 平台生成对应的文件存储路径
-2. 检查头像缓存：在显示头像之前，通过 `uni.getFileSystemManager().readFile` 检查头像是否已缓存在本地
-3. 下载和缓存头像：如果头像未被缓存，创建一个下载任务，并将任务加入下载队列，通过 `avatarCache.createFilePath` 生成本地存储的路径
-4. 读取缓存头像：如果头像已被缓存，直接从本地路径读取
+1. 对网络头像 URL 进行哈希，根据微信 API 和环境变量 `${wx.env.USER_DATA_PATH}/${fileName}` 拼接头像的缓存路径
+2. 在显示头像之前，通过 `uni.getFileSystemManager().readFile` 检查头像是否已缓存在本地
+3. 如果头像未被缓存，创建一个下载任务，参数是 `filePath` 和 `url`，并将任务加入下载队列
+4. 如果头像已被缓存，直接从本地路径读取
 
 ##### 弹窗

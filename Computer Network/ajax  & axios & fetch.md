@@ -14,16 +14,13 @@ axios 是一个基于 Promise 的 HTTP 客户端，用于浏览器和 Nodejs 中
 - 转换请求数据和响应数据
 - 自动转换 JSON 数据
 - 支持 Promise API
-- 从浏览器中创建 XMLHttpRequests
-* 从 Node.js 创建 HTTP 请求
-- 客户端支持防止 CSRF
 
 ###### fetch
 
-Fetch API 提供了一个 JavaScript 接口，用于访问和操纵 HTTP 管道的部分，例如请求和响应。它还提供了一个全局 `fetch()` 方法，该方法提供了一种简单、合理的方式来跨网络异步获取资源
+Fetch API 提供了一个 JavaScript 接口
 
-- 基于 Promise 设计
+- 不支持取消请求和原生的进度监控
 - 替代 XMLHttpRequest 和更传统的方法如 jQuery.ajax
 - 无需依赖额外的库或框架
 - 原生支持 JSON
-- 不支持取消请求和原生的进度监控
+- 基于 Promise 设计

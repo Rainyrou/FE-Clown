@@ -11,7 +11,6 @@
 ###### 3. Option API & Composition API
 
 - Vue2 引入 Option API，所有组件逻辑都放在一个对象里，按照不同选项（如 `data`、`methods`、`computed` 等）进行分类
-
 * Vue3 引入 Composition API，允许开发者以更强大且灵活地方式组织组件逻辑
 
 ###### 4. TypeScript 支持
@@ -34,5 +33,4 @@
 ###### 7. 多个根节点的组件
 
 - 在 Vue2 中，每个组件仅有一个根节点
-
 * Vue3 允许有多个根节点

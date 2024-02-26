@@ -13,6 +13,11 @@
 9. 设置原型 `Object.setPrototypeOf`
 10. 调用函数 `apply`
 
+###### 局限性
+
+1. `Proxy` 是 ES6 的特性，不支持 IE 浏览器
+2. 不像 `Object.defineProperty`，`Proxy` 无法通过 polyfill 在不支持的环境中实现
+
 ###### 底层原理
 
  * Vue2  响应式的特点是依赖收集，数据可变，自动派发更新，初始化时通过 `Object.defineProperty`  递归劫持  `data` 所有属性，为其添加 `getter` 和 `setter`。每个组件实例关联一个 `watcher` 实例，在组件渲染时进行依赖收集，并在依赖项的 `setter` 被调用时通知 `watcher` 重新渲染

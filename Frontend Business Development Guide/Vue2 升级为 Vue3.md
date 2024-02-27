@@ -13,4 +13,4 @@
 <el-input :modelValue="inputValue" @update:modelValue="val => inputValue = val"></el-input>
 ```
 
-4. 确保 Element Plus 和 TailwindCSS 的样式共存而不冲突。通过 CSS 作用域、CSS Modules 和 Vue 3 的`<style scoped>` 来隔离组件样式。同时利用 Element Plus 提供的主题定制功能，调整与 TailwindCSS 更匹配的颜色、边距等样式变量
+4. 确保 Element Plus 和 TailwindCSS 的样式共存而不冲突，通过 CSS 作用域、CSS Modules 和 Vue 3 的 `<style scoped>` 来隔离组件样式。同时利用 Element Plus 提供的主题定制功能，调整与 TailwindCSS 更匹配的颜色、边距等样式变量

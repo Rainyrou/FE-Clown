@@ -1,6 +1,6 @@
 1. 聊天界面
 
-- 使用 Flexbox 布局创建一个分栏的聊天界面，左侧为对话列表，右侧为当前对话内容，使用 TailwindCSS 快速实现响应式布局。开发消息组件来展示不同类型的消息（文本、图片、链接等），使用Element Plus的 `<el-card>` 组件来包装每条消息。在界面底部提供一个输入区域，包含文本输入框和发送按钮。使用 Element Plus 的 `<el-input>` 和`<el-button>` 组件，并加入快捷键支持（如 Enter 发送消息）
+- 使用 Flexbox 布局创建一个分栏的聊天界面，左侧为对话列表，右侧为当前对话内容，使用 TailwindCSS 快速实现响应式布局。开发消息组件来展示不同类型的消息（文本、图片、链接等），使用 Element Plus 的 `<el-card>` 组件来包装每条消息。在界面底部提供一个输入区域，包含文本输入框和发送按钮，使用 Element Plus 的 `<el-input>` 和 `<el-button>` 组件，并加入快捷键支持（如 Enter 发送消息）
 
 2. 数据处理 & 展示
 
@@ -56,7 +56,3 @@ export const webSocketService = new WebSocketService();
 * 使用 Web Workers 将计算密集型任务移出主线程，避免阻塞 UI 渲染
 - 将基于 AI 生成内容的组件设计为异步组件，按需加载
 - 结合 `requestAnimationFrame` 或者 `Vue.nextTick` 批量更新 DOM，避免阻塞 UI 线程
-
-
-
-

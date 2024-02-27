@@ -17,9 +17,8 @@ Promise.all(iterable)
 ```JavaScript
 Promise._all = function (promises) {
   return new Promise((resolve, reject) => {
-    if (promises == null || typeof promises[Symbol.iterator] !== "function") {
+    if (promises == null || typeof promises[Symbol.iterator] !== "function")
       throw new TypeError(`${promises} is not an iterator`);
-    }
     promises = [...promises];
     if (promises.length === 0) resolve([]);
     let count = 0;

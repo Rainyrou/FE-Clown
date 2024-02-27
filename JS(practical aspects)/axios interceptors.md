@@ -21,9 +21,7 @@ axios.interceptors.request.use(
 
 ```JavaScript
 axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response && error.response.status === 401)
       console.log("Fail, please login again");

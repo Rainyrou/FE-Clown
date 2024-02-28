@@ -1,8 +1,8 @@
 ###### ajax
 
-Asynchronous JavaScript and XML 是一种使用现有标准的方法，其核心是 XMLHttpRequest 对象，用于在后台与服务器通信，获取数据
+Asynchronous JavaScript and XML 是一种使用现有标准的方法，其核心是 XMLHttpRequest 对象，用于在后台与服务端通信，获取数据
 
-- 可以异步更新网页的一部分，而无需重新加载完整页面
+- 可异步更新网页的一部分，而无需重新加载完整页面
 - 使用 JavaScript 进行动态交互
 
 ###### axios

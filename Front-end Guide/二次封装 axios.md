@@ -54,11 +54,6 @@ axios.interceptors.response.use(res => {
     }
     if (res.data.code !== 200) {
         if (res.data.msg) Toast.show(res.data.msg)
-
-        /**
-         * 没有登录的用户，默认跳到 /login 页面
-         */
-
         if (res.data.code === 401) {
             window.location.href = '/login'
         }

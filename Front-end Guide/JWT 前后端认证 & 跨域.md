@@ -1,10 +1,3 @@
-> [!todo] To do
-> 全文背诵
-
-##### 你是如何优化 JWT 认证机制的？在这个过程中遇到的主要挑战是什么？
-
-##### 在处理跨域问题时，你采取了哪些技术措施？这些措施如何有效保证前后端通信的安全性和效率？
-
 #### 多用户鉴权
 
 `config.default.js`
@@ -55,9 +48,7 @@ CORS 配置允许跨域请求。在多用户环境中需要确保 API 只允许�
 
 ```JavaScript
 config.cors = {
-    // 允许所有跨域访问
     origin: '*',
-    // 允许 Cookie 跨域
     credentials: true,
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
   };
@@ -152,7 +143,7 @@ async register() {
     ...
     const result = await ctx.service.user.register({
         username,
-        password, // 直接使用用户提交的明文密码
+        password, 
         ...
     });
     ...
@@ -161,7 +152,7 @@ async register() {
 // service/user.js
 async register(params) {
     ...
-    const result = await app.mysql.insert('user', params); // 将明文密码直接插入到数据库中
+    const result = await app.mysql.insert('user', params); 
     ...
 }
 ```
@@ -180,7 +171,7 @@ config.security = {
     enable: false,
     ignoreJSON: true
   },
-  domainWhiteList: [ '*' ], // 注意这里
+  domainWhiteList: [ '*' ], 
 };
 ```
 

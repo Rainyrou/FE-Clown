@@ -1,4 +1,4 @@
-`useCallback` 基于闭包和 React 的 Hooks 机制，它接受一个回调函数和一个依赖项数组，返回一个记忆化的版本的回调函数，只有当依赖项发生变化时，这个回调函数才会更新
+`useCallback` 基于闭包和 React 的 Hooks 机制，它接受一个回调函数和一个依赖项数组，返回一个记忆化的版本的回调函数，只有当依赖项发生变化时，该回调函数才会更新
 
 ```JavaScript
 const memoizedCallback = useCallback(() => doSomething(a, b), [a, b]);

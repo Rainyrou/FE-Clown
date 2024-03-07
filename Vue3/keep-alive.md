@@ -1,9 +1,44 @@
->[!todo] To do 
->先看 Vue2 目录的对应部分，本文是其补充，解读官方文档和实战 demo
+>[!hint] Helpful hint
+>以下说法适用于 Vue2 & Vue3
 
-`<KeepAlive>`  是一个内置组件，它的功能是在多个组件间动态切换时缓存被移除的组件实例
+如果你希望用户在切换组件时保持组件的状态而不是销毁它，你可以使用 `<keep-alive>` 组件来实现缓存组件
 
-##### 基本使用
+`<keep-alive>` 可以保持组件状态，避免重新渲染。当你包裹一个动态组件时，所有的状态都会被保留，即组件不会被销毁和重新创建
+
+```JavaScript
+<keep-alive>
+  <component :is="currentComponent"></component>
+</keep-alive>
+```
+
+在上面的代码中，`currentComponent` 是一个动态绑定的组件，根据需要展示不同的组件。只有当 `currentComponent` 变化时，Vue 才会切换组件
+
+被 `<keep-alive>` 包裹的组件会多出两个生命周期钩子：`activated` 和 `deactivated`。当组件被激活时调用 `activated`，当组件被停用时调用 `deactivated`
+
+```JavaScript
+export default {
+  activated() {
+    console.log('Component is activated');
+  },
+  deactivated() {
+    console.log('Component is deactivated');
+  }
+};
+```
+
+`<keep-alive>` 本身提供了两个属性来进行更细粒度的控制：
+
+- `include`：字符串或正则表达式。只有名称匹配的组件会被缓存
+- `exclude`：字符串或正则表达式。任何名称匹配的组件都不会被缓存
+
+```JavaScript
+<keep-alive :include="whiteList">
+  <component :is="currentComponent"></component>
+</keep-alive>
+```
+
+在这个例子中，只有 `whiteList` 中包含的组件名称才会被 `<keep-alive>` 缓存
+
 
 ```TypeScript
 <component :is="activeComponent" />
@@ -47,7 +82,7 @@
 </KeepAlive>
 ```
 
-##### 缓存实例的生命周期
+###### 缓存实例的生命周期
 
 当一个组件实例从 DOM 上移除但因为被  `<KeepAlive>`  缓存而仍作为组件树的一部分时，它将变为不活跃状态而不是被卸载。当一个组件实例作为缓存树的一部分插入到 DOM 中时，它将被重新激活
 
@@ -57,184 +92,13 @@
 
 `activated` 在组件挂载及每次从缓存中被重新插入的时候调用，`deactivated` 在从 DOM 上移除、进入缓存及组件卸载时调用
 
-[一个 Vue 3 UI 框架 | Element Plus](https://element-plus.org/zh-CN/)
+###### 底层原理
 
-```bash
-npm install element-plus --save
-```
+在底层，Vue 使用了一个缓存对象来存储和复用组件实例。当一个组件被 `<keep-alive>` 包裹时，如果该组件没有被缓存，则创建一个新的组件实例；如果该组件已经被缓存，则从缓存中取出并复用
 
-`main.ts`
+在源码层面，`<keep-alive>` 组件的渲染函数会检查其插槽内容的组件节点，并决定是创建一个新的 VNode 实例还是从缓存中取出一个实例。组件的实例会保留在内存中，直到它被排除或 `<keep-alive>` 被销毁
 
-```TypeScript
-import { createApp } from 'vue';
-import App from './App.vue';
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
+使用 `<keep-alive>` 会占用内存。因此避免缓存大量组件，特别是那些占用大量内存或需要频繁更新的组件
 
-export const app = createApp(App);
-
-app.use(ElementPlus);
-app.mount('#app');
-```
-
-`App.vue`
-
-```typeScript
-<template>
-  <el-button type="primary" @click="flag = !flag">toggle</el-button>
-  <keep-alive :include="['A', 'B']">
-    <A v-if="flag"></A>
-    <B v-else></B>
-  </keep-alive>
-</template>
-
-<script setup lang='ts'>
-import { ref, reactive } from 'vue';
-import A from './components/A.vue';
-import B from './components/B.vue';
-
-const flag = ref<boolean>(true);
-</script>
-
-<style scoped></style>
-```
-
-`components/A.vue`
-
-```TypeScript
-<template>
-    <el-card>
-        <h1>I am A component</h1>
-        <el-form :model="form" label-width="120px">
-            <el-form-item label="Activity name">
-                <el-input v-model="form.name" />
-            </el-form-item>
-            <el-form-item label="Activity zone">
-                <el-select v-model="form.region" placeholder="please select your zone">
-                    <el-option label="Zone one" value="shanghai" />
-                    <el-option label="Zone two" value="beijing" />
-                </el-select>
-            </el-form-item>
-            <el-form-item label="Activity time">
-                <el-col :span="11">
-                    <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%" />
-                </el-col>
-                <el-col :span="2" class="text-center">
-                    <span class="text-gray-500">-</span>
-                </el-col>
-                <el-col :span="11">
-                    <el-time-picker v-model="form.date2" placeholder="Pick a time" style="width: 100%" />
-                </el-col>
-            </el-form-item>
-            <el-form-item label="Instant delivery">
-                <el-switch v-model="form.delivery" />
-            </el-form-item>
-            <el-form-item label="Activity type">
-                <el-checkbox-group v-model="form.type">
-                    <el-checkbox label="Online activities" name="type" />
-                    <el-checkbox label="Promotion activities" name="type" />
-                    <el-checkbox label="Offline activities" name="type" />
-                    <el-checkbox label="Simple brand exposure" name="type" />
-                </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="Resources">
-                <el-radio-group v-model="form.resource">
-                    <el-radio label="Sponsor" />
-                    <el-radio label="Venue" />
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="Activity form">
-                <el-input v-model="form.desc" type="textarea" />
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">Create</el-button>
-                <el-button>Cancel</el-button>
-            </el-form-item>
-        </el-form>
-    </el-card>
-</template>
-
-<script lang="ts" setup>
-import { reactive, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
-
-// do not use same name with ref
-const form = reactive({
-    name: '',
-    region: '',
-    date1: '',
-    date2: '',
-    delivery: false,
-    type: [],
-    resource: '',
-    desc: '',
-})
-
-const onSubmit = () => {
-    console.log('submit!')
-}
-
-onMounted(() => {
-    console.log('mounted');
-})
-
-onActivated(() => {
-    console.log('keep-alive mounted');
-})
-
-onDeactivated(() => {
-    console.log('keep-alive unMounted');
-})
-
-onUnmounted(() => {
-    console.log('unMounted');
-})
-</script>
-```
-
-`components/B.vue`
-
-```TypeScript
-<template>
-    <el-card>
-        <h1>I am B component</h1>
-        <div class="mb-2 flex items-center text-sm">
-            <el-radio-group v-model="radio1" class="ml-4">
-                <el-radio label="1" size="large">Option 1</el-radio>
-                <el-radio label="2" size="large">Option 2</el-radio>
-            </el-radio-group>
-        </div>
-        <div class="my-2 flex items-center text-sm">
-            <el-radio-group v-model="radio2" class="ml-4">
-                <el-radio label="1">Option 1</el-radio>
-                <el-radio label="2">Option 2</el-radio>
-            </el-radio-group>
-        </div>
-        <div class="my-4 flex items-center text-sm">
-            <el-radio-group v-model="radio3" class="ml-4">
-                <el-radio label="1" size="small">Option 1</el-radio>
-                <el-radio label="2" size="small">Option 2</el-radio>
-            </el-radio-group>
-        </div>
-        <div class="mb-2 flex items-center text-sm">
-            <el-radio-group v-model="radio3" disabled class="ml-4">
-                <el-radio label="1" size="small">Option 1</el-radio>
-                <el-radio label="2" size="small">Option 2</el-radio>
-            </el-radio-group>
-        </div>
-    </el-card>
-</template>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const radio1 = ref('1')
-const radio2 = ref('1')
-const radio3 = ref('1')
-</script>
-```
-
-`onMounted` 只调用了一次：
-
-![[1696725365783.png]]
-
+`<KeepAlive>`  是一个内置组件，它的功能是在多个组件间动态切换时缓存被移除的组件实例
 

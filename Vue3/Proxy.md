@@ -1,4 +1,4 @@
-`Proxy` 对象用于创建响应式数据。它是 Vue 3 响应式原理的核心，取代了 Vue 2 `Object.defineProperty` 方法。`Proxy` 能够拦截和监视对象的任意操作，支持更多的数据结构
+`Proxy` 对象用于创建响应式数据。它是 Vue3 响应式原理的核心，取代了 Vue2 `Object.defineProperty` 方法。`Proxy` 能够拦截和监视对象的任意操作，支持更多的数据结构
 
 `Proxy` 可拦截以下类型的操作：
 

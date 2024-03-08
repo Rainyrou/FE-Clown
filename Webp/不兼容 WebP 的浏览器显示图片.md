@@ -1,3 +1,5 @@
+大多数现代浏览器都支持 WebP 格式，包括 Chrome、Firefox、Edge、Safari 14 及更高版本。但一些旧版本的浏览器和操作系统可能不支持 WebP，特别是早于 iOS 14 的 Safari 版本
+
 1. HTML5 `picture`：允许为不同情况指定多个源图片，浏览器选择它支持的第一个图片格式进行加载
 
 ```HTML

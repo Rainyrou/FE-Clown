@@ -46,7 +46,7 @@ module.exports = {
 
 1. 转换过程：在遇到由 `import` 或 `require` 引入的非 JavaScript 文件时，Webpack 会查看其配置中的 `module.rules`，找到相应的 loader 对文件进行处理
 2. 链式调用：多个 loader 可以链式调用。链中的每个 loader 都可以对资源进行转换，且链中的前一个 loader 的返回结果传递给下一个 loader。最终，链中的最后一个 loader 返回 JavaScript 给 webpack
-3. 配置：通过在 Webpack 配置文件中定义 `rules`（以数组形式），指定哪些文件应该被哪些 loader 处理。`test` 属性用于指定哪些文件被转换，`use` 属性指定使用哪个 loader
+3. 配置：通过在 Webpack 配置文件中以数组形式定义 `rules`，指定哪些文件应该被哪些 loader 处理。`test` 属性用于指定哪些文件被转换，`use` 属性指定使用哪个 loader
 
 ##### Plugin
 
@@ -87,6 +87,6 @@ module.exports = {
 ###### 底层原理
 
 1. Webpack 有一个基于事件的 Plugin 系统，Plugin 可以监听构建过程中的不同事件节点，并在这些节点上执行特定操作
-2. Plugin 可以访问 Webpack 的内部实例，包括 Compiler & Compilation 对象。这些对象提供了对 Webpack 运行时和构建流程的完全访问权限，Compiler 对象代表完整的 Webpack 环境配置，它负责启动并协调整个编译过程。Compilation 对象代表一次资源版本构建
+2. Plugin 可以访问 Webpack 的内部实例，包括 Compiler & Compilation 对象。这些对象提供对 Webpack 运行时和构建流程的完全访问权限，Compiler 对象代表完整的 Webpack 环境配置，它负责启动并协调整个编译过程。Compilation 对象代表一次资源版本构建
 3. Plugin 通过 Webpack 配置文件的 `plugins` 数组进行配置和使用。Plugin 一般通过 `new` 关键字来创建实例
-4. 自定义 Plugin 通常包括一个 JavaScript 类，类的 `apply` 方法会被 Webpack 编译器调用，Plugin 可以在 `apply` 方法中注册自定义的行为
+4. 自定义 Plugin 包括一个 JavaScript 类，类的 `apply` 方法被 Webpack 编译器调用，Plugin 可在 `apply` 方法中注册自定义的行为

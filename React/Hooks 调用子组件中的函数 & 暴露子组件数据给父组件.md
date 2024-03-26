@@ -1,0 +1,93 @@
+在 Hooks 中直接调用子组件中的函数并不像在类组件中那样直接，由于函数组件的特性，我们不能通过 `ref` 属性直接调用子组件的函数，因为 `ref` 不能直接绑定到函数组件上，除非子组件是一个类组件，但还是可通过`useImperativeHandle` & `forwardRef` 实现。虽然此种方式可实现上述需求，但 React 官方建议避免过度使用 refs 来实现组件间的交互，因为这可能破坏组件间的独立性和封装性，推荐通过状态提升或使用上下文 Context 实现
+
+`useImperativeHandle` 允许子组件向父组件暴露特定的实例值，而 `forwardRef` 允许将 `ref` 从父组件传递给子组件
+
+```jsx
+import React, { useImperativeHandle, forwardRef } from 'react';
+
+const Child = forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    showMessage() {
+      alert('Hello from Child Component!');
+    }
+  }));
+
+  return <div>Child Component</div>;
+});
+```
+
+```jsx
+import React, { useRef } from 'react';
+import Child from './Child';
+
+function Parent() {
+  const childRef = useRef();
+
+  return (
+    <div>
+      <Child ref={childRef} />
+      <button onClick={() => childRef.current.showMessage()}>
+        Call Child Method
+      </button>
+    </div>
+  );
+}
+```
+
+函数式组件通过 Props 接收来自父组件的数据和回调函数。但当需要从子组件向父组件暴露数据或方法时，我们不能直接修改 Props，因为它们是只读的
+
+1. 回调函数：子组件可接收一个来自父组件的回调函数作为 Props，在适当时机调用该回调函数，并将子组件的数据或方法作为参数传递给父组件
+
+```jsx
+function ParentComponent() {
+  const handleChildData = (data) => console.log("Data from child:", data);
+  return <ChildComponent onChildData={handleChildData} />;
+}
+```
+
+```jsx
+function ChildComponent({ onChildData }) {
+  const someData = "Some data from ChildComponent";
+
+  const handleClick = () => {
+    if (onChildData) onChildData(someData);
+  };
+
+  return <button onClick={handleClick}>Click Me</button>;
+}
+```
+
+2. `useImperativeHandle` & `forwardRef`
+
+```jsx
+import React, { useRef } from 'react';
+
+function ParentComponent() {
+  const childRef = useRef();
+  const accessChild = () => {
+    if (childRef.current) console.log(childRef.current.someMethod());
+  };
+
+  return (
+    <>
+      <ChildComponent ref={childRef} />
+      <button onClick={accessChild}>Access Child Method</button>
+    </>
+  );
+}
+```
+
+```jsx
+import React, { useImperativeHandle, forwardRef } from 'react';
+
+const ChildComponent = forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    someMethod() {
+      return "This data is from child's someMethod";
+    },
+  }));
+
+  return <div>Child Component</div>;
+});
+```
+

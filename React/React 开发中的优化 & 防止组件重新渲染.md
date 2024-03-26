@@ -1,4 +1,4 @@
-1. `React.memo` & `PureComponent` + `shouldComponentUpdate`
+1. `React.memo` & `PureComponent` & `shouldComponentUpdate`
 
 `React.memo` 仅对其组件的 props 进行浅比较，当函数组件接收到相同的 props 时，`React.memo` 跳过渲染，从而提高性能，同时它接受第二个参数作为自定义比较函数
 
@@ -11,7 +11,19 @@ function areEqual(prevProps, nextProps) {}
 export default React.memo(YourComponent, areEqual);
 ```
 
-`PureComponent` 在类组件中通过 `shouldComponentUpdate` 进行浅比较来防止不必要的渲染
+可通过在类组件中实现 `shouldComponentUpdate` 方法来避免不必要的渲染，其返回一个布尔值，决定是否继续进行渲染
+
+```jsx
+class MyComponent extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.id !== this.props.id;
+  }
+
+  render() {}
+}
+```
+
+`React.PureComponent` 与 `React.Component` 类似，不同之处在于 `PureComponent` 通过 props 和 state 的浅比较自动实现 `shouldComponentUpdate` 方法，若组件的 props 和 state 均不变，那么组件不会进行重新渲染
 
 ```JavaScript
 class MyComponent extends React.PureComponent {
@@ -37,5 +49,3 @@ render() {
 ```
 
 4. 组件懒加载
-
-

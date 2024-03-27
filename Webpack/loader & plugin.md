@@ -1,6 +1,6 @@
-##### loader
+##### Loader
 
-Webpack 本身只能理解 JavaScript，Loader 可将其他类型文件转换为有效的 module，将之加入到依赖图中，以供应用程序使用
+Webpack 本身只能理解 JavaScript，Loader 可将其他类型文件转换为有效的 module，将之加入到依赖图中
 
 1. babel-loader: 兼容旧浏览器，将 ES6 代码转换为 ES5
 2. ts-loader：加载 TypeScript 文件，并将其转换为 JavaScript
@@ -42,15 +42,22 @@ module.exports = {
 };
 ```
 
+###### 为什么需要转义：
+
+1. 兼容性：许多现代 JavaScript 特性在旧版本浏览器中不被支持，通过转义，开发者可使用最新的 JavaScript 特性而无需担心兼容性问题
+2. 跨平台支持：预处理器或模板语言如 Pug 需被转义为原生 CSS 或 HTML，以便浏览器解析
+3. 模块化非 JS 资源
+4. 优化代码：转义过程中包含压缩和优化步骤，减少代码体积，提高性能
+
 ###### 底层原理
 
-1. 转换过程：在遇到由 `import` 或 `require` 引入的非 JavaScript 文件时，Webpack 会查看其配置中的 `module.rules`，找到相应的 loader 对文件进行处理
-2. 链式调用：多个 loader 可以链式调用。链中的每个 loader 都可以对资源进行转换，且链中的前一个 loader 的返回结果传递给下一个 loader。最终，链中的最后一个 loader 返回 JavaScript 给 webpack
-3. 配置：通过在 Webpack 配置文件中以数组形式定义 `rules`，指定哪些文件应该被哪些 loader 处理。`test` 属性用于指定哪些文件被转换，`use` 属性指定使用哪个 loader
+1. 转换过程：在遇到由 `import` 或 `require` 引入的非 JavaScript 文件时，Webpack 查看其配置中的 `module.rules`，找到相应的 loader 对文件进行处理
+2. 链式调用：多个 loader 可以链式调用。链中的每个 loader 均可对资源进行转换，且链中的前一个 loader 的返回结果传递给下一个 loader。最终，链中的最后一个 loader 返回 JavaScript 给 Webpack
+3. 配置：通过在 Webpack 配置文件中以数组形式定义 `rules`，指定哪些文件应被哪些 loader 处理。`test` 属性用于指定哪些文件被转换，`use` 属性指定使用哪个 loader
 
 ##### Plugin
 
-Plugin 是基于 Webpack 的事件钩子系统构建的，Plugin 提供了一种强大的机制来直接参与到 Webpack 的打包过程，允许在构建中的特定时刻添加自定义构建步骤
+Plugin 是基于 Webpack 的事件钩子系统构建的，它提供一种机制直接参与到 Webpack 的打包过程，允许在构建的特定时刻添加自定义构建步骤
 
 1. HtmlWebpackPlugin: 为应用程序生成 HTML 文件，并自动注入所有生成的 bundle
 2. MiniCssExtractPlugin: 将 CSS 提取到单独的文件中，为每个包含 CSS 的 JS 文件创建一个 CSS 文件

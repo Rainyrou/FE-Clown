@@ -16,17 +16,16 @@ CSRF（Cross-Site Request Forgery，跨站请求伪造）：攻击者通过欺�
 
 ```HTML
 <form id="dataForm" action="/submit-data" method="post">
-  <!-- ... 其他的表单字段 ... -->
   <input type="hidden" name="csrf_token" id="csrf_token">
   <input type="submit" value="Submit">
 </form>
 
 <script>
-  // 假设后端已经将CSRF token设置在了用户的会话中，并且可以通过某个API接口获取到
+  // 假设后端已将 CSRF token 设置在用户会话中，且可以通过某个 API 接口获取
   fetch('/get-csrf-token')
     .then(response => response.json())
     .then(data => {
-      // 将token设置为隐藏字段的值
+      // 将 token 设置为隐藏字段的值
       document.getElementById('csrf_token').value = data.csrfToken;
     })
     .catch(error => {
@@ -40,7 +39,6 @@ CSRF（Cross-Site Request Forgery，跨站请求伪造）：攻击者通过欺�
 - 对 cookies 设置 `SameSite` 属性，该属性限制第三方请求携带 cookie
 
 ```JavaScript
-// 设置cookie时，添加SameSite属性
 document.cookie = "sessionId=your_session_id; SameSite=Strict";
 ```
 

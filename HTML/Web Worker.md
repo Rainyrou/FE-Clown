@@ -1,4 +1,4 @@
-Web Workers 提供了一种在 Web 应用中运行脚本的方式，而不会干扰主线程的用户界面。它们通常用于执行耗时的计算，以避免阻塞 UI。Web Workers 与主线程的通信基于事件的消息传递机制。具体来说，使用 `postMessage` 方法和 `onmessage` 事件处理程序来进行通信
+Web Workers 提供一种在 Web 应用中运行脚本的方式，而不会干扰主线程的用户界面，用于执行耗时的计算，以避免阻塞 UI。Web Workers 与主线程的通信基于事件的消息传递机制。具体来说，使用 `postMessage` 方法和 `onmessage` 事件处理程序来进行通信
 
 1. 主线程
 

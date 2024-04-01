@@ -1,4 +1,4 @@
-`setup` 函数是 Composition API 的入口点，它为组件的逻辑和状态提供一个更加灵活的组织方式。此外 `setup` 函数中不可以使用 `this` 来访问组件实例，在执行 `setup` 函数时，组件实例还没有被创建，因此 `this` 在 `setup` 函数中是 `undefined`。这是 Vue3 设计上的一部分，减少对 `this` 上下文的依赖，旨在鼓励我们使用 `ref`、`reactive` 等函数来声明响应式状态，而不是依赖于组件实例，有利于与 TypeScript 结合使用，提高了代码的可维护性
+`setup` 函数是 Composition API 的入口点，它为组件的逻辑和状态提供一个更加灵活的组织方式。此外 `setup` 函数中不可以使用 `this` 来访问组件实例，在执行 `setup` 函数时，组件实例还没有被创建，因此 `this` 在 `setup` 函数中是 `undefined`。这是 Vue3 设计上的一部分，减少对 `this` 上下文的依赖，旨在鼓励我们使用 `ref`、`reactive` 等函数来声明响应式状态，而不是依赖于组件实例，有利于与 TypeScript 结合使用，提高代码的可维护性
 
 ###### 用途
 

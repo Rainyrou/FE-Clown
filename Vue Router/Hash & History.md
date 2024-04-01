@@ -94,18 +94,10 @@ router.afterEach((to, from) => {
 
 ##### 实现原理
 
-1. 路由注册:
+1. 路由注册：当我们创建一个 VueRouter 实例，并传入一个 `routes` 配置数组，`vue-router` 根据此配置创建一个路由映射表
 
-当我们创建一个 VueRouter 实例，并传入一个 `routes` 配置数组，`vue-router` 会根据此配置创建一个路由映射表
+2. 监听 URL 变化：在 Hash 模式下，通过监听 `hashchange` 事件；在 History 模式下，通过监听 `popstate` 事件
 
-2. 监听 URL 变化:
+3. 注入：响应式地将当前路由对象 `$route` 注入到所有 Vue 实例，我们可以在任何组件内使用 `this.$route` 来访问当前路由对象，URL 的变化被自动捕获
 
-在 Hash 模式下，通过监听 `hashchange` 事件；在 History 模式下，通过监听 `popstate` 事件
-
-3. 响应式地将当前路由对象 `$route` 注入到所有 Vue 实例:
-
-这样我们可以在任何组件内使用 `this.$route` 来访问当前路由对象，URL 的变化会被自动捕获
-
-4. `<router-view>` 渲染:
-
-基于当前的路由，`<router-view>` 组件会递归渲染对应的组件
+4. `<router-view>` 渲染：基于当前的路由，`<router-view>` 组件递归渲染对应的组件

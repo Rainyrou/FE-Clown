@@ -17,14 +17,12 @@
 ###### 示例
 
 ```CSS
-/* 对于宽度小于600px的设备 */
 @media (max-width: 599px) {
   body {
     background-color: lightblue;
   }
 }
 
-/* 对于宽度至少为600px的设备 */
 @media (min-width: 600px) {
   body {
     background-color: pink;

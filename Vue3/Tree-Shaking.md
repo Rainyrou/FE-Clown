@@ -10,7 +10,7 @@ Vue3 引入的组合式 API 进一步促进 Tree-Shaking 的效果。与 Vue2 �
 
 3. 构建工具
 
-Vite 或 Webpack 等前端构建工具能够识别和剔除未使用的 Vue 模块，尤其是在生产阶段，通过压缩和优化步骤进一步减少最终的打包体积
+Vite 或 Webpack 等前端构建工具能够识别和移除未使用的 Vue 模块，尤其是在生产阶段，通过压缩和优化步骤进一步减少最终的打包体积
 
 ```JavaScript
 import { createApp, ref } from 'vue';
@@ -24,5 +24,4 @@ const App = {
 createApp(App).mount('#app');
 ```
 
-这里我们只使用了 `createApp` 和 `ref` 两个 API。Vite 或 Webpack 在处理这段代码时，会静态分析所有的导入语句，只将这些被使用的部分包含在最终的 bundle 中。未被引用的 API，如 `reactive`、`computed` 等，则不会包含在内
-
+这里我们只使用了 `createApp` 和 `ref` 两个 API。Vite 或 Webpack 在处理这段代码时，会静态分析所有的导入语句，只将这些被使用的部分包含在最终的 bundle 中，未被引用的 API 如 `reactive`、`computed` 等，则不会包含在内

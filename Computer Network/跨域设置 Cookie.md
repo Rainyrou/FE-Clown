@@ -33,7 +33,7 @@ Access-Control-Allow-Origin: https://www.your-website.com
 ```JavaScript
 fetch('https://api.example.com/data', {
   method: 'GET',
-  credentials: 'include' // 确保 cookies 被发送
+  credentials: 'include' 
 })
 .then(response => response.json())
 .then(data => console.log(data))

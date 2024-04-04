@@ -1,4 +1,4 @@
-XSS（Cross-Site Scripting）攻击是一种安全威胁，攻击者利用 Web 网站的安全漏洞，将恶意的 HTML 标签或 JavaScript 代码注入到合法的 Web 页面中。当用户浏览这个被篡改的页面时，这些恶意脚本将在其浏览器中执行。这样，攻击者可以绕过浏览器的同源策略，获取用户的敏感数据，如 Cookie、Session ID 等
+Cross-Site Scripting 攻击是一种安全威胁，攻击者利用 Web 网站的安全漏洞，将恶意的 HTML 标签或 JavaScript 代码注入到合法的 Web 页面中。当用户浏览这个被篡改的页面时，这些恶意脚本将在其浏览器中执行。这样，攻击者可以绕过浏览器的同源策略，获取用户的敏感数据，如 Cookie、Session ID 等
 
 XSS 攻击大致可以分为三类：
 
@@ -18,9 +18,9 @@ XSS 攻击大致可以分为三类：
 <div>{userInput}</div> // React将自动转义
 ```
 
-2. Content Security Policy (CSP)：
+2. CSP：
 
-- 使用 CSP 指定哪些外部资源可以加载和执行，这可以通过 HTTP 头或 meta 标签实现
+- 使用 Content Security Policy 指定哪些外部资源可以加载和执行，这可以通过 HTTP 头或 meta 标签实现
 
 ```HTML
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://trusted-source.com">
@@ -30,9 +30,7 @@ XSS 攻击大致可以分为三类：
 Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-source.com
 ```
 
-3. HttpOnly 和 Secure flags：
-
-- 设置 cookie 时，使用 HttpOnly 防止 JavaScript 通过 `document.cookie` 获取 cookie，使用 Secure 确保 cookie 只通过加密的 HTTPS 传输
+3. HttpOnly 和 Secure flags：设置 cookie 时，使用 HttpOnly 防止 JavaScript 通过 `document.cookie` 获取 cookie，使用 Secure 确保 cookie 只通过加密的 HTTPS 传输
 
 ```Node
 res.cookie('sessionId', 'SESSIONID123', { httpOnly: true, secure: true });

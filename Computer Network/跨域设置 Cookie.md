@@ -1,5 +1,3 @@
-跨域设置 Cookie 通常涉及两个独立的域之间进行资源共享时的 Cookie 传输问题。为了跨域设置 Cookie，你需要正确配置服务端和客户端
-
 ###### 服务端设置
 
 1. 设置 Set-Cookie Header: 服务器响应时需要通过设置 `Set-Cookie` HTTP header 来包含 Cookie 信息，并且需要特别配置几个属性，以确保浏览器能在跨域情况下设置 Cookie
@@ -27,8 +25,6 @@ Access-Control-Allow-Origin: https://www.your-website.com
 2. Origin: 请求跨域，请求的 `Origin` 需要和 `Access-Control-Allow-Origin` 匹配
 3. Content-Type: 当你发送 POST 请求时，如果 `Content-Type` 是 `application/x-www-form-urlencoded`、`multipart/form-data` 或 `text/plain`，则是简单请求。如果使用其他值，则需要确保服务端响应预检请求并批准该 `Content-Type`
 4. 在本地开发环境中，需要配置本地服务器代理以绕过浏览器的同源策略限制。例如在开发 Node.js 应用时，可以使用代理中间件如 `http-proxy-middleware`
-
-示例（Fetch API）:
 
 ```JavaScript
 fetch('https://api.example.com/data', {

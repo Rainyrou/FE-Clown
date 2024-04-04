@@ -20,21 +20,16 @@ Cookie 实质上是一小段文本信息，服务端将 Cookie 发送到客户�
 
 ###### Cookie 的属性
 
-1. Name 和 Value：`Cookie` 的基本组成部分是其名称和值，它们是键值对，使用 `=` 分隔，如 `username=JohnDoe`
-
+1. Name 和 Value：`Cookie` 的基本组成部分是其名称和值，它们是键值对，以 `=` 分隔，如 `username=JohnDoe`
 2. Expires/Max-Age：指定 `Cookie` 的生存时间，默认情况下，`Cookie` 是会话级的，只存在于用户的会话期间。当指定 `Expires` 或 `Max-Age` 属性后，`Cookie` 会在指定的时间段后过期
 
    - `Expires` 设置一个特定的过期日期和时间
    - `Max-Age` 设置一个特定的存活秒数
 
 3. Domain：指定可以接收 `Cookie` 的域，默认情况下，`Cookie` 只发送给创建它的域
-
 4. Path：指定 `Cookie` 在哪些路径下有效，默认情况下，它只在创建 `Cookie` 的页面路径下有效
-
 5. Secure：指定 `Cookie` 只能通过安全的 HTTPS 连接发送
-
 6. HttpOnly：当设置这个属性，JavaScript 和其他脚本无法访问该 `Cookie`，可防止 XSS 攻击
-
 7. SameSite：用于防止 CSRF，它可以有三个值：
    - `Strict`：仅在同一站点请求中发送 `Cookie`
    - `Lax`：顶级导航和从外部站点发送的 GET 请求可发送 `Cookie`

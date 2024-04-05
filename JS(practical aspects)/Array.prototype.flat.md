@@ -10,11 +10,5 @@ Array.prototype._myflat = function (deep = 1) {
 };
 
 const arr = [1, [2, 3, [4, 5]], 1, 2, [6, 7]];
-console.log(arr._myflat(1));
-```
-
-正确的输出结果
-
-```
-[ 1, 2, 3, [ 4, 5 ], 1, 2, 6, 7 ]
+console.log(arr._myflat(1)); // [ 1, 2, 3, [ 4, 5 ], 1, 2, 6, 7 ]
 ```

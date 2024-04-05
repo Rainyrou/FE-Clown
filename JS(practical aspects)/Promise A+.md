@@ -184,34 +184,6 @@ npm install promises-aplus-tests -D
 }
 ```
 
-##### 基础知识
-
-pending 状态下的 Promise 不会执行回调函数 `then()`
-
-必须给 Promise 对象传入一个执行函数，否则将会报错
-
-尽量避免在 `then()` 方法里面定义 rejected 状态的回调函数（即 `then` 的第二个参数），而总是使用 `catch` 方法
-
-Event Loop：它在 JavaScript 运行时环境检查执行栈是否为空。如果执行栈为空，它会从消息队列中取出一个消息并执行它。如果执行栈不为空，它会等待直到栈为空
-
-执行栈是一个后进先出（LIFO）的数据结构，用于跟踪函数执行的过程。当一个函数被调用，它被添加到栈的顶部。当这个函数执行完毕，它会从栈顶弹出，返回控制权给调用它的函数
-
-Macrotasks：setTimeout、setInterval、setImmediate、requestAnimationFrame、I/O、UI rendering 等
-
-Microtasks：Promise 的 then 方法、process.nextTick、MutationObserver
-
-1. 执行整体的 script 作为一个宏任务
-
-2. 执行当前宏任务中的所有代码
-
-3. 如果在执行当前宏任务时产生了微任务，在当前宏任务结束后立即执行这些微任务，直到微任务队列清空
-
-4. 如果有任何待处理的 UI 渲染任务，此时处理
-
-5. 执行下一个宏任务
-
-6. 重复步骤 2-5
-
 #### myPromise 类
 
 ##### constructor 部分
@@ -221,7 +193,7 @@ Microtasks：Promise 的 then 方法、process.nextTick、MutationObserver
 Promise 的核心是延迟执行和状态管理
 
 1. 当创建一个 Promise 实例时，传入的函数 `func` 包含某个时刻要执行的异步操作。这个函数不会立即执行，而是在 Promise 内部被保存下来，直到 Promise 实例被 resolved 或 rejected
-2. Promise 的状态管理需要在异步操作完成后进行。传入的函数 `func` 提供了两个函数：`resolve` 和 `reject`，这两个函数分别用于在异步操作成功完成时 resolve Promise 或在发生错误时 reject Promise
+2. Promise 的状态管理需要在异步操作完成后进行，传入的函数 `func` 提供两个函数：`resolve` 和 `reject`，这两个函数分别用于在异步操作成功完成时 resolve Promise 或在发生错误时 reject Promise
 
 ```JavaScript
 const myAsyncTask = new myPromise((resolve, reject) => {

@@ -5,8 +5,8 @@ Array.prototype._myfill = function(value, start = 0, end = this.length) {
     }
     start = Math.max(Math.min(start, this.length), 0);
     end = Math.max(Math.min(end, this.length), 0);
-    // 原生 `Array.prototype.fill` 会直接修改调用它的数组
-    // `Array.prototype.fill` 也可以工作于类数组对象
+    // 原生 `Array.prototype.fill` 直接修改调用它的数组
+    // `Array.prototype.fill` 也可工作于类数组对象
     for(let i = start;i < end;++i) {
         this[i] = value;
     }

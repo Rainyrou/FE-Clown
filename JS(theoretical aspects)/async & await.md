@@ -1,0 +1,1 @@
+async/await 是 Generator 函数语法糖，在实现上结合 Generator 与 Promise，它简化使用多个 Promise 时的同步行为，无需关心某个操作是否为异步操作

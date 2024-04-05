@@ -15,7 +15,7 @@ Array.prototype._myunshift = function(...elements) {
 };
 ```
 
-在 JS 中，当你增加一个数组的索引超出其当前长度时，它会自动更新该数组的 `length` 属性。因此没有必要显式地增加`this.length`，因为在移动数组元素时已自动完成
+当增加一个数组的索引超出其当前长度时，数组自动更新其 `length` 属性，无需显式增加 `this.length`
 
 测试代码：
 

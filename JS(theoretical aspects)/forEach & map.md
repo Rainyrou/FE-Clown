@@ -9,7 +9,7 @@ const array = [1, 2, 3, 4, 5];
 // 打印数组的每个元素
 array.forEach(item => console.log(item));
 
-// forEach不返回任何内容
+// forEach 不返回任何内容
 const result = array.forEach(item => item * 2);
 console.log(result); // undefined
 ```

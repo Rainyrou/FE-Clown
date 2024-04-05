@@ -9,8 +9,6 @@ Promise._race = function (promises) {
 };
 ```
 
-由于只要有一个 Promise 完成，`resolve` 或 `reject` 就会被调用，整个 `Promise._race` 就会完成。而其他还未完成的 Promise 仍会继续执行，但它们的结果不会影响最终结果
-
 测试用例：
 
 ```JavaScript

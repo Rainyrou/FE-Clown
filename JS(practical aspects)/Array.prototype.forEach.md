@@ -1,16 +1,9 @@
 ```JavaScript
 Array.prototype._myforEach = function(callback, thisBinding = globalThis) {
-    if(typeof callback !== 'function') {
-        throw new TypeError(`${callback} is not a function`);
-    }
-    if(this == null || typeof this[Symbol.iterator] !== 'function') {
-        throw new TypeError(`${this} is not a iterator`);
-    }
+    if(typeof callback !== 'function') throw new TypeError(`${callback} is not a function`);
+    if(this == null || typeof this[Symbol.iterator] !== 'function') throw new TypeError(`${this} is not a iterator`);
     const arr = [...this];
-    for(let i = 0;i < arr.length;++i) {
-	    // 之所以传递三个参数，是因为原生方法便是如此
-        callback.call(thisBinding, arr[i], i, this);
-    }
+    for(let i = 0;i < arr.length;++i) callback.call(thisBinding, arr[i], i, this);
 };
 ```
 

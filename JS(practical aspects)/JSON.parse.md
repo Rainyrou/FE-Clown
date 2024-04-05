@@ -1,28 +1,13 @@
-`JSON.parse()` 不能直接解析的数据：
+`JSON.parse` 不能解析的数据：
 
-* Function
-* Error,Date,RegExp, Map, Set
-* 稀疏数组，缺失项会被解析为 `null`
 * undefined
+* Function
+* Date,RegExp, Map, Set,Error
+* 稀疏数组，缺失项解析为 `null`
 * 循环引用，原型链上的属性
 
 ```JavaScript
 let json = '{"name":"Clown", "age":21}';
 let obj = eval("(" + json + ")");
 ```
-
-`eval` 允许在运行时动态执行传递给它的 JavaScript 代码字符串
-
-这里首先定义了一个包含 JSON 格式数据的字符串 `json`。然后使用 `eval` 函数尝试将这个字符串转换成 JavaScript 对象
-
-为了确保字符串被正确地解释为一个对象字面量（而不是块语句），我们在字符串前后加上括号
-
-直接调用 `eval`  存在  XSS  漏洞，数据中可能不是  JSON 数据，而是可执行的  JavaScript 代码。因此，在调用 `eval`  之前，需要对数据进行校验
-
-使用 `eval` 即便在对数据进行校验后仍存在风险，原因如下：
-
-1. 正则表达式的校验可能会漏掉某些特殊情况或者恶意代码格式。攻击者可能会找到办法绕过这些校验
-2. 在后续的代码维护中，可能会对校验逻辑进行更改，或者有新的 JSON 格式需要适应，这时很容易引入新的安全风险
-3. 对于大的 JSON 数据，正则表达式的校验可能带来性能问题
-4. 可能存在合法的、安全的 JSON 数据被误判为不安全，或者恶意数据误判为安全的情况
 

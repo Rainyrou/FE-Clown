@@ -1,10 +1,12 @@
 ```JavaScript
-Promise._race = function (promises) {
+Promise._race = (promises) => {
   return new Promise((resolve, reject) => {
-    if (promises === null || typeof promises[Symbol.iterator] !== "function")
+    if (promises == null || typeof promises[Symbol.iterator] !== "function")
       throw new TypeError(`${promises} is not an iterator`);
     promises = [...promises];
-    for (const p of promises) Promise.resolve(p).then(resolve).catch(reject);
+    promises.forEach((promise) =>
+      Promise.resolve(promise).then(resolve).catch(reject)
+    );
   });
 };
 ```

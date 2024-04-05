@@ -6,14 +6,12 @@ Array.prototype._myFillter = function (callback, thisBinding = globalThis) {
     throw new TypeError(`${this} is not an iterator`);
   const arr = [...this];
   const res = [];
-  for (let i = 0; i < arr.length; ++i) {
-    if (callback.call(thisBinding, arr[i], i, this)) res.push(arr[i]);
-  }
+  for (let i = 0; i < arr.length; ++i) if (callback.call(thisBinding, arr[i], i, this)) res.push(arr[i]);
   return res;
 };
 ```
 
-测试用例
+测试用例：
 
 ```JavaScript
 const numbers = [1, 2, 3, 4, 5];

@@ -1,23 +1,15 @@
-`JSON.stringify()`  方法是将一个 JavaScript 值(对象或者数组)转换为 JSON 字符串。此处模拟实现不考虑可选的第二个参数  `replacer`  和第三个参数  `space`
+`JSON.stringify`  将 JavaScript 值转换为 JSON 字符串，其转换过程基于 `[[Class]]` 内部属性和 `ToJSON` 方法，对于内置类型，`JSON.stringify` 首先检查对象是否有 `toJSON` 方法，若有，直接调用该方法，再对结果值进行序列化，若无，`JSON.stringify` 根据内置类型规则直接序列化值
 
-1. 基本数据类型及函数：
-- string 转换之后仍是 string
-- undefined、symbol 和 function 转换之后是 undefined
-- number 类型(除 NaN 和 Infinity)转换之后是 string 类型数值
-- NaN  和  Infinity  转换之后是字符串"null"
-- boolean 转换之后是字符串"false"或者"true"
-
-2. 对象类型（不包括函数）：
-- null 转换之后是字符串"null"
-* array：如果属性值中出现 undefined、symbol 或函数，转换之后是字符串"null"
-* RegExp：返回  `{}` (类型是 string)
-* Date：调用 toJSON()，转化之后是字符串
-* 如果是普通对象：
-  - 如果有 toJSON()，序列化 toJSON()的返回值
-  - 以 symbol 为属性键的属性忽略
-  - 如果属性值中出现  undefined、symbol 或者 function，忽略
-
-4. 对包含循环引用的对象执行此方法，会抛出错误
+- Undefined & Symbol & Function -> undefined
+- Null & NaN & Infinity -> null
+- Number (❌ NaN & Infinity) -> String
+- Boolean -> "true" & "false"
+- String -> String
+* Array -> JSON Array
+* Object -> JSON Object
+* RegExp -> {}
+* Date -> ISO 格式 String
+* 循环引用 -> 抛出错误
 
 ```JavaScript
 function jsonStringify(data) {
@@ -126,7 +118,7 @@ let set = new Set([1,2,3,4,5,1,2,3]);
 console.log(jsonStringify(set) === JSON.stringify(set));
 ```
 
-正确的输出结果
+输出结果：
 
 ```
 true

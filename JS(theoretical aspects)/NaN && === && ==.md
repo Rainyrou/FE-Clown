@@ -1,0 +1,5 @@
+- `==`：宽松相等，若两者类型不同，JavaScript 尝试转换其数据类型接着比较
+- `===`：严格相等，若两者类型不同，直接返回 `false`
+- `null == undefined` 为 `true`，`null === undefined` 为 `false`，`NaN === NaN` 为 `false`
+- `Number.isNaN` 检测一个值是否为 `NaN`
+- `NaN` 非数字，其表示数学运算返回值无效，`typeof NaN` 返回 `"number"`

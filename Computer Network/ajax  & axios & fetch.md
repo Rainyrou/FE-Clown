@@ -4,14 +4,6 @@ Asynchronous JavaScript and XML 的核心是 XMLHttpRequest 对象，用于在�
 
 ###### Axios
 
-Axios 是一个基于 Promise 的 HTTP 客户端，用于浏览器和 Nodejs 中，其拦截器基于 AOP 的理念，允许你在函数执行前后进行预处理或自定义操作，而无需修改函数本身，使代码易于维护和复用
-
-- 拦截请求和响应
-- 取消请求
-- 转换请求数据和响应数据
-- 自动转换 JSON 数据
-- 支持 Promise API
-
 ###### Fetch
 
 Fetch API 提供一个 JavaScript 接口

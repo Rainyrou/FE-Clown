@@ -10,9 +10,7 @@ function setItemWithExpiry(key, value, ttl) {
 
 function getItemWithExpiry(key) {
   const itemStr = localStorage.getItem(key);
-  if (!itemStr) {
-    return null;
-  }
+  if (!itemStr) return null;
   const item = JSON.parse(itemStr);
   const now = new Date();
   if (now.getTime() > item.expiry) {

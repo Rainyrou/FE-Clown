@@ -1,16 +1,10 @@
 ```JavaScript
 function _myobjectCreate(proto, propertiesObject) {
-	// 函数也是对象，可以作为原型
-    if(typeof proto !== 'object' && typeof proto !== 'function') {
-        throw new TypeError(`${proto} is not an object or null`);
-    }
+    if(typeof proto !== 'object' && typeof proto !== 'function') throw new TypeError(`${proto} is not an object or null`);
     const fn = function() {};
     fn.prototype = proto;
     const obj = new fn();
-    // 如果提供了第二个参数 `propertiesObject`
-    if(propertiesObject !== undefined) {
-        Object.defineProperties(obj, propertiesObject);
-    }
+    if(propertiesObject !== undefined)  Object.defineProperties(obj, propertiesObject);
     return obj;
 };
 ```

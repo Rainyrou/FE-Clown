@@ -1,12 +1,8 @@
 ```JavaScript
 Array.prototype._mypush = function(...elements) {
-    if(this == null || typeof this.length !== 'number') {
-        throw new TypeError(`${this} does not have a valid length property`);
-    }
+    if(this == null || typeof this.length !== 'number') throw new TypeError(`${this} does not have a valid length property`);
     let startIndex = this.length;
-    for(let i = 0;i < elements.length;++i) {
-        this[startIndex + i] = elements[i];
-    }
+    for(let i = 0;i < elements.length;++i) this[startIndex + i] = elements[i];
     this.length = startIndex + elements.length;
     // 返回新数组长度
     return this.length;

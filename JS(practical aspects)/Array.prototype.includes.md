@@ -1,13 +1,9 @@
 ```JavaScript
 Array.prototype._myincludes = function(searchElement, fromIndex = 0) {
-    if(this == null || typeof this[Symbol.iterator] !== 'function') {
-        throw new TypeError(`${this} is not an iterator`);
-    }
+    if(this == null || typeof this[Symbol.iterator] !== 'function') throw new TypeError(`${this} is not an iterator`);
     fromIndex = Math.max(fromIndex, 0);
     for(let i = fromIndex;i < this.length;++i) {
-        if(this[i] === searchElement || (isNaN(searchElement) && isNaN(this[i]))) {
-            return true;
-        }
+        if(this[i] === searchElement || (isNaN(searchElement) && isNaN(this[i]))) return true;
     }
     return false;
 };

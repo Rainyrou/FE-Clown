@@ -13,30 +13,32 @@
 
 Axios 拦截器基于 JavaScript 的异步特性、Promise 链及拦截和修改请求或响应的机制，允许我们在请求发送前后及响应到达前后进行自定义逻辑。拦截器实质上可看作为 Promise 链中的一个中间件，请求拦截器在链的前端添加，响应拦截器在链的后端添加，这使得请求响应可通过一系列拦截器依照顺序进行处理即链式调用。Axios 内部维护两个拦截器列表，分别用于请求拦截器和响应拦截器，在拦截器链中，若任一拦截器抛出错误或返回一个 rejected 的 Promise，后续拦截器将不会执行，错误被直接传递到调用者的 catch 方法中
 
-```JavaScript
+```js
+let activeRequest = 0;
+const toggleLoading = (isLoading) =>
+  isLoading ? console.log("loading") : console.log("hide loading");
+  
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    if (token) config.headers.Authorization = `bear ${token}`;
+    ++activeRequest;
+    if (activeRequest === 1) toggleLoading(true);
     return config;
   },
   (error) => Promise.reject(error)
 );
-```
 
-```JavaScript
 axios.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    --activeRequest;
+    if (!activeRequest) toggleLoading(false);
+    return response;
+  },
   (error) => {
-    if (error.response && error.response.status === 401)
-      console.log("Fail, please login again");
+    --activeRequest;
+    if (!activeRequest) toggleLoading(false);
     return Promise.reject(error);
   }
 );
-```
-
-```JavaScript
-axios.interceptors.request.eject(myInterceptor);
 ```
 
 ###### 取消功能

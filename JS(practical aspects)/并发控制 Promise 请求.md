@@ -1,18 +1,14 @@
 分批处理，单个批次含固定数量的 Promise，每次并行单个批次的 Promise，将单个 Promise 的结果收集到一个数组中，依照顺序执行，单个批次的 Promise 全部执行完后再执行下一批次
 
 ```JavaScript
-const promiseGenerator = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(`Result of Promise ${id}`);
-    }, 1000);
-  });
-};
+const promiseGenerator = (id) =>
+  new Promise((resolve) =>
+    setTimeout(() => resolve(`Result of Promise ${id}`), 1000)
+  );
 
 const batchPromiseExecutor = (promises, batchSize) => {
-  let results = [];
-  let batchIndex = 0;
-
+  let results = [],
+    batchIndex = 0;
   const executeBatch = () => {
     return new Promise((resolve) => {
       const currentBatch = promises.slice(batchIndex, batchIndex + batchSize);

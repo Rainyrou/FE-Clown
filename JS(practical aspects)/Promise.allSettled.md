@@ -4,7 +4,7 @@ Promise._allSettled = function (promises) {
     if (promises == null || typeof promises[Symbol.iterator] !== "function")
       throw new TypeError(`${promises} is not iterable`);
     promises = [...promises];
-    if (promises.length === 0) resolve([]);
+    if (promises.length === 0) return resolve([]);
     const values = [];
     let count = 0;
     promises.forEach((promise, index) => {
@@ -14,7 +14,7 @@ Promise._allSettled = function (promises) {
           (reason) => (values[index] = { status: "rejected", reason })
         )
         .finally(() => {
-          if (++count === promises.length) resolve(values);
+          if (++count === promises.length) return resolve(values);
         });
     });
   });

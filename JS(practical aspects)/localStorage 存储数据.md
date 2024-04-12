@@ -21,11 +21,7 @@ function getItemWithExpiry(key) {
 }
 
 setItemWithExpiry("myKey", "myValue", 3600000);
-
-const value = getItemWithExpiry("myKey");
-console.log(value); // myValue
+console.log(getItemWithExpiry("myKey")); // myValue
 ```
-
-在浏览器控制台输入上述代码，即可打印预期输出信息：
 
 ![[1699858192700.png]]

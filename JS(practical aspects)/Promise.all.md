@@ -7,7 +7,7 @@ Promise._all = function (promises) {
       throw new TypeError(`${promises} is not an iterator`);
     // 将任何可迭代对象转化为数组
     promises = [...promises];
-    if (promises.length === 0) resolve([]);
+    if (promises.length === 0) return resolve([]);
    
     // `count` 记录已 resolved 的 Promise 数量
     let count = 0;
@@ -17,7 +17,7 @@ Promise._all = function (promises) {
       Promise.resolve(promise)
         .then((res) => {
           values[index] = res;
-          if (++count === promises.length) resolve(values);
+          if (++count === promises.length) return resolve(values);
         })
         .catch(reject);
     });

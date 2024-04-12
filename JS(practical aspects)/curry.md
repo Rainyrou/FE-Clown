@@ -1,31 +1,27 @@
-Currying 是把接受多个参数的函数变换成接受一个单一参数的函数，并且返回接受余下的参数且返回结果的新函数的技术，是函数式编程应用
-
-柯里化其实就是流水线上的加工站，函数组合就是我们的流水线，它由多个加工站组成。对于加工站即 Currying，简单来说就是将一个多元函数，转换成一个依次调用的单元函数，函数的柯里化是用于将一个操作分成多步进行，且可以改变函数的行为，在我的理解中柯里化实际就是实现了一个状态机，当达到指定参数时，从接收参数的状态转换到执行函数的状态
+柯里化：将接收多个参数的函数转换成接收单一参数的函数，且返回接收剩余参数的新函数
 
 ```JavaScript
 function _mycurry(fn) {
-	// 使用扩展运算符收集所有传入的参数
-    function curried(...args) {
-	    // 如果传入的参数足够,直接调用 `fn` 函数
-        if(args.length >= fn.length) {
-            return fn.apply(this, args);
-        } else {
-	        // 调用这个匿名函数会累积参数,直到参数数量满足 `fn` 的需求
-            return function(...args2) {
-                return curried.apply(this, args.concat(args2));
-            }
-        }
-    }
-    return curried;
-};
+  function curried(...args) {
+    if (args.length >= fn.length) return fn.apply(this, args);
+    else
+      return function (...args2) {
+        return curried.apply(this, args.concat(args2));
+      };
+  }
+  return curried;
+}
 ```
 
-每个 JavaScript 函数都有一个 `length` 属性，函数的 `length` 属性是该函数所期望的命名参数的数量，不包括剩余参数、仅有默认值的参数、和第一个使用了默认值之后的所有参数
+测试用例：
 
-```JavaScript
-(function(a, b = 1, c) {}).length; // 1
+```js
+function add(a, b, c) {
+  return a + b + c;
+}
+const curriedAdd = _mycurry(add);
+console.log(curriedAdd(1)(2)(3)); // 6
+console.log(curriedAdd(1, 2)(3)); // 6
+console.log(curriedAdd(1)(2, 3)); // 6
 ```
 
-柯里化函数工作方式：每次只接受一个参数并返回一个新函数，该新函数等待下一个参数。这一过程一直持续，直到所有的参数都被收到。只有当收到足够的参数后，原始函数才会被调用
-
-柯里化的底层原理是闭包。闭包允许函数保留对其创建上下文中的变量的访问权限，即使函数在其创建上下文之外被执行。在柯里化的例子中，每个返回的函数都有对先前传递的参数的访问权，因为这些参数都存储在其外部作用域中

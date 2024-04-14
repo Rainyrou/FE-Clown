@@ -1,3 +1,3 @@
 ```js
-const customTrim = str => str.replace(/^\s+|\s+$/g, '');
+const myTrim = str => str.replace(/^\s+|\s+$/g, '');
 ```

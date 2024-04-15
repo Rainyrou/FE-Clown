@@ -2,7 +2,7 @@ Tree-Shaking 是一种通过移除 JavaScript 中未被引用代码的方式来�
 
 1. 模块化架构
 
-Vue3 采用了更加模块化的架构，其功能和 API 都被设计为可按需导入的模块，此种方式有利于打包工具的静态分析，从而实现 Tree-Shaking
+Vue3 采用更加模块化的架构，其功能和 API 都被设计为可按需导入的模块，此种方式有利于打包工具的静态分析，从而实现 Tree-Shaking
 
 2. Composition API & 静态导入
 
@@ -12,16 +12,3 @@ Vue3 引入的组合式 API 进一步促进 Tree-Shaking 的效果。与 Vue2 �
 
 Vite 或 Webpack 等前端构建工具能够识别和移除未使用的 Vue 模块，尤其是在生产阶段，通过压缩和优化步骤进一步减少最终的打包体积
 
-```JavaScript
-import { createApp, ref } from 'vue';
-
-const App = {
-    setup() {
-        const count = ref(0);
-    }
-}
-
-createApp(App).mount('#app');
-```
-
-这里我们只使用了 `createApp` 和 `ref` 两个 API。Vite 或 Webpack 在处理这段代码时，会静态分析所有的导入语句，只将这些被使用的部分包含在最终的 bundle 中，未被引用的 API 如 `reactive`、`computed` 等，则不会包含在内

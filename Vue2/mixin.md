@@ -10,34 +10,4 @@
 2. 隐式依赖：组件和 `mixin` 之间的依赖关系可能不够明确，使得代码的依赖关系变得难以理解，特别是在大型项目中
 3. 难以调试：`mixin` 的属性和方法被直接混入到组件中，这可能会使调试变得更加困难，尤其是当多个 `mixin` 被用于同一个组件时
 
-随着 Vue 3 引入 Composition API 的引入，mixin 逐渐被取代
 
-`myMixin.js`
-
-```JavaScript
-export default {
-    data() {
-        return {
-            mixinMessage: 'Hello from mixin'
-        }
-    },
-    method: {
-        showMixin() {
-            alert(this.mixinMessage)
-        }
-    }
-}
-```
-
-`MyComponent.vue`
-
-```JavaScript
-import myMixin from './myMixin.js';
-
-export default {
-    mixins: [myMixin],
-    mounted() {
-        this.showMixin();
-    }
-}
-```

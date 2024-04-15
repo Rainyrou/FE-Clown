@@ -1,4 +1,4 @@
-Vue3 的 hook 实际上是通过 Composition API 中的 Lifecycle Hook Functions 和 Composition Functions 实现的，这些 API 提供了一种在组件外部封装和复用逻辑的方法，同时允许开发者在合适的时机钩入组件的生命周期
+Vue3 的 hook 实际上是通过 Composition API 中的 Lifecycle Hook Functions 和 Composition Functions 实现的，这些 API 提供一种在组件外部封装和复用逻辑的方法，同时允许开发者在合适的时机钩入组件的生命周期
 
 Vue3 允许在 `setup` 函数内部直接访问组件的生命周期钩子，而组合函数通过在函数中使用响应式状态、生命周期钩子和其他 Vue 特性，再将其导出给使用它的组件，与 React Hooks 的理念非常类似
 

@@ -1,13 +1,8 @@
 ```JavaScript
-// `generatorToAsync` 为 HOC，接收一个 Generator 函数
 function generatorToAsync(generatorFn) {
   return function () {
-	 // 执行 `generatorFn` 并返回一个迭代器 `gen`	 
     const gen = generatorFn.apply(this, arguments);
-    // 返回一个 Promise
     return new Promise((resolve, reject) => {
-		    // `go` 用于递归 `gen`
-	        // `key` 为 'next' 或 'throw'，而 `arg` 为传递给生成器的值
       function go(key, arg) {
         let res;
         try {
@@ -16,7 +11,6 @@ function generatorToAsync(generatorFn) {
           return reject(err);
         }
         const { value, done } = res;
-	     // `Promise.resolve(value)` 允许在 `yield` 表达式后使用非 Promise 值
         return done
           ? resolve(value)
           : Promise.resolve(value).then(
@@ -24,7 +18,6 @@ function generatorToAsync(generatorFn) {
               (err) => go("throw", err)
             );
       }
-      // 首次执行
       go("next");
     });
   };

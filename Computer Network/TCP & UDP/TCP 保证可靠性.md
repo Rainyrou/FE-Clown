@@ -1,5 +1,3 @@
-Transmission Control Protocol 通过一系列机制保证数据的可靠性
-
 1. 三次握手
 
 - 第一次握手：客户端发送一个 SYN 同步序列报文，以开始连接

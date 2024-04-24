@@ -1,29 +1,18 @@
 ##### 路由的种类
 
-1. Hash 模式
-
-- 默认模式，使用 URL 的 hash（即 `#` 符号后面的部分）来模拟一个完整的 URL
+1. Hash 模式：基于浏览器的 `hashchange` API，其为默认模式，使用 URL 的 hash 即 `#` 符号后面的部分来模拟一个完整的 URL，当 URL 改变时页面不会重新加载，由于只是 hash 变化，无需 HTTP 请求，因此无需任何服务端配置几乎所有浏览器均支持此模式
 
 ```JavaScript
 http://example.com/#/user/id
 ```
 
-- 几乎所有浏览器都支持此模式
-- 基于 URL 中的 hash，当 URL 改变时页面不会重新加载
-- 由于只是 hash 变化，无需 HTTP 请求，因此无需任何服务端配置
-* 底层原理：基于浏览器的 `hashchange` API
+- 改变 URL 的方式：浏览器前进后退 + 改变 `<a>` 标签 + 通过 `window.location`
 
-2. History 模式
-
-* 没有 hash，看起来更像传统 URL
+2. History 模式：基于浏览器的 History API `pushState`、`replaceState` 和 `popstate`，旧版浏览器不支持，其没有 hash，看起来更像传统 URL，服务端需配置 URL 重写规则，确保所有路由均指向同一 HTML 文件
 
 ```JavaScript
 http://example.com/user/id
 ```
-
-* 旧浏览器不支持 HTML5 History API 
-- 服务端需配置 URL 重写规则，确保所有路由都指向同一个 HTML 文件
-- 底层原理：基于浏览器的 History API `pushState`、`replaceState` 和 `popstate`
 
 ##### 基本特性
 

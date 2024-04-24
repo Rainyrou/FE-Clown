@@ -1,5 +1,5 @@
 ```JavaScript
-function _setInterval(fn, delay = 4, ...args) {
+function _setInterval(fn, delay, ...args) {
   let cancel = false;
   const task = () => {
     setTimeout(() => {

@@ -1,6 +1,8 @@
+一面：
+
 1. 实习工作
 
-2. 浏览器缓存 -> localStorage & sessionStorage 存储
+2. 浏览器缓存 -> localStorage & sessionStorage
 
 3. 浏览器渲染
 
@@ -23,3 +25,7 @@
 12. 前端按钮权限 & 页面权限
 
 13. 反问
+
+二面：
+
+聊天

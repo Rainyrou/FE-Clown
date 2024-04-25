@@ -20,7 +20,7 @@ Diff 算法是 Virtual DOM 的核心，用来比较新旧虚拟 DOM 树中节点
 ###### 5. TypeScript 支持
 
 - Vue2 对 TypeScript 的支持有限，并不是所有的 Vue2 代码都能很好地与 TypeScript 集成
-- Vue3 是用 TypeScript 重写的，它提供了更好的 TypeScript 支持
+- Vue3 是用 TypeScript 重写的，它提供更好的 TypeScript 支持
 
 ###### 6. Fragment & Teleport & Suspense
 

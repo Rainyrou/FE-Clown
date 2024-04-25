@@ -6,10 +6,10 @@ Webpack 本身只能理解 JavaScript，Loader 可将其他类型文件转换为
 2. ts-loader：加载 TypeScript 文件，并将其转换为 JavaScript
 3. vue-loader: 加载 Vue SFC 即 `.vue` 文件
 4. style-loader: 将模块的导出作为样式添加到 DOM 中
-5. css-loader: 处理 CSS 文件中的 `import` 和 `url()`，并将其转换为 JavaScript 模块
+5. css-loader: 处理 CSS 文件中的 `import` 和 `url`，并将其转换为 JavaScript 模块
 6. sass-loader: 将 Sass/Scss 文件编译为 CSS
 7. less-loader：将 Less 文件编译为 CSS
-8. file-loader: 解析 `import`/`require()` 的文件，并将它们导出到构建目录
+8. file-loader: 解析 `import`/`require` 的文件，并将它们导出到构建目录
 9. url-loader:与 `file-loader` 类似，但如果文件小于限制，则返回 data URL
 
 ```JavaScript

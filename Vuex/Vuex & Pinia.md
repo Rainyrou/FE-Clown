@@ -2,7 +2,7 @@ Vuex 和 Pinia 都是状态管理库，用于管理 Vue 应用的全局状态。
 
 ###### Vuex
 
-Vuex 采用了基于 Flux 架构的思想：
+Vuex 采用基于 Flux 架构的思想：
 
 - 使用单一状态树，所有组件的状态都存储在一个全局对象中
 - 将状态树分割成 module，每个模块可以拥有自己的 state、getter、mutation 和 action

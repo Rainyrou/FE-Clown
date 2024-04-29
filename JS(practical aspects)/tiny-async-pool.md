@@ -1,3 +1,5 @@
+[async-pool/lib/es9.js at master · rxaviers/async-pool · GitHub](https://github.com/rxaviers/async-pool/blob/master/lib/es9.js)
+
 ```js
 async function* asyncPool(concurrency, iterator, iteratorFn) {
   const executing = new Set();

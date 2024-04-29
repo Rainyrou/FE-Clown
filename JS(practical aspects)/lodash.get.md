@@ -1,13 +1,12 @@
 ```JavaScript
 const _get = (obj, key, val) => {
-  if (!Array.isArray(key)) {
+  if (!Array.isArray(key))
     key = key
       .trim()
       .replace(/\[(.*)\]/g, (match, i) => `.${i}`)
       .split(".");
-  }
-  for (let i = 0; i < key.length; ++i) {
-    obj = obj[key[i]];
+  for (const item of key) {
+    obj = obj[item];
     if (!obj) return val;
   }
   return obj || val;

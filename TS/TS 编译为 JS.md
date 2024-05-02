@@ -1,4 +1,4 @@
-TypeScript 不能直接在浏览器或 Node.js 环境中运行，它需要先被编译成 JavaScript，然后才能在这些环境中运行
+TypeScript 不能直接在浏览器或 Node.js 环境中运行，它需被编译为 JavaScript，才能在这些环境中运行
 
 1. 安装
 

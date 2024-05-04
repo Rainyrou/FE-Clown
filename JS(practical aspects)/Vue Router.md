@@ -161,7 +161,7 @@ VueRouter.install = function (v) {
   Vue.component("router-view", {
     render(h) {
       let current = this._self._root._router.history.current;
-      let routeMap = this._self._root._router.routeMap;
+      let routeMap = this._self._root._router.routesMap;
       return h(routeMap[current]);
     },
   });

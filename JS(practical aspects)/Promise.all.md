@@ -8,7 +8,6 @@ Promise._all = function (promises) {
     // 将任何可迭代对象转化为数组
     promises = [...promises];
     if (promises.length === 0) return resolve([]);
-   
     // `count` 记录已 resolved 的 Promise 数量
     let count = 0;
     // `values` 存储各个 Promise 的结果值

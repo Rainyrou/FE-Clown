@@ -11,7 +11,7 @@ Function.prototype._myapply = function (thisArg, args = []) {
 ```
 
 ```JavaScript
-Function.prototype._myapply = function (thisArg, ...args) {
+Function.prototype._mycall = function (thisArg, ...args) {
   thisArg =
     thisArg !== null && thisArg !== undefined ? Object(thisArg) : window;
   const fn = Symbol();

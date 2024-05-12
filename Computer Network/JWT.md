@@ -1,4 +1,4 @@
-JSON Web Token 是一种互联网开放标准，定义一种自包含的方式，作为 JSON 对象用于在客户端和服务端间传递信息，它由三部分组成，用句点 `.` 分隔：
+JSON Web Token 定义一种自包含的方式，作为 JSON 对象用于在客户端和服务端间传递信息，它由三部分组成，用句点 `.` 分隔：
 
 ```JSON
 const token = base64urlEncoding(header) + '.' + base64urlEncoding(payload) + '.' + base64urlEncoding(signature)

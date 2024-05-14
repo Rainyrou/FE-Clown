@@ -1,4 +1,4 @@
-`<script>` 标签用于引入外部 JavaScript 文件
+`<script>` 用于引入外部 JavaScript 文件
 
 - 在无 `async` 或 `defer` 的情况下，脚本同步下载执行，阻塞 HTML 解析
 - `async` 和 `defer` 允许浏览器异步下载脚本，不阻塞 HTML 解析

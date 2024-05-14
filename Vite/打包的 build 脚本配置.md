@@ -4,5 +4,5 @@
 4. `minify`：启用 & 禁用压缩或指定使用的压缩工具 `'terser'` | `'esbuild'` | `false`
 5. `sourcemap`：生成源码映射文件
 6. `rollupOptions`：直接传递给 Rollup 的配置选项，允许在构建中利用 Rollup 的高级配置
-7. `css.codeSplit`：控制是否对 CSS 代码进行代码分割，默认情况下，Vite 会为每个异步加载的 JavaScript chunk 生成相应的 CSS 文件
+7. `css.codeSplit`：控制是否对 CSS 代码进行代码分割，默认情况下，Vite 为每个异步加载的 JavaScript chunk 生成相应的 CSS 文件
 

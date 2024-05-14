@@ -14,7 +14,7 @@ try {
 
 在这个示例中，`setTimeout` 中的错误不会被 `try...catch` 捕获，错误信息不会被打印
 
-为了捕获 `setTimeout` 中的错误，你可以在 `setTimeout` 的回调函数内部使用 `try...catch`：
+为捕获 `setTimeout` 中的错误，你可以在 `setTimeout` 的回调函数内部使用 `try...catch`：
 
 ```JavaScript
 setTimeout(() => {

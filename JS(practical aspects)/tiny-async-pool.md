@@ -4,6 +4,7 @@
 async function* asyncPool(concurrency, iterator, iteratorFn) {
   const executing = new Set();
   async function consume() {
+    // `Promise` 对象被解析为一个数组即 `Promise` 对象本身和 `iteratorFn` 执行结果
     const [promise, value] = await Promise.race(executing);
     executing.delete(promise);
     return value;

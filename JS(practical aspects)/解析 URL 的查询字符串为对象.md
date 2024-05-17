@@ -10,7 +10,7 @@ const parseQuery = (queryString) => {
 
 const queryObj = parseQuery(window.location.search);
 console.log(queryObj);
-```
+``` 
 
 ![[1712328627732.png]]
 
@@ -19,14 +19,14 @@ console.log(queryObj);
 ```js
 const parseQuery = (queryString) => {
   const pairs = queryString[0] === "?" ? queryString.substring(1) : queryString;
-  const result = {};
+  const obj = {};
   pairs.split("&").forEach((part) => {
     const item = part.split("=");
     result[decodeURIComponent(item[0])] = decodeURIComponent(
       item[1] ? item[1] : ""
     ).replace(/\+/g, " ");
   });
-  return result;
+  return obj;
 };
 
 const queryObj = parseQuery(window.location.search);

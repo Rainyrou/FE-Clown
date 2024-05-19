@@ -5,7 +5,7 @@ const ajax = (url, options = {}) => {
     const { method = "GET", data, headers } = options;
     xhr.open(method, url, true);
     if (headers)
-      for (let key in headers) xhr.setRequestHeader(key, headers[key]);
+      for (const key in headers) xhr.setRequestHeader(key, headers[key]);
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
         let response;

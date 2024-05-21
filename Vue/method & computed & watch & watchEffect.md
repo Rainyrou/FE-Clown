@@ -1,0 +1,4 @@
+method：定义函数以执行处理用户输入等无需缓存的逻辑，在 template 中通过事件绑定如 `@click="methodName"` 或在 JS 中直接调用 `this.methodName`
+computed：计算属性，缓存结果，自动追踪依赖项，当依赖的响应式数据变化时重新计算，否则直接返回缓存的结果，在 template 中直接使用计算属性名（简化复杂表达式以避免在模板中使用过多逻辑判断）或在 JS 中通过 `this.computedProperty` 访问。初始化 `computed`，为每个计算属性创建相应的 `watcher`，并将其标记为懒执行，访问计算属性时触发 `getter`，通过 `watcher.evaluate` 计算结果并收集依赖，当依赖的响应式数据变化时通知 `watcher` 重新渲染并将 `dirty` 设置为 `true`，以便在下次访问计算属性时重新计算
+watch：监听响应式数据或计算属性，并在其变化时执行回调，其回调接收两个参数即新值和旧值，`watch` 无返回值，但可执行异步等逻辑，提供更细粒度的控制，对监听数据变化前后值的访问，`deep: true` 观察对象内部变化，`immediate: true` 初始化时立即执行回调。`stateWatch` 类初始化组件实例的 `watch` 配置，`initWatch` 方法遍历 `watch` 对象并为每个属性调用 `createWatcher` 方法创建相应的 `watcher`，`watcher` 接收组件实例 `vm`、属性键 `key` 和 `handler`，根据 `handler` 类型提取选项并解析 `handler`，调用组件实例的 `$watch` 方法来注册观察者，`watcher` 实例在构造函数中调用 `this.get` 方法进行依赖收集，并在依赖的响应式数据变化时通知 `watcher` 重新渲染
+watchEffect：用于自动收集依赖，无需指定监听源，初始化时立即执行一次回调，自动跟踪回调中的响应式数据，并在其变化时重新执行回调

@@ -1,4 +1,4 @@
-Vue 提供 `ref` 和 `reactive` 两种响应式 API 是为了覆盖不同开发场景，为开发者提供更多选择
+Vue 提供 `ref` 和 `reactive` 是为了覆盖不同开发场景
 
 ###### ref
 

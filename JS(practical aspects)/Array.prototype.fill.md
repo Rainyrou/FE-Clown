@@ -1,5 +1,5 @@
 ```JavaScript
-Array.prototype._myfill = function(value, start = 0, end = this.length) {
+Array.prototype._fill = function(value, start = 0, end = this.length) {
     if(this == null || typeof this[Symbol.iterator] !== 'function') throw new TypeError(`${this} is not a iterator`);
     start = Math.max(Math.min(start, this.length), 0);
     end = Math.max(Math.min(end, this.length), 0);

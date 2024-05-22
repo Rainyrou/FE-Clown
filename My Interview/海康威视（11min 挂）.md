@@ -2,7 +2,7 @@
 
 2. 前后端沟通联调
 
-3. WebPack 的构建流程
+3. webpack 构建流程
 
 4. 左右固定，中间自适应
 
@@ -10,6 +10,6 @@
 
 6. 清除浮动
 
-7. require & import
+7.  import & require
 
 8. 查询参数 & 路由参数

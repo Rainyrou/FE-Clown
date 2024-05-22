@@ -1,10 +1,23 @@
 1. 状态码
+
 2. 浏览器渲染
+
 3. Promise
-4. 代码输入输出及变式
+
+4. 代码输出题及变式
+
 5. Vue Router history & hash
-6. method & computed & wacth
-7. Vue 组件间通信
-8. 实习工作
-9. 数组扁平化
-10. 反问
+
+6. Git
+
+7. git stash & git rebase
+
+8. method & computed & wacth
+
+9. Vue 组件间通信
+
+10. 实习工作
+
+11. 数组扁平化
+
+12. 反问

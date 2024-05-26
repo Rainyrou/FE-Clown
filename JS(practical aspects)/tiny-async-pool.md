@@ -23,8 +23,77 @@ async function* asyncPool(concurrency, iterator, iteratorFn) {
 测试用例：
 
 ```js
-const timeout = (time) =>
-  new Promise((resolve) => setTimeout(() => resolve(time), time));
-for await (const ms of asyncPool(2, [1000, 5000, 3000, 2000], timeout))
-  console.log(ms);
+async function update(machine) {
+  return await machine.update();
+}
+
+// 假设的 machines 数组，每个 machine 对象有一个 update 方法
+const machines = [
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 1 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 2 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 3 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 4 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 5 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 6 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 7 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 8 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 9 updated";
+    },
+  },
+  {
+    update: async () => {
+      await new Promise((r) => setTimeout(r, 1000));
+      return "Machine 10 updated";
+    },
+  },
+];
+
+(async () => {
+  for await (const result of asyncPool(3, machines, update)) {
+    console.log(result);
+  }
+})();
 ```

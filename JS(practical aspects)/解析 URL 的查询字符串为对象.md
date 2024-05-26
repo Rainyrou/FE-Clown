@@ -22,7 +22,7 @@ const parseQuery = (queryString) => {
   const obj = {};
   pairs.split("&").forEach((part) => {
     const item = part.split("=");
-    result[decodeURIComponent(item[0])] = decodeURIComponent(
+    obj[decodeURIComponent(item[0])] = decodeURIComponent(
       item[1] ? item[1] : ""
     ).replace(/\+/g, " ");
   });

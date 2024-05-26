@@ -3,7 +3,7 @@ const _get = (obj, key, val) => {
   if (!Array.isArray(key))
     key = key
       .trim()
-      .replace(/\[(.*)\]/g, (match, i) => `.${i}`)
+      .replace(/\[(.*)\]/g, (all, match) => `.${match}`)
       .split(".");
   for (const item of key) {
     obj = obj[item];

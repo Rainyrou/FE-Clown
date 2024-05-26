@@ -15,8 +15,7 @@ console.log(arr._flat(1)); // [ 1, 2, 3, [ 4, 5 ], 1, 2, 6, 7 ]
 
 ```js
 const flattenArray = (arr) => {
-  let stk = [...arr];
-  let res = [];
+  const stk = [...arr], res = [];
   while (stk.length) {
     let next = stk.pop();
     if (Array.isArray(next)) stk.push(...next);

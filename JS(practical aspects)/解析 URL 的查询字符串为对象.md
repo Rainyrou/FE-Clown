@@ -18,7 +18,7 @@ console.log(queryObj);
 
 ```js
 const parseQuery = (queryString) => {
-  const pairs = queryString[0] === "?" ? queryString.substring(1) : queryString;
+  const pairs = queryString[0] === "?" ? queryString.slice(1) : queryString;
   const obj = {};
   pairs.split("&").forEach((part) => {
     const item = part.split("=");

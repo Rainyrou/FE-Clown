@@ -15,7 +15,7 @@ class myPromise {
         try {
 	        // `bind` 确保 `resolve` 和 `reject` 函数调用时使用的是 Promise 实例的上下文，从而正确修改 Promise 的状态
             func(this.resolve.bind(this), this.reject.bind(this));
-        } catch(err) {
+	        } catch(err) {
             this.reject(err);
         }
     };

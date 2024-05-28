@@ -1,5 +1,3 @@
-三道手写题
-
 1. React 实现计算器
 
 2. 手写：提取数组出现大于 1 次的元素 + 红绿灯 -> Promise + async/await + compose

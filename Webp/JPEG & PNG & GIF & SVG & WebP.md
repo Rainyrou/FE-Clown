@@ -14,7 +14,7 @@
 
 3. Graphics Interchange Format：使用 Lempel-Ziv-Welch 压缩算法进行压缩，适用于动画
 
-优点：轻量级，无损压缩，支持动画
+优点：轻量级，无损压缩，支持动画`
 缺点：仅支持 256 种颜色，不适合色彩丰富的图片
 
 4. Scalable Vector Graphics：适用于 logo、图表和动画

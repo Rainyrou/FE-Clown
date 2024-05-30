@@ -67,4 +67,58 @@
 </html>
 ```
 
+###### 优化
 
+1. 防抖支持立即触发
+
+```js
+const debounce = function (fn, wait, immediate = false) {
+  let timer = null;
+  return function (...args) {
+    const context = this;
+    const later = () => {
+      timer = null;
+      if (!immediate) fn.apply(context, args);
+    };
+    const callNow = immediate && !timer;
+    clearTimeout(timer);
+    timer = setTimeout(later, wait);
+    if (callNow) fn.apply(context, args);
+  };
+};
+```
+
+2.  防抖支持一次触发
+
+```js
+const debounceOnce = function (fn, wait) {
+  let timer = null;
+  let hasBeenCalled = false;
+  return function (...args) {
+    const context = this;
+    if (!hasBeenCalled) {
+      fn.apply(context, args);
+      hasBeenCalled = true;
+    }
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      hasBeenCalled = false;
+    }, wait);
+  };
+};
+```
+
+3. 节流优化
+
+```js
+const throttle = function (fn, delay) {
+  let lastCall = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      fn.apply(this, args);
+    }
+  };
+};
+```

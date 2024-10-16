@@ -2,11 +2,11 @@
 
 ```JavaScript
 const _instanceof = (target, fn) => {
-    let proto = Object.getPrototypeOf(target);
-    while(proto) {
-        if(proto === fn.prototype) return true;
-        proto = Object.getPrototypeOf(proto);
-    }
-    return false;
+  let proto = Object.getPrototypeOf(target);
+  while (proto) {
+    if (proto === fn.prototype) return true;
+    proto = Object.getPrototypeOf(proto);
+  }
+  return false;
 };
 ```

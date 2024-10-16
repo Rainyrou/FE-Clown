@@ -1,5 +1,5 @@
 ```JavaScript
-Function.prototype._myapply = function (thisArg, args = []) {
+Function.prototype._apply = function (thisArg, args = []) {
   thisArg =
     thisArg !== null && thisArg !== undefined ? Object(thisArg) : window;
   const fn = Symbol();
@@ -11,7 +11,7 @@ Function.prototype._myapply = function (thisArg, args = []) {
 ```
 
 ```JavaScript
-Function.prototype._mycall = function (thisArg, ...args) {
+Function.prototype._call = function (thisArg, ...args) {
   thisArg =
     thisArg !== null && thisArg !== undefined ? Object(thisArg) : window;
   const fn = Symbol();
@@ -23,7 +23,7 @@ Function.prototype._mycall = function (thisArg, ...args) {
 ```
 
 ```JavaScript
-Function.prototype._mybind = function (thisArg, ...args) {
+Function.prototype._bind = function (thisArg, ...args) {
   const _this = this;
   thisArg =
     thisArg !== null && thisArg !== undefined ? Object(thisArg) : window;

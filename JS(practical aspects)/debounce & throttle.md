@@ -1,3 +1,25 @@
+```js
+function debounce(fn) {
+  let timer = null;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeOut(() => fn.call(this, args), 1000);
+  };
+}
+
+function throttle(fn, delay) {
+  let startTimer = Date.now();
+  return function (...args) {
+    let curTimer = Date.now();
+    if (curTimer - startTimer > delay) {
+      fn.call(this, args);
+      startTimer = Date.now();
+    }
+  };
+}
+```
+
+
 防抖和节流并不能减少事件的触发次数，而是限制事件处理程序的执行次数
 
 ```HTML

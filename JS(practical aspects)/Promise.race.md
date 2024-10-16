@@ -1,4 +1,4 @@
-```JavaScript
+```js
 Promise._race = (promises) => {
   return new Promise((resolve, reject) => {
     if (promises == null || typeof promises[Symbol.iterator] !== "function")
@@ -9,11 +9,7 @@ Promise._race = (promises) => {
     );
   });
 };
-```
 
-测试用例：
-
-```JavaScript
 Promise._race([
   new Promise((_, reject) => setTimeout(() => reject("A"), 100)),
   new Promise((resolve) => setTimeout(() => resolve("B"), 200)),

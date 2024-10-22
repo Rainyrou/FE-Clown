@@ -1,3 +1,12 @@
+Redux 只是一个单纯的状态管理库，没有 View 层
+
+* `createStore`：用于创建 `store` 存储状态，接收 `reducer` 和 `enhancer`，`enhancer` 可选，其为装饰器模式，接收当前的 `createStore`，返回增强版的 `createStore`
+- `store.getState`：用于访问 `state`
+- `store.dispatch(action)`：用于执行 `reducer`，更新 `state`
+- `store.subscribe`：用于订阅 `state` 变化，当调用 `store.dispatch(action)` 时被触发
+- `combineReducers`：用于合并多个 `reducer`，返回新的 `reducer`
+- `applyMiddleware`：返回增强版的 `enhancer`，中间件为装饰器模式，接收当前的 `dispatch`，返回增强版的 `dispatch`
+
 ```bash
 npx create-react-app redux-milk-example
 cd redux-milk-example
@@ -162,12 +171,3 @@ function applyMiddleware(...middlewares) {
 
 export { createStore, combineReducers, applyMiddleware, compose };
 ```
-
-Redux 只是一个单纯的状态管理库，没有 View 层
-
-* `createStore`：用于创建 `store` 存储状态，接收 `reducer` 和 `enhancer`，`enhancer` 可选，其为装饰器模式，接收当前的 `createStore`，返回增强版的 `createStore`
-- `store.getState`：用于访问 `state`
-- `store.dispatch(action)`：用于执行 `reducer`，更新 `state`
-- `store.subscribe`：用于订阅 `state` 变化，当调用 `store.dispatch(action)` 时被触发
-- `combineReducers`：用于合并多个 `reducer`，返回新的 `reducer`
-- `applyMiddleware`：返回增强版的 `enhancer`，中间件为装饰器模式，接收当前的 `dispatch`，返回增强版的 `dispatch`

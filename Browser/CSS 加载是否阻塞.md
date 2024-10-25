@@ -1,1 +1,0 @@
-DOM 树 和 CSS Object Model 树并行构建，因此 CSS 加载不会阻塞 DOM 的解析，但 RenderObject 树的构建依赖于 DOM 树和 CSS Object Model 树，因此其必须等待 CSS Object Model 树构建完毕，即 CSS 加载完毕才开始构建，因此 CSS 加载会阻塞 DOM 的渲染。同时 GUI 渲染线程与 JS 引擎线程互斥，当执行 JS 引擎时 GUI 渲染线程被挂起，其被添加到队列中等待 JS 引擎空闲时被立即执行，CSS 在后续 JS 执行前加载完毕，因此 CSS 加载会阻塞 JS 的执行

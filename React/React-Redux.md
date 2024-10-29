@@ -1,4 +1,3 @@
-
 ![[Pasted image 20240505205745.png]]
 
 [Tutorial: Connect API | React Redux](https://react-redux.js.org/tutorials/connect)

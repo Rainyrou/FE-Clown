@@ -6,7 +6,7 @@
 4. 预检请求需设置 `Access-Control-Allow-Headers` 和 `Access-Control-Allow-Methods`
 5. `Secure`: 只有在 HTTPS 时浏览器才携带 Cookie
 6. `SameSite=None`: 表示 Cookie 在任何情况下均被发送
-7. HttpOnly: 防止 JavaScript 通过 `document.cookie` 获取 Cookie
+7. `HttpOnly`: 防止 JavaScript 通过 `document.cookie` 获取 Cookie
 
 ```HTTP
 Set-Cookie: key=value; Path=/; Domain=.example.com; Secure; HttpOnly; SameSite=None

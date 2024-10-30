@@ -1,4 +1,4 @@
-Cross-Site Scripting：攻击者利用网站的安全漏洞，将恶意的 HTML 或 JavaScript 注入到合法的页面中，当用户浏览这个被篡改的页面时，这些将恶意的 HTML 或 JavaScript 将被执行，攻击者绕过浏览器的同源策略，获取用户的敏感数据
+Cross-Site Scripting：攻击者利用网站的安全漏洞，将恶意的 HTML 或 JavaScript 注入到合法的页面中，当用户浏览这个被篡改的页面时，这些恶意的 HTML 或 JavaScript 将被执行，攻击者绕过浏览器的同源策略，获取用户的敏感数据
 
 1. 反射型 XSS：攻击代码出现在 URL 中，其为一个未经过滤的输入，当用户点击该恶意链接时，服务端将其返回给浏览器，在用户浏览器上执行
 2. 存储型 XSS：攻击代码存储在服务端如数据库、日志，当其他用户浏览这个被篡改的页面时，这些恶意代码将被执行
@@ -32,6 +32,6 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-s
 res.cookie('sessionId', 'SESSIONID123', { httpOnly: true, secure: true });
 ```
 
-4. 避免使用 `eval()` 或其他可将字符串作为代码执行的 JavaScript 函数如 `new Function()`, `setTimeout()` 和 `setInterval()`
+4. 避免使用 `eval` 或其他可将字符串作为代码执行的 JavaScript 函数如 `new Function`, `setTimeout` 和 `setInterval`
 5. 定期更新
 6. 实施自动化安全测试和实时监控

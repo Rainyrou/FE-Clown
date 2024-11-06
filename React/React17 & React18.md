@@ -1,5 +1,27 @@
 [三年不洗澡 - React18 新特性解读](https://juejin.cn/post/7094037148088664078)
 
+```
+1. CM: useTransition + useDeferredValue + useId + useSyncExternalStore + useInsertionEffect
+
+2. Render API 
+
+ReactDOM.render() -> ReactDOM.createRoot().render()
+ReactDOM.unmountComponentAtNode(root) -> root.unmount()
+ReactDOM.hydrate() -> ReactDOM.hydrateRoot()
+
+3. setState React -> React/Native/setTimeout/Promise
+
+4. flushSync exit
+
+5. Suspense -> fallback
+
+6. React return null -> null/undefined
+
+7. Strict Mode 1 -> 1 + 1
+
+8. unmount delete update warning
+```
+
 新项目直接通过  npm  或  yarn  安装新版依赖即可，老项目将 `package.json` 的依赖改为最新，删除 `node_modules` 并重装即可
 
 React17：渐进式升级
@@ -82,7 +104,7 @@ const App: React.FC = () => {
 export default App;
 ```
 
-3. userId
+3. useId
 
 [Intent to Ship: useId · reactwg/react-18 · Discussion #111 · GitHub](https://github.com/reactwg/react-18/discussions/111)
 
@@ -167,7 +189,7 @@ const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(<AppWithCallback />);
 ```
 
-若用到 SSR，需将 `hydration` 升级为 `hydrateRoot`：
+若用到 SSR，需将 `hydrate` 升级为 `hydrateRoot`：
 
 React17：
 

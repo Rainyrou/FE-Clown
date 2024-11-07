@@ -5,10 +5,21 @@ Promise 用于解决回调地狱，为异步操作的成功值或失败原因分
 3. `Promise.prototype.catch(onRejected)`：添加一个 `onRejected` 的回调，其为 `Promise.prototype.then(null, onRejected)` 的语法糖
 4. `Promise.prototype.finally(onFinally)`：添加一个在 Promise 不论 resolved 或 rejectd 均执行的回调
 
-###### 静态方法
+静态方法：
 
 1. `Promise.resolve(value)`：返回一个 resolved 给定值的 Promise 对象，若该值是一个 Promise，直接返回这个 Promise
 2. `Promise.reject(reason)`：返回一个 rejectd 给定原因的 Promise 对象，同上
 3. `Promise.all(iterable)`：接收一个 Promise 可迭代对象作为参数，并返回一个 Promise，当传入的所有 Promise 实例都 resolved 后，返回一个 resolved 的新数组，其包含所有 resolved 结果，若其中一个 Promise 被 rejected，返回的 Promise 直接 rejected，并带有第一个被 rejected 的原因
 4. `Promise.allSettled(iterable)`：等待所有给定的 Promise 实例都 resolved 或 rejectd，返回一个新的 Promise 实例，该实例总是 resolved，并带有每个 Promise 的结果对象数组
 5. `Promise.race(iterable)`：当传入的 Promise 中有一个首先被 resolved 或 rejectd，则直接返回一个新的 Promise ，其结果由第一个 resolved 或 rejectd 的 Promise 决定，其他Promise 仍会继续执行，但它们的结果不会影响最终结果
+
+
+判断一个对象是否为 Promise 实例：
+
+```js
+const isPromise = (obj) =>
+  !!obj &&
+  (typeof obj === "object" || typeof obj === "function") &&
+  typeof obj.then === "function" &&
+  typeof obj.catch === "function";
+```

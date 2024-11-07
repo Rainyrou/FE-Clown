@@ -1,26 +1,58 @@
+防抖和节流并不能减少事件的触发次数，而是限制事件处理程序的执行次数
+防抖用于避免事件处理程序在短时间内频繁触发如输入框实时搜索和浏览器窗口 `resize` 事件，每次调用事件处理程序时，防抖函数重置定时器，在设定的时间间隔内，若无新的触发，则执行最后一次触发，否则重新计时
+节流用于限制高频率事件如页面滚动和点击按钮，在设定的时间间隔内，无论触发多少次，事件处理程序只执行一次，一旦函数执行则开始计时，在设定的时间间隔内忽略新的触发
+`debounce` 返回一个新函数，其封装控制计时器的行为，我们需要这个返回的新函数来控制原函数的调用，每次调用返回的新函数时，它决定是否立即调用原始函数
+`timer` 变量存储每次 `setTimeout` 的返回值，以便后续使用 `clearTimeout` 来取消它
+
 ```js
-function debounce(fn) {
+// 支持立即触发
+function debounce(fn, wait, immediate = false) {
   let timer = null;
   return function (...args) {
+    const context = this;
+    if (immediate && !timer) fn.apply(context, args);
     clearTimeout(timer);
-    timer = setTimeOut(() => fn.call(this, args), 1000);
+    timer = setTimeout(() => {
+      if (!immediate) fn.apply(context, args);
+      timer = null;
+    }, wait);
   };
 }
 
-function throttle(fn, delay) {
-  let startTimer = Date.now();
+// 支持一次触发
+function debounce(fn, wait) {
+  let timer = null,
+    hasCalled = false;
   return function (...args) {
-    let curTimer = Date.now();
-    if (curTimer - startTimer > delay) {
-      fn.call(this, args);
-      startTimer = Date.now();
+    const context = this;
+    if (!hasCalled) {
+      fn.apply(context, args);
+      hasCalled = true;
+    }
+    clearTimeout(timer);
+    timer = setTimeout(() => (hasCalled = false), wait);
+  };
+}
+
+function throttle(fn, delay, immediate = false) {
+  let timer = null,
+    lastCall = 0;
+  return function (...args) {
+    const context = this,
+      now = Date.now();
+    if (immediate && now - lastCall > delay) {
+      fn.apply(context, args);
+      lastCall = now;
+    } else if (!timer) {
+      timer = setTimeout(() => {
+        fn.apply(context, args);
+        lastCall = Date.now();
+        timer = null;
+      }, delay);
     }
   };
 }
 ```
-
-
-防抖和节流并不能减少事件的触发次数，而是限制事件处理程序的执行次数
 
 ```HTML
 <!DOCTYPE html>
@@ -52,9 +84,7 @@ function throttle(fn, delay) {
 </html>
 ```
 
-* 在 JavaScript 中，函数是一等公民，它赋值给变量、作为参数传递给其他函数，或作为函数的返回值。使用箭头函数赋值给 `window.onload`，则当加载事件触发时，调用该函数，确保在函数执行时所有的 DOM 元素均可用，避免尝试访问尚未加载的DOM元素而导致错误，若直接写  `window.onload = yourFunction` 则立即调用 `yourFunction` 并将其返回值而非函数本身赋值给 `window.onload`，除非 `yourFunction` 返回另一函数，否则这样写是不对的
-* `debounce` 返回一个新函数，其封装控制计时器的行为，我们需要这个返回的新函数来控制原函数的调用，每次调用返回的新函数时，它决定是否立即调用原始函数
-* `timer` 变量存储每次 `setTimeout` 的返回值，以便后续使用 `clearTimeout` 来取消它
+在 JavaScript 中函数为一等公民，它赋值给变量、作为参数传递给其他函数或作为函数的返回值。使用箭头函数赋值给 `window.onload`，则当加载事件触发时，调用该函数，确保在函数执行时所有的 DOM 元素均可用，避免尝试访问尚未加载的DOM元素而导致错误，若直接写  `window.onload = yourFunction` 则立即调用 `yourFunction` 并将其返回值而非函数本身赋值给 `window.onload`，除非 `yourFunction` 返回另一函数，否则这样写是不对的
 
 ```HTML
 <!DOCTYPE html>
@@ -89,58 +119,3 @@ function throttle(fn, delay) {
 </html>
 ```
 
-###### 优化
-
-1. 防抖支持立即触发
-
-```js
-const debounce = function (fn, wait, immediate = false) {
-  let timer = null;
-  return function (...args) {
-    const context = this;
-    const later = () => {
-      timer = null;
-      if (!immediate) fn.apply(context, args);
-    };
-    const callNow = immediate && !timer;
-    clearTimeout(timer);
-    timer = setTimeout(later, wait);
-    if (callNow) fn.apply(context, args);
-  };
-};
-```
-
-2.  防抖支持一次触发
-
-```js
-const debounceOnce = function (fn, wait) {
-  let timer = null;
-  let hasBeenCalled = false;
-  return function (...args) {
-    const context = this;
-    if (!hasBeenCalled) {
-      fn.apply(context, args);
-      hasBeenCalled = true;
-    }
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      hasBeenCalled = false;
-    }, wait);
-  };
-};
-```
-
-3. 节流优化
-
-```js
-const throttle = function (fn, delay) {
-  let lastCall = 0;
-  return function (...args) {
-    const now = Date.now();
-    if (now - lastCall >= delay) {
-      lastCall = now;
-      fn.apply(this, args);
-    }
-  };
-};
-```

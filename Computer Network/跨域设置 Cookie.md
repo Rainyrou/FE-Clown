@@ -1,3 +1,13 @@
+```
+1. setCookie
+
+2. Access-Control-Allow-Credentials/Origin/Headers/Methods
+
+3. Secure/HttpOnly
+
+4. SameSite=None
+```
+
 ###### 服务端设置
 
 1. `Set-Cookie`: 服务端响应时设置 `Set-Cookie` 字段以包含 Cookie，配置以确保浏览器在跨域情况下设置 Cookie
@@ -5,8 +15,8 @@
 3. `Access-Control-Allow-Origin`: 不能设置为 `*`，浏览器检查 `Origin` 与 `Access-Control-Allow-Origin` 是否匹配
 4. 预检请求需设置 `Access-Control-Allow-Headers` 和 `Access-Control-Allow-Methods`
 5. `Secure`: 只有在 HTTPS 时浏览器才携带 Cookie
-6. `SameSite=None`: 表示 Cookie 在任何情况下均被发送
-7. `HttpOnly`: 防止 JavaScript 通过 `document.cookie` 获取 Cookie
+6. `HttpOnly`: 防止通过 `document.cookie` 获取 Cookie
+7. `SameSite=None`: 表示 Cookie 在任何情况下均被发送
 
 ```HTTP
 Set-Cookie: key=value; Path=/; Domain=.example.com; Secure; HttpOnly; SameSite=None

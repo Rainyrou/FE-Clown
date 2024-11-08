@@ -1,3 +1,44 @@
+1. 进程守护：PM2 可确保项目持续运行，应用崩溃后自行重启，可随时停止和重启进程，PM2 守护进程长期运行在后台，启动时其将自身作为一个独立后台进程运行，根据配置并利用 Node.js 的 `child_process` 模块来 fork 出新的子进程并通过事件监听和进程通信持续监控这些进程的生命周期，若进程异常退出，PM2 守护进程监听到 `exit` 事件并根据配置决定是否自动重启
+2. 负载均衡：PM2 负载均衡机制基于操作系统级的负载均衡，即通过操作系统的调度机制来分配 TCP/HTTP 连接到不同进程，PM2 利用 Node.js 的 Cluster 模块自动进行负载均衡，只需简单配置，PM2 就能自动检测服务器的 CPU 核心数并默认为每一核心启动一个实例，守护进程负责维护一个负载均衡器，将请求平均分配给所有正运行的实例，项目便可以集群模式跨多核心服务器运行，最大化地利用 CPU，提高应用吞吐率和稳定性
+3. 日志管理：PM2 自动捕获并保存项目的标准输出 stdout 和标准错误输出 stderr，便于追踪问题来源和调试
+4. 性能监控：PM2 提供实时监控如 CPU 和内存的使用情况，在此基础上集成第三方监控工具做进一步分析
+5. 指定环境变量：PM2 允许为项目指定环境变量，便于在开发、测试和生产中运行
+
+###### 处理异常退出
+
+1. 实时查看应用日志
+
+```bash
+pm2 logs
+pm2 logs myApp/myId # 指定应用名或 id
+```
+
+实时跟踪日志输出，显示最新的 1000 行日志并实时更新：
+
+```bash
+pm2 logs --lines 1000
+```
+
+2. 实时监控 Node.js 应用的 CPU 和内存使用情况：
+
+```bash
+pm2 monit
+```
+
+3. 自动重启和零停机更新
+
+```bash
+pm2 reload myApp
+```
+
+4. 日志旋转，自动切割日志文件，避免单个日志文件过大，安装并配置日志旋转的相关参数如最大文件大小、保留的文件数量等
+
+```bash
+pm2 install pm2-logrotate
+pm2 set pm2-logrotate:max_size 100M 
+pm2 set pm2-logrotate:retain 10
+```
+
 ###### 配置 ssh
 
 ```bash
@@ -134,7 +175,7 @@ module.exports = {
 };
 ```
 
-- 安装依赖时，设置  `--production=false`  用于安装  `devDependencies`  中的包，否则无法进行  `vite`  打包操作
+安装依赖时，设置  `--production=false`  用于安装  `devDependencies`  中的包，否则无法进行  `vite`  打包操作
 
 ```bash
 pm2 deploy ecosystem.config.js production setup

@@ -1,14 +1,72 @@
-Vue 提供 `ref` 和 `reactive` 是为了覆盖不同开发场景
+`ref` 用于将非响应式原始值转化为响应式引用，通过 `.value` 访问和修改，适用于基本和引用数据类型，在模板中使用时自动解引用
+`reactive` 用于将非响应式原始值转化为响应式代理，适用于引用数据类型，在模板中使用时无需解引用
 
-###### ref
+```ts
+export function shallowRef(value?: unknown) {
+  return createRef(value, true);
+}
 
-1. 用于包装一个原始值（如字符串、数字、布尔值等），使其变成响应式的，返回的是一个包含 `value` 属性的响应式引用对象，可通过 `.value` 属性来访问或修改内部值
-2. 用于基本数据类型和引用数据类型
-3. 在模板中使用时，Vue 自动解引用，不需要 `.value` 访问或修改内部值
+export function ref(value?: unknown) {
+  return createRef(value, false);
+}
 
-###### reactive
+function createRef(rawValue: unknown, shallow: boolean) {
+  return isRef(rawValue) ? rawValue : new RefImpl(rawValue, shallow);
+}
 
-1. 用于创建一个响应式对象，直接返回传入的对象的响应式代理，不需要通过 `.value` 属性来访问或修改对象的属性
-2. 只局限于引用数据类型，不能直接用于创建单一值的响应式数据
-3. 在模板中使用时，无需解引用，可直接访问或修改对象的属性，但这一属性失去响应式
+class RefImpl<T> {
+  private _rawValue: T; // 存储原始值
+  private _value: T; // 存储响应式值
+  public dep?: Dep = undefined; // 用于依赖跟踪
+  public readonly __v_isRef = true; // 是否是 ref 实例
 
+  constructor(value: T, public readonly __v_isShallow: boolean) {
+  	this._rawValue = __v_isShallow ? value : toRaw(value);
+    this._value = __v_isShallow ? value : toReactive(value);
+  }
+
+  get value() {
+    trackRefValue(this); // 依赖追踪，当 ref 值变化时，依赖于该 ref 的组件/副作用函数重新执行
+    return this._value; // 返回存储的响应式值
+  }
+
+  set value(newVal) {
+    const useDirectValue =
+      this.__v_isShallow || isShallow(newVal) || isReadonly(newVal);
+    newVal = useDirectValue ? newVal : toRaw(newVal);
+    if (hasChanged(newVal, this._rawValue)) {
+      this._rawValue = newVal;
+      this._value = useDirectValue ? newVal : toReactive(newVal);
+      triggerRefValue(this, DirtyLevels.Dirty, newVal); // 依赖更新
+    }
+  }
+}
+```
+	
+```ts
+function reactive(target) {
+  if (target && target.__v_isReactive) return target;
+  return createReactiveObject(
+    target,
+    false,
+    mutableHandlers,
+    mutableCollectionHandlers,
+    reactiveMap
+  );
+}
+
+function createReactiveObject(
+  target,
+  isReadonly,
+  baseHandlers,
+  collectionHandlers,
+  proxyMap
+) {
+  if (!isObject(target)) return target;
+  const existingProxy = proxyMap.get(target);
+  if (existingProxy) return existingProxy;
+  const proxy = new Proxy(target, baseHandlers);
+  proxyMap.set(target, proxy);
+  return proxy;
+}
+```

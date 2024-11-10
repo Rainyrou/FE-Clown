@@ -16,11 +16,57 @@ Vue 和 React 的核心理念差异决定了它们的发展轨迹。React 最初
 
 3. **响应式**：
 
-- Vue2  响应式的特点是依赖收集，数据可变，自动派发更新，初始化时通过 `Object.defineProperty`  递归劫持  `data` 所有属性，为其添加 `getter` 和 `setter`。每个组件实例关联一个 `watcher` 实例，在组件渲染时进行依赖收集并在依赖项的 `setter` 被调用时通知 `watcher` 重新渲染
-- Vue3 使用 `Proxy`  重构响应式，`Proxy` 修复 Vue2 响应式存在的缺陷，可以拦截对象的任意操作（包括增删对象属性、数组索引赋值和修改数组长度等），支持更多数据结构且不再一开始递归劫持对象属性，而是代理第一层对象本身，运行时才递归，按需代理，用 `effect`  副作用函数来代替 Vue2  的 `watcher`，用 `trackMap` 代替 Vue2  的 `Dep` 统一管理依赖，无需再维护大量依赖关系
+- Vue2  响应式的特点是依赖收集，数据可变，自动派发更新，初始化时通过 `Object.defineProperty`  递归劫持  `data` 所有属性，为其添加 `getter` 和 `setter`，每个组件实例关联一个 `watcher` 实例，`watcher`  实例用于追踪组件的渲染依赖，访问属性时触发  `getter` 将当前组件的  `watcher`  实例添加到 `dep`  对象中，而  `dep`  对象直接存储于响应式对象，修改属性时触发  `setter` 通知当前组件的  `watcher`  实例更新，重新渲染组件，当组件销毁时 Vue2 手动清理所有依赖关系以避免内存泄漏，但 `Object.defineProperty` 无法直接监听增删对象属性、数组索引赋值和修改数组长度等操作，因此 Vue2 通过  `$set`  和  `$delete`  方法增删对象属性，通过重写数组的变异方法手动触发依赖更新
+- Vue3 重构响应式，通过 `Proxy` 修复 Vue2 响应式存在的缺陷，支持监听增删对象属性，通过数组索引赋值和修改数组长度，Vue3 只在运行时拦截数据，使用 `Proxy` 动态代理对象属性访问，不再在初始化时递归遍历，只有在访问嵌套对象时才递归创建代理，使用 `WeakMap` 和 `Set` 高效存储依赖关系以避免重复收集及内存泄漏，读取响应式数据时触发 `track` 函数将当前副作用函数收集到依赖集合中，修改响应式数据时触发 `trigger`，查找并执行依赖于该属性的所有副作用函数
+
+```js
+const targetMap = new WeakMap();
+let activeEffect = null;
+
+function track(target, key) {
+  if (!activeEffect) return;
+  let depsMap = targetMap.get(target);
+  if (!depsMap) targetMap.set(target, (depsMap = new Map()));
+  let dep = depsMap.get(key);
+  if (!dep) depsMap.set(key, (dep = new Set()));
+  dep.add(activeEffect);
+}
+
+function trigger(target, key) {
+  const depsMap = targetMap.get(target);
+  if (!depsMap) return;
+  const dep = depsMap.get(key);
+  if (dep) dep.forEach((effect) => effect());
+}
+
+function reactive(target) {
+  return new Proxy(target, {
+    get(target, key, receiver) {
+      track(target, key);
+      return Reflect.get(target, key, receiver);
+    },
+    set(target, key, value, receiver) {
+      const result = Reflect.set(target, key, value, receiver);
+      trigger(target, key);
+      return result;
+    },
+  });
+}
+
+function effect(fn) {
+  activeEffect = fn;
+  fn();
+  activeEffect = null;
+}
+
+const state = reactive({ count: 66 });
+effect(() => console.log(`count is: ${state.count}`));
+state.count++;
+```
+
 - React  的响应式不是自动的，基于状态，单向数据流，数据不可变，需手动 `setState`  来显式触发更新，且当数据改变时以根组件为目录，默认重新渲染整个组件树，更新粒度更大一些，需额外使用 `pureComponent` 和 `shouldComponentUpdate` 等防止不必要的渲染，保证整个组件树的渲染完全由其组件的 `props` 决定，React 的组件优化伴随着一定程度的心智负担
 * 在引入 Fiber 架构前，React 通过堆栈渲染器的同步渲染引擎来渲染组件，React 递归遍历组件树，对需更新的组件调用 `render` 方法，与前一次的渲染结果进行比对，更新 DOM，此种更新机制是同步且一次性完成的，一旦开始便不被中断或暂停，其无法为不同渲染任务分配不同优先级且较大组件树的复杂更新势必阻塞浏览器主线程
-* React Fiber 正是为解决上述问题而生的，其用于提高 React 的性能，尤其是在处理动画和页面渲染等方面，Fiber 实质上重构 React Virtual DOM，每个 React 元素对应一至多个 Fiber 节点，其构成一个工作单元的树形结构，React 为每个 Fiber 节点标记 Effect 来表示不同类型的工作，每个 Fiber 节点代表一个工作单元，React 调度过程为 Fiber 架构的一部分，调度器 Scheduler 是其并发模式 Concurrent Mode 之核心，React 在底层上通过 `requestIdleCallback` 检测浏览器主线程的空闲时间，实现任务分割和优先级排序，并据此顺序执行这些 Fiber 节点，具体来说，由于 `requestIdleCallback` 的支持和触发时机存在局限性，React 实现自己的调度策略，其调度器内部维护一个任务队列，每个任务均有其到期时间，React 据此排序它们，在浏览器空闲时执行高优先级任务，在更新过程中中断和复用渲染任务，避免阻塞浏览器主线程，确保优先处理关键更新，增强 React 渲染的可预测性。React 在渲染组件时构建两棵 Fiber 树，一棵为在屏幕上显示的 current tree，另一棵为正在内存中构建的工作树 work-in-progress tree，此种方式使 React 可在内存中构建新树并在完成后进行快速切换，在协调阶段，React 异步计算新树变化（此过程可被中断），在提交阶段，React 遍历 Effect 列表，将计算出的变化同步应用到 DOM 上（此过程不可中断）
+* React Fiber 正是为解决上述问题而生的，其用于提高 React 的性能，尤其是在处理动画和页面渲染等方面，Fiber 实质上重构 React Virtual DOM，每个 React 元素对应一至多个 Fiber 节点，其构成一个工作单元的树形结构，React 为每个 Fiber 节点标记 Effect 来表示不同类型的工作，每个 Fiber 节点代表一个工作单元，React 调度过程为 Fiber 架构的一部分，调度器 Scheduler 是其并发模式 Concurrent Mode 之核心，React 在底层上通过类似 `requestIdleCallback` 的机制检测浏览器主线程的空闲时间，实现任务分割和优先级排序，并据此顺序执行这些 Fiber 节点，具体来说，由于 `requestIdleCallback` 的支持和触发时机存在局限性，React 实现自己的调度策略，其调度器内部维护一个任务队列，每个任务均有其到期时间，React 据此排序它们，在浏览器空闲时执行高优先级任务，在更新过程中中断和复用渲染任务，避免阻塞浏览器主线程，确保优先处理关键更新，增强 React 渲染的可预测性。React 在渲染组件时构建两棵 Fiber 树，一棵为在屏幕上显示的 current tree，另一棵为正在内存中构建的工作树 work-in-progress tree，此种方式使 React 可在内存中构建新树并在完成后进行快速切换，在协调阶段，React 异步计算新树变化（此过程可被中断），在提交阶段，React 遍历 Effect 列表，将计算出的变化同步应用到 DOM 上（此过程不可中断）
 
 4. **Diff 算法**：
 

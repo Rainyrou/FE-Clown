@@ -3,11 +3,14 @@
 ```JavaScript
 function _curry(fn) {
   function curried(...args) {
-    if (args.length >= fn.length) return fn.apply(this, args);
-    else
-      return function (...args2) {
-        return curried.apply(this, args.concat(args2));
+    const context = this;
+    if (fn.length >= args.length) {
+      return fn.apply(context, args);
+    } else {
+      return function (...newArgs) {
+        return curried.apply(context, args.concat(newArgs));
       };
+    }
   }
   return curried;
 }

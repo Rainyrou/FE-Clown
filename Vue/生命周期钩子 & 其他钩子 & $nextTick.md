@@ -2,9 +2,15 @@ Vue 生命周期钩子是基于其响应式系统实现的
 
 初始化 -> 挂载 -> 更新 -> 销毁
 
-`new Vue` 执行后，Vue 进入初始化阶段，然后选择性进入模板编译与挂载阶段。在初始化阶段，Vue 分别初始化实例属性、事件、`provide/inject` 及状态等，其中状态又包含 `data`、`props`、`methods`、`computed` 和 `watcher` 等。初始化阶段结束后，会触发 `created` 钩子函数。在 `created` 钩子函数与 `beforeMount` 钩子函数之间是模板编译阶段，这个阶段在不同的构建版本中不一定存在。在 `beforeMount` 钩子函数与 `mounted` 钩子函数之间是挂载阶段。挂载完毕后，Vue 处于已挂载阶段，它持续追踪状态的变化，当数据(状态)发生变化时，`watcher` 会通知虚拟 DOM 重新渲染视图。在渲染视图前触发 `beforeUpdate` 钩子函数，渲染完毕后触发 `updated` 钩子函数。当 `vm.$destroy` 被调用时，组件进入卸载阶段。卸载前会触发 `beforeDestroy` 钩子函数，卸载后会触发 `destroyed` 钩子函数
-
 在 `mounted` 生命周期钩子中发起请求更为合适而非 `created`，组件渲染依赖于虚拟 DOM，组件在 `created` 生命周期钩子中并未挂载到 DOM上，此时发起异步请求将导致请求与页面初始渲染同时进行，请求返回的数据可能影响页面渲染
+
+父组件 `created` 钩子 -> 父组件 `beforeMount` 钩子 -> 递归遍历所有子组件 -> 子组件 `created` 钩子 -> 子组件 `beforeMount` 钩子 -> 子组件 `mounted` 钩子 -> 父组件 `mounted` 钩子
+
+操作DOM的钩子：`mounted` + `updated` + `$nextTick`
+
+`$nextTick` 基于事件循环，用于处理 Vue 中的异步更新队列。当你在异步更新队列中修改数据时，视图不会立即更新，Vue 将更新任务放入异步队列中，并在下一个事件循环周期中批量处理，以减少 DOM 操作次数
+
+在 JavaScript 的事件循环中，微任务在当前事件循环的末尾，即在浏览器进行下一次重绘前执行。`$nextTick` 将回调函数放入微任务队列，确保它在所有同步代码执行完毕后才执行，它用于在 DOM 更新完成后立即执行代码，确保其根据最新的响应式数据更新 DOM 元素。Vue 在底层上使用 `Promise.then` 和 `MutationObserver` 作为微任务队列的触发器，`MutationObserver` 用于监听 DOM 变化，若浏览器不支持，则回退到 `setTimeout(fn, 0)`，从而保证回调函数在当前事件循环的末尾执行，此时 DOM 更新已完成
 
 * **setup**: 新增的钩子，在组件创建前执行，用于 Composition API，此时组件的 props 和 reactive state 已可用，但模板和实例尚未挂载和渲染
 - **beforeCreate**: 初始化 Vue 实例，进行数据观测

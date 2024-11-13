@@ -1,16 +1,30 @@
+```
+input
+
+video/audio
+
+canvas/svg
+
+ondrag/ondrop
+
+geolocation
+
+webworker/websocket/webstorage
+```
+
 ###### 新增语义化标签
 
-如 `header`，`footer`、`nav`、`section`、`article`、`aside`、`details`、`summary`、`dialog`、`figure`、`figcaption`、`main`、`mark`、`time`、`date`
+如 `main`、`header`，`footer`、`nav`、`section`、`article`、`aside`、`details`、`summary`、`dialog`、`figure`、`figcaption`、`mark`、`time`、`date`
 
 ###### 表单增强
 
-1. input 类型
+1. input 类型 
 
 - `time`: 时间选择器
-- `week`: 选择周和年
-- `month`: 月份选择器
 - `date`: 日期选择器
 - `datetime-local`: 选择日期和时间（无时区）
+- `month`: 月份选择器
+- `week`: 选择周和年
 - `number`: 数字输入，可以设置最大值和最小值
 - `range`: 滑块，用于从范围中选择数字
 - `search`: 专为搜索字段设计
@@ -99,7 +113,7 @@ context.fillRect(50, 50, 150, 100);
 
 ###### 地理位置
 
-- Geolocation 允许开发者获取用户的地理位置信息
+Geolocation 允许开发者获取用户的地理位置信息
 
 ```JavaScript
 navigator.geolocation.getCurrentPosition(function(position) {

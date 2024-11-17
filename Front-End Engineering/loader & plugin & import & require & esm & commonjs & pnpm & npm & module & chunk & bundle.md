@@ -1,4 +1,6 @@
-Loader：用于将其他格式的文件转换为 Webpack 支持打包的 module 即模块化非 JavaScript，通过转义以兼容旧版本浏览器及跨平台支持并减少构建产物打包体积，其本质为函数，支持同步、异步操作及链式调用，Webpack 检查 `import` 或 `require` 引入的非 JavaScript 文件配置中的 `module.rules` 并以相应 Loader 进行处理 ，Webpack 打包时按数组从后往前的顺序将目标资源交由 Loader 处理
+参考文章：[美团点餐 - Webpack 之 Loader 和 Plugin 简介](https://juejin.cn/post/6844903489458405390?searchId=20241117171358EFAC48295E488CE488B5)
+
+Loader：用于将其他格式的文件转换为 Webpack 支持打包的 module 即模块化非 JavaScript，通过转义以兼容旧版本浏览器及跨平台支持并减少构建产物打包体积，其本质为函数，支持同步、异步操作及链式调用，Webpack 检查 `import` 或 `require` 引入的非 JavaScript 文件配置中的 `module.rules` 并以相应 Loader 进行处理 ，Webpack 打包时按数组从右向左或从下到上的顺序将目标资源交由 Loader 处理
 
 ```
 output=loader(input) // input 为源文件字符串/上一 loader 转换后的结果
@@ -23,6 +25,81 @@ module.exports = function (source, sourceMap?, data?) {
 5. file-loader：用于处理其他格式的文件资源
 6. url-loader：用于处理图片，目标图片若大于指定大小则将其打包，否则将其转换为 base64 字符串并合并至 JavaScript 文件中
 
+Loader 的使用：
+
+1. 在 `webpack.config.js` 中配置
+2. 通过内联使用，在 `import` 语句中显示指定
+
+自定义 Loader：
+
+`my-loader.js`
+
+```js
+module.exports = function (content) {
+  this.cacheable && this.cacheable(); // 启用 Loader 缓存
+  this.value = content; // 保存传入内容，便于链式调用
+  return "module.exports = " + JSON.stringify(content); // 将内容转换为 JavaScript 模块导出形式
+};
+```
+
+`webpack.config.js`
+
+```js
+const path = require("path");
+
+module.exports = {
+  mode: "development",
+  entry: "./src/index.js",
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.txt$/,
+        use: path.resolve(__dirname, "my-loader.js"),
+      },
+    ],
+  },
+};
+```
+
+在 `src` 文件夹下创建一个测试文件 `example.txt`：
+
+```txt
+Hello, Webpack Loader!
+```
+
+在 `src/index.js` 中引入：
+
+```js
+import text from './example.txt';
+console.log(text);
+```
+
+在命令行执行：
+
+```bash
+npx webpack
+```
+
+输出 `dist/bundle.js` 文件：
+
+```js
+module.exports = "Hello, Webpack Loader!";
+```
+
+自定义 Loader 原则：
+
+- Loader 生成的模块与 Webpack 设计一致，遵循 JavaScript 模块规范 ES Modules 或 CommonJS，支持模块化加载
+- 将通用逻辑抽离为独立模块，避免重复生成
+- Loader 专注于单一任务，避免复杂多任务逻辑
+- Loader 不应保存任何与模块编译相关的状态，每次调用均独立完成任务，若需共享状态，可通过 Webpack 提供的缓存机制
+- 每个 Loader 均应尽可能输出适合于下一 Loader 处理的内容，通过多个 Loader 链式调用实现复杂功能
+- 通过 `this.addDependency` 手动声明外部依赖，`this.resolve` 解析模块依赖，将可能引发版本冲突的依赖声明为 `peerDependencies`
+- 通过 `loader-utils` 和 `schema-utils` 提供的工具处理 Loader 选项和验证，使用 `loader-utils` 提供的 `stringifyRequest` 将绝对路径转换为相对路径
+
 Plugin：基于 Tapable 的 Webpack 事件钩子系统，用于在构建的各个阶段添加自定义的构建步骤。Webpack 的构建过程可视为生产线，从源文件经过多个处理阶段最终转换为输出结果，各个处理阶段职责单一且存在依赖关系，只有完成当前处理阶段，结果才能交由下一阶段继续处理，其保证构建的有序性，而 Plugin 可视为插入到该生产线中的功能模块，其通过监听 Webpack 的事件流机制在构建的特定阶段对资源进行定制化处理
 
 1. copy-webpack-plugin：用于将单文件或完整目录复制到构建目录
@@ -30,6 +107,37 @@ Plugin：基于 Tapable 的 Webpack 事件钩子系统，用于在构建的各�
 3. mini-css-extract-plugin: 用于从 JavaScript 文件中提取 CSS，生成独立于该 JavaScript 文件的 CSS 文件
 4. optimize-css-assets-plugin：压缩 CSS
 5. terser-webpack-plugin：压缩 JavaScript
+
+自定义 Plugin：
+
+- 编写一个 JavaScript 命名函数
+- 在其原型上定义一个 `apply` 方法
+- 指定挂载的 Webpack 事件钩子
+- 处理 Webpack 内部实例的特定数据
+- 功能完成后调用 Webpack 提供的回调
+
+```js
+class FileListPlugin {
+  constructor(options) {
+    this.options = options || {};
+  }
+  apply(compiler) {
+    // 在 "emit" 阶段挂载钩子
+    compiler.hooks.emit.tapAsync("FileListPlugin", (compilation, callback) => {
+      let filelist = "In this build:\n\n"; // 创建文件列表
+      for (const filename in compilation.assets) filelist += `- ${filename}\n`;
+      // 将 filelist.md 添加到构建的输出中
+      compilation.assets["filelist.md"] = {
+        source: () => filelist,
+        size: () => filelist.length,
+      };
+      callback();
+    });
+  }
+}
+
+module.exports = FileListPlugin;
+```
 
 `import`：ES Module，其为 ES6 引入的模块导入语法，在编译时执行，允许静态分析，支持 Tree Shaking，支持动态导入模块，返回一个 Promise，处理循环依赖时，返回的是导出对象的引用
 `require`：CommonJS，其为 Node.js 特有的模块导入语法，在运行时执行，不支持 Tree Shaking，支持动态导入模块，处理循环依赖时，返回的是导出对象的拷贝

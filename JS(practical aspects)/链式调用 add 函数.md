@@ -8,3 +8,5 @@ function add(...args) {
 
 console.log(add(1, 2, 3)(4, 5)(6)()); // 21
 ```
+
+

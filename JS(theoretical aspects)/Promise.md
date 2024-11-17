@@ -13,7 +13,6 @@ Promise 用于解决回调地狱，为异步操作的成功值或失败原因分
 4. `Promise.allSettled(iterable)`：等待所有给定的 Promise 实例都 resolved 或 rejectd，返回一个新的 Promise 实例，该实例总是 resolved，并带有每个 Promise 的结果对象数组
 5. `Promise.race(iterable)`：当传入的 Promise 中有一个首先被 resolved 或 rejectd，则直接返回一个新的 Promise ，其结果由第一个 resolved 或 rejectd 的 Promise 决定，其他Promise 仍会继续执行，但它们的结果不会影响最终结果
 
-
 判断一个对象是否为 Promise 实例：
 
 ```js

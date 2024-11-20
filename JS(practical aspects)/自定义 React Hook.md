@@ -87,3 +87,26 @@ export const usePrevious = (value) => {
 };
 ```
 
+8. 手写按钮锁即点击后 5s 内无法重复点击
+
+```js
+export const useBottonLock = (wait = 5000) => {
+  const [isLocked, setIsLocked] = useState(false);
+  const [shouldTimer, setShouldTimer] = useState(false);
+  useEffect(() => {
+    if (!shouldTimer) return;
+    const timer = setTimeout(() => {
+      setIsLocked(false);
+      setShouldTimer(false);
+    }, wait);
+    return () => clearTimeout(timer);
+  }, [shouldTimer, wait]);
+  const handleClick = (fn) => {
+    if (isLocked) return;
+    fn && fn();
+    setIsLocked(true);
+    setShouldTimer(true);
+  };
+  return [isLocked, handleClick];
+};
+```

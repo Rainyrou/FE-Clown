@@ -1,6 +1,6 @@
 1. `shouldComponentUpdate` & `PureComponent`
 
-`shouldComponentUpdate` 方法的返回值表示是否渲染，React 在调用 `render` 方法前触发 `shouldComponentUpdate` 方法，默认直接返回 `true` 即 React 重新渲染当前组件及其子组件，若返回 `false`，React 直接跳过本次渲染。通过 `shouldComponentUpdate` 可避免不必要的 Diff 和真实 DOM 操作
+`shouldComponentUpdate` 方法的返回值表示是否渲染，React 在调用 `render` 方法前触发 `shouldComponentUpdate` 方法，默认直接返回 `true` 即 React 重新渲染当前组件及其子组件，若返回 `false`，React 直接跳过本次渲染。通过 `shouldComponentUpdate` 可避免不必要的 Diff 和真实 DOM 操作。在函数组件中，React 未直接提供 `shouldComponentUpdate`，但可通过 `React.memo` 和 `useMemo` 或 `useCallback` 实现类似效果
 
 ```js
 shouldComponentUpdate(nextProps, nextState) {

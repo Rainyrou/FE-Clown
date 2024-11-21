@@ -1,5 +1,13 @@
-> [!todo] To do
-> **React 是手动挡，Vue 是自动挡**
+```
+// 设计哲学
+// Template & JSX
+// Vux/Pinia/Context/Redux
+// Vue CLI/Vite/Create React App
+// 组件通信
+// 生命周期
+// 性能优化
+// 响应式 + Diff
+```
 
 **它们都只是同一时代下产品的不同解决方案，仅此而已，它们终将会被时代抛弃（就像俺呜呜）。精通框架没什么屁用，要跳脱出框架本身，否则到死也不知道自己是怎么个死法**
 

@@ -1,0 +1,125 @@
+`transition` 用于在不同状态间平滑过渡元素样式即在某特定时刻动态化改变 CSS 属性
+
+1. `property`：定义过渡效果的 CSS 属性名如 `opacity`、`background-color` 等
+2. `duration`：定义过渡效果的执行时间
+3. `timing-function`：定义过渡效果的时间曲线如 `linear`、`ease`、`ease-in`、`ease-out` 和 `ease-in-out`，可通过 `cubic-bezier` 函数自定义
+4. `delay`：定义延迟即在应用过渡效果前的等待时间
+
+```css
+.selector {
+    transition: property duration timing-function delay;
+}
+```
+
+`transform` 用于对元素进行平移、倾斜、旋转和缩放以改变其形状和位置
+
+1. `translate(x, y)`：移动元素，`x` 和 `y` 为横竖移动距离
+2. `skew(x-angle, y-angle)`：倾斜元素，`x-angle` 和 `y-angle` 为横竖倾斜角度
+3. `rotate(angle)`：旋转元素，`angle` 为旋转角度
+4. `scale(x, y)`：缩放元素，`x` 和 `y` 为横竖缩放因子
+5. `matrix(a, b, c, d, tx, ty)`：2D 变换矩阵
+
+```css
+.selector {
+    transform: function1(...) function2(...)
+}
+```
+
+`animation` 用于定义动画
+
+- `name`：定义动画名，与 `@keyframes` 中定义的关键帧名相关联
+- `duration`：定义动画执行时间
+- `timing-function`：定义动画时间曲线
+- `delay`：定义延迟即在应用动画效果前的等待时间
+- `iteration-count`：定义动画播放次数
+- `direction`：定义动画播放方向
+- `fill-mode`：定义动画执行前后影响元素样式的方式
+- `play-state`：定义动画播放状态
+
+`@keyframes` 通过定义一系列关键帧样式描述动画步骤及过渡效果，相比于 `transition`，其提供对动画中间步骤更细粒度的控制，定义多步渐变效果
+
+控制动画步骤： 每个动画分为多个关键帧，通过百分比或关键字如 `from` 和 `to` 定义动画从开始到结束的状态
+样式插值： CSS 根据不同关键帧指定样式，自动计算并生成中间状态即插值，若某关键帧未定义某属性，则在中间帧中使用其前后帧的插值
+绑定动画：通过 `animation-name` 绑定动画并结合 `animation-duration` 和 `animation-timing-function` 等来控制动画
+重复定义：若在同一 `@keyframes` 中定义多个相同百分比的关键帧，则浏览器使用所有关键帧并依照层叠顺序计算样式
+`!important` 无效：关键帧的样式层叠机制不同于原生的 CSS 规则
+JavaScript 动态操作：通过 DOM 的 `CSSKeyframesRule` 接口访问和动态创建 `@keyframes` 动画
+
+```css
+.traffic-light {
+    width: 100px;
+    height: 250px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    border-radius: 20px;
+}
+
+.light {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: gray;
+    opacity: 0.3;
+}
+
+@keyframes red-light {
+    0% {
+        background-color: red;
+        opacity: 1;
+    }
+
+    50% {
+        background-color: white;
+        opacity: 0.3;
+    }
+
+    100% {
+        background-color: red;
+        opacity: 1;
+    }
+}
+
+@keyframes green-light {
+    0% {
+        background-color: green;
+        opacity: 1;
+    }
+    50% {
+        background-color: white;
+        opacity: 0.3;
+    }
+    100% {
+        background-color: green;
+        opacity: 1;
+    }
+}
+
+@keyframes yellow-light {
+    0% {
+        background-color: yellow;
+        opacity: 1;
+    }
+    50% {
+        background-color: white;
+        opacity: 0.3;
+    }
+    100% {
+        background-color: yellow;
+        opacity: 1;
+    }
+}
+
+.red {
+    animation: red-light 6s infinite;
+}
+.green {
+    animation: green-light 6s infinite 2s;
+}
+.yellow {
+    animation: yellow-light 6s infinite 4s;
+}
+```

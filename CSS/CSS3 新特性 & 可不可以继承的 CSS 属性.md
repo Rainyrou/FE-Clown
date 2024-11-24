@@ -50,4 +50,30 @@
 - HSLA：`hsla(hue, saturation, lightness, alpha)`
 - 透明度：`opacity`
 
-11. 媒体查询：`@media` 和媒体特性如 `max-width`、`min-width`、`orientation`、`resolution`、`aspect-ratio` 等
+11. 媒体查询
+
+可继承的：
+
+- `color`
+- `visibility`
+- `font-family`
+- `font-size`
+- `font-weight`
+- `font-style`：字体样式如斜体
+- `line-height`：行高
+- `text-align`：文本对齐方式
+- `text-transform`：文本转换如大写
+- `letter-spacing`：字符间距
+- `word-spacing`：单词间距
+
+不可继承的：
+
+- `position`
+- `height`
+- `width`
+- `padding`
+- `border`
+- `margin`
+- `z-index`
+- `box-sizing`
+- `background`

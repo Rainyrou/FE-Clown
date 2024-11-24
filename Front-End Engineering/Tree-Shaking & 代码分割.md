@@ -16,7 +16,7 @@ DCE（Dead Code Elimination） 用于删除不被执行、对代码执行结果�
 "sideEffects": ["*.css", "*.js"]
 ```
 
-- 动态导入和 CommonJS：若使用动态 `import` 或CommonJS 的 `require`，Tree-shaking 无法分析其依赖关系
+- 动态导入和 CommonJS：若使用动态 `import` 或 CommonJS 的 `require`，Tree-shaking 无法分析其依赖关系
 
 Webpack 启用 Tree-Shaking：
 
@@ -35,3 +35,11 @@ module.exports = {
   },
 };
 ```
+
+代码分割：通过静态分析获取模块间的依赖关系，哪些模块是可拆分的，哪些模块是相互依赖的，哪些模块是共享的，哪些模块是首屏加载所需的，根据模块及其依赖关系所生成的依赖图采取以下策略进行代码分割：
+
+- 入口分割：应用程序有多个入口点如首页、登录页和后台管理页等，通过入口分割将不同页面代码分离，为每个入口点生成一个独立的 Chunk，每个 Chunk 只包含该入口点所需代码
+- 动态导入：通过动态 `import` 按需加载，当代码执行至动态 `import` 部分时，Webpack 或 Vite 生成一个独立的 Chunk 并在运行时加载该 Chunk
+- 共享模块分割：Webpack `optimization.splitChunks` 和 Vite `rollupOptions.manualChunks` 将多个模块间共享的部分提取为一个独立的 Chunk，避免重复加载相同模块
+
+生成 Chunk 后，Webpack 或 Vite 为每个 Chunk 生成一个对应的文件名，其为一个与文件内容和元数据相关的哈希值（确保文件内容变化时生成不同文件以避免浏览器缓存问题），文件被输出到指定目录如 `dist`

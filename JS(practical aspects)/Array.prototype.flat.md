@@ -15,14 +15,15 @@ console.log(arr._flat(1)); // [ 1, 2, 3, [ 4, 5 ], 1, 2, 6, 7 ]
 
 ```js
 const flattenArray = (arr) => {
-  const stk = [...arr], res = [];
+  const stk = [...arr],
+    ans = [];
   while (stk.length) {
-    let next = stk.pop();
+    const next = stk.pop();
     if (Array.isArray(next)) stk.push(...next);
-    else res.push(next);
+    else ans.push(next);
   }
-  return res.reverse();
+  return ans.reverse();
 };
 
-console.log(flattenArray([1, 2, 3, [4, 5], 1, 2, 6, 7]));
+console.log(flattenArray([1, 2, 3, [4, [5]], 1, 2, 6, 7]));
 ```

@@ -2,8 +2,8 @@
 
 ###### Hash & History
 
-1. Hash 模式：默认模式，使用 URL 的 hash 即 `#` 后的部分来模拟完整 URL，当 URL 改变时页面不会重新加载，基于浏览器的 `hashchange` API，使用 `window.addEventListener('hashchange', callback)` 监听 URL 的 hash 变化，当 hash 变化时，`hashchange` 事件触发，Vue Router 在回调函数中处理路由跳转，由于只是 hash 变化，无需 HTTP 请求，因此无需任何服务端配置
-2. History 模式：传统 URL，基于浏览器的 `pushState`、`replaceState` 和 `popstate` API，使用 `window.addEventListener('popstate', callback)` 监听 URL 变化。当点击浏览器前进或后退按钮或 `history.back`、`history.forward` 和 `history.go(n)` 时，`popstate` 事件触发，此外在 `pushState` 或 `replaceState` 调用时 `popstate` 事件不会触发，因此 Vue Router 需在这些方法被调用时手动更新路由。旧版浏览器不支持 HTML5 History API，除根目录外的 URL 在服务端上不存在相应资源，服务端需配置 URL 重写规则以支持 SPA 的这种行为，确保所有路由均指向同一入口文件如 `index.html`
+1. Hash 模式：默认模式，使用 URL 的 hash 即 `#` 后的部分来模拟完整 URL，当 URL 改变时页面不会重新加载，基于浏览器的 `hashchange` API，使用 `window.addEventListener('hashchange', callback)` 监听 URL 的 hash 变化，当 hash 变化时，`hashchange` 事件触发，Vue Router 在回调函数中处理路由跳转，由于只是 hash 变化，路径信息被完全保留在 `#` 后面，因此无需从浏览器通过 HTTP 请求发送至服务端，无需任何服务端配置
+2. History 模式：传统 URL，服务端解析该完整路径，其基于浏览器的 `pushState`、`replaceState` 和 `popstate` API，使用 `window.addEventListener('popstate', callback)` 监听 URL 变化，当点击浏览器前进或后退按钮或 `history.back`、`history.forward` 和 `history.go(n)` 时，`popstate` 事件触发，此外在 `pushState` 或 `replaceState` 调用时 `popstate` 事件不会触发，因此 Vue Router 在这些方法被调用时需手动更新路由，旧版浏览器不支持 HTML5 History API，除根目录外的 URL 在服务端上不存在相应资源，服务端需配置 URL 重写规则以支持 SPA 的这种行为，确保所有路由均指向同一入口文件如 `index.html`
 
 `nginx.conf`
 

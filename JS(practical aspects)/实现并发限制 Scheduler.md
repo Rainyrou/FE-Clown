@@ -4,26 +4,26 @@
 class Scheduler {
   constructor() {
     this.tasks = [];
-    this.usingTask = [];
+    this.usingTasks = [];
   }
   add(promiseCreator) {
     return new Promise((resolve, reject) => {
       promiseCreator.resolve = resolve;
-      if (this.usingTask.length < 2) this.usingRun(promiseCreator);
+      if (this.usingTasks.length < 2) this.usingRun(promiseCreator);
       else this.tasks.push(promiseCreator);
     });
   }
   usingRun(promiseCreator) {
-    this.usingTask.push(promiseCreator);
+    this.usingTasks.push(promiseCreator);
     promiseCreator().then(() => {
       promiseCreator.resolve();
       this.usingMove(promiseCreator);
-      if (this.tasks.length > 0) this.usingRun(this.tasks.shift());
+      if (this.tasks.length) this.usingRun(this.tasks.shift());
     });
   }
   usingMove(promiseCreator) {
-    const index = this.usingTask.findIndex((item) => item === promiseCreator);
-    this.usingTask.splice(index, 1);
+    const index = this.usingTasks.findIndex((item) => item === promiseCreator);
+    this.usingTasks.splice(index, 1);
   }
 }
 

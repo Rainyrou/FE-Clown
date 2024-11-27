@@ -6,7 +6,7 @@
 127.0.0.1 company.internal
 ```
 
-3. 重启浏览器或在命令提示符执行` ipconfig /flushdns` 清除 DNS 缓存
+3. 重启浏览器或在命令提示符执行 `ipconfig /flushdns` 清除 DNS 缓存
 
 ###### 注意事项
 

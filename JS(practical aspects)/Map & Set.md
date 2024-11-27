@@ -67,7 +67,7 @@ class MySet {
   }
   delete(val) {
     const index = this.data.findIndex((item) => this.isEqual(val, item));
-    if (item !== -1) {
+    if (index !== -1) {
       this.data.splice(index, 1);
       return true;
     }

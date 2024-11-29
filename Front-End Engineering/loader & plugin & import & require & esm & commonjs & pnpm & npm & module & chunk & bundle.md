@@ -110,7 +110,7 @@ Plugin：基于 Tapable 的 Webpack 事件钩子系统，用于在构建的各�
 
 自定义 Plugin：
 
-- 编写一个 JavaScript 命名函数
+- 编写一个 JavaScript 命名函数或类
 - 在其原型上定义一个 `apply` 方法
 - 指定挂载的 Webpack 事件钩子
 - 处理 Webpack 内部实例的特定数据

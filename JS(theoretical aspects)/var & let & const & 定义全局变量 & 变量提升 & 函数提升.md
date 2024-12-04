@@ -4,12 +4,16 @@
 
 ```js
 for (var i = 0; i < 3; i++) {
-  setTimeout(() => {
-    console.log(i++); // 3 4 5
-  }, 0);
+  setTimeout(() => console.log(i++), 0); // 3 4 5
   console.log(i); // 0 1 2
 }
 ```
+
+```js
+for (var i = 0; i < 5; i++) setTimeout(() => console.log(i), 5000); // 5 5 5 5 5
+```
+
+**`var`** 作用域为函数（全局）作用域，每次迭代回调均引用同一 `i` 变量，而非创建一个新的 `i` 变量
 
 ###### 定义全局变量
 

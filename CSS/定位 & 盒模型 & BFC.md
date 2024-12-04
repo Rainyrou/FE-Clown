@@ -26,7 +26,7 @@ overflow: auto/hidden
 2. Absolute Positioning：元素相对于其最近的非 Static Positioning 祖先元素进行定位，其脱离文档流，不占据空间，即不影响其他元素的布局，可通过 `left`、`right`、`top`、`bottom` 和 `z-index` 来改变元素位置
 3. Relative Positioning：元素相对于其在文档流的初始位置进行定位，其不脱离文档流，可通过 `left`、`right`、`top`、`bottom` 和 `z-index` 来改变元素位置
 4. Fixed Positioning：元素相对于浏览器窗口进行定位，无论页面是否滚动始终处于固定位置，其脱离文档流，可通过 `left`、`right`、`top`、`bottom` 和 `z-index` 来改变元素位置
-5. Sticky Positioning：Relative Positioning + Fixed Positioning，其不脱离文档流，初始为Relative Positioning，滚动到一定位置变为Fixed Positioning，可通过 `left`、`right`、`top`、`bottom` 和 `z-index` 来改变元素位置
+5. Sticky Positioning：Relative Positioning + Fixed Positioning，其不脱离文档流，初始为 Relative Positioning，滚动到一定位置变为 Fixed Positioning，可通过 `left`、`right`、`top`、`bottom` 和 `z-index` 来改变元素位置
 
 ```CSS
 .static {

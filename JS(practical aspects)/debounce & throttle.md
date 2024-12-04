@@ -10,7 +10,7 @@ function debounce(fn, wait, immediate = false) {
   let timer = null;
   return function (...args) {
     const context = this;
-    if (immediate && !timer) fn.apply(context, args);
+    if (!timer && immediate) fn.apply(context, args);
     clearTimeout(timer);
     timer = setTimeout(() => {
       if (!immediate) fn.apply(context, args);

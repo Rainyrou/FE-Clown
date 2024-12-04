@@ -36,6 +36,9 @@ const _deepClone = (target, map = new WeakMap()) => {
 };
 ```
 
+`i`：忽略大小写
+`test`：测试字符串是否与正则表达式匹配
+
 测试用例：
 
 ```js

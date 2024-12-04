@@ -11,10 +11,10 @@ Promise._race = (promises) => {
 };
 
 Promise._race([
-  new Promise((_, reject) => setTimeout(() => reject("A"), 100)),
-  new Promise((resolve) => setTimeout(() => resolve("B"), 200)),
-  new Promise((resolve) => setTimeout(() => resolve("C"), 300)),
-]).catch((reason) => {
-  console.log(reason); // A
-});
+  new Promise((resolve, reject) => setTimeout(() => reject("A"), 1000)),
+  new Promise((resolve, reject) => setTimeout(() => resolve("B"), 2000)),
+  new Promise((resolve, reject) => setTimeout(() => resolve("C"), 3000)),
+])
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err)); // A
 ```

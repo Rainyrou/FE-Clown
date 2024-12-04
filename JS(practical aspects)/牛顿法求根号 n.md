@@ -1,10 +1,10 @@
 ```js
-const sqrtNewton = (n, epsilion = 1e-7) => {
+const sqrtNewton = (n) => {
   if (n === 0) return 0;
   let x = n;
   while (true) {
     const nextX = 0.5 * (x + n / x);
-    if (Math.abs(nextX - x) < epsilion) return nextX;
+    if (Math.abs(nextX - x) < 1e-7) return nextX;
     x = nextX;
   }
 };

@@ -35,5 +35,5 @@ const addTask = (time, order) =>
 addTask(4000, 4);
 addTask(2000, 2);
 addTask(3000, 3);
-addTask(1000, 1);
+addTask(1000, 1); // 2 4 3 1
 ```

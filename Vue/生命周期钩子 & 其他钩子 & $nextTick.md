@@ -13,7 +13,6 @@ Vue 生命周期钩子是基于其响应式系统实现的
 在 JavaScript 的事件循环中，微任务在当前事件循环的末尾，即在浏览器进行下一次重绘前执行。`$nextTick` 将回调函数放入微任务队列，确保它在所有同步代码执行完毕后才执行，它用于在 DOM 更新完成后立即执行代码，确保其根据最新的响应式数据更新 DOM 元素。Vue 在底层上使用 `Promise.then` 和 `MutationObserver` 作为微任务队列的触发器，`MutationObserver` 用于监听 DOM 变化，若浏览器不支持，则回退到 `setTimeout(fn, 0)`，从而保证回调函数在当前事件循环的末尾执行，此时 DOM 更新已完成
 
 - **setup**: 新增的钩子，在组件创建前执行，用于 Composition API，此时组件的 props 和 reactive state 已可用，但模板和实例尚未挂载和渲染
-
 * **beforeCreate**: 初始化 Vue 实例，进行数据观测
 * **created**: 数据绑定、挂载 `computed` 与 `method`、`watch/event` 事件回调，但组件尚未挂载到 DOM，页面尚未渲染，`$el` 仍为 `undefined`
 * **beforeMount**: `template` 编译成 `render` 函数，但尚未将渲染结果挂载到 DOM 上，渲染的优先级是 `render` > `template` >  外部 HTML

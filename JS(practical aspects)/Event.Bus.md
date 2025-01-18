@@ -1,3 +1,39 @@
+```js
+class EventBus {
+  constructor() {
+    this.eventMap = {};
+  }
+  on(eventName, callback) {
+    if (!this.eventMap[eventName]) this.eventMap[eventName] = [];
+    this.eventMap[eventName].push(callback);
+  }
+  emit(eventName, ...args) {
+    this.eventMap[eventName].forEach((callback) => callback(...args));
+  }
+  off(eventName, callback) {
+    this.eventMap[eventName] = this.eventMap[eventName].filter(
+      (item) => item !== callback
+    );
+  }
+}
+
+const emitter = new EventBus();
+
+function onFoo(e) {
+  console.log("foo", e);
+}
+
+function onBar(e) {
+  console.log("bar", e);
+}
+
+emitter.on("type", onFoo);
+emitter.on("type", onBar);
+emitter.emit("type", { a: "b" }); // foo {a: "b"} bar {a: "b"}
+emitter.off("type", onBar);
+emitter.emit("type", { a: "b" }); // foo {a: "b"}
+```
+
 ```JavaScript
 class EventBus {
   constructor(maxListeners) {

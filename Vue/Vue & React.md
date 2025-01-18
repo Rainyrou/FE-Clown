@@ -15,7 +15,6 @@ Vue.js 和 React.js 均为构建用户界面的 JavaScript 库
 1. **Template & JSX**
 
 - Vue 采用基于 HTML 的模板语法，提供数据驱动的视图层框架，允许开发者声明式地将 DOM 绑定到底层 Vue 实例的数据
-
 * JSX 是 React 中一种类似 XML 的语法扩展，使得在 JavaScript 代码中可编写类似 HTML 的代码，更接近函数式编程，其提供一种简单直观的方式来声明 UI，实际为一种语法糖，通过 Babel 转换为 JavaScript，通过 `React.createElement` 生成虚拟 DOM，通过 `ReactDOM.render` 将虚拟 DOM 转换为真实 DOM 并插入到页面中
 
 2. **响应式**：

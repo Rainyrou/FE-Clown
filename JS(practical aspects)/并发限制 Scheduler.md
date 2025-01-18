@@ -27,7 +27,7 @@ class Scheduler {
   }
 }
 
-const timeout = (time) => new Promise((resolve) => setTimeout(resolve, time));
+const timeout = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
 const scheduler = new Scheduler();
 const addTask = (time, order) =>
   scheduler.add(() => timeout(time)).then(() => console.log(order));

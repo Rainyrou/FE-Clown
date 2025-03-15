@@ -1,4 +1,4 @@
-```JavaScript
+```js
 const _jsonp = (url, params, callbackName) => {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');

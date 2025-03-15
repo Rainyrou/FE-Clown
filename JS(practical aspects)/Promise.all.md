@@ -1,4 +1,4 @@
-```js
+ ```js
 Promise._all = (promises) => {
   return new Promise((resolve, reject) => {
     if (promises == null || typeof promises[Symbol.iterator] !== "function")

@@ -1,3 +1,22 @@
+```js
+class VNode {
+  constructor(tagName, props, children) {
+    this.tagName = tagName;
+    this.props = props || {};
+    this.children = children || [];
+  }
+}
+
+const h = (tagName, props, ...children) => {
+  const flatChildren = children
+    .flat()
+    .map((child) => typeof child === "string" || typeof child === "number")
+    ? { type: "text", value: String(child) }
+    : child;
+  return new VNode(tagName, props, flatChildren.fliter(Boolean));
+};
+```
+
 在浏览器中输入
 
 模拟 `React.createElement`，`tag` 为 HTML 标签，`props` 为元素属性，`document.createTextNode` 创建文本节点

@@ -4,8 +4,8 @@ Webpack 解析配置文件 `webpack.config.js`，根据 Entry、Output、Loader�
 
 Vite
 
-1. no-bundle 服务：在开发阶段，Vite 无需打包而基于浏览器天然支持的 ESM 之 no-bundle 服务加载模块，浏览器通过  `import`  语句按需请求模块，Vite dev server 首次启动时拦截请求，实时编译并返回结果，在模块解析方面，对于裸模块，Vite 将 `import`  语句中的第三方依赖重写为预构建后的路径 `/node_modules/.vite/react.js`，对项目源码如  `./App.vue`，Vite 动态编译为浏览器可执行的 ES Module
-2. 中间件机制：基于 Koa 的轻量级开发服务器 Vite dev server 拦截浏览器请求，按需编译文件，调用对应插件将 Vue/React 组件转化为 CSS + JS，将 CSS 文件转换为 JS 文件并通过 `<style>` 标签动态注入，通过 ESBuild 将 JS/TS 文件转换为浏览器兼容的 ES 模块，而对于静态资源则直接返回解析后的 URL
-3. 依赖预构建：Vite 扫描入口文件如  `index.html`，分析所有  `import`  语句，递归收集依赖列表，以 Esbuild 打包 CommonJS/UMD 模块为 ES Module，并 Tree-Shaking 及缓存预构建结果，生成预构建的依赖文件默认置于 `node_modules/.vite` 目录，浏览器后续直接复用缓存而无需重复编译，生成  `metadata.json`，记录模块的依赖图谱和哈希值以验证缓存，浏览器通过 URL 中的查询哈希参数强缓存预构建的模块，若  `package.json`  或  `lockfile`  变化，Vite 自动重新预构建并更新哈希值
+1. no-bundle 服务：在开发阶段，Vite 无需打包而基于浏览器天然支持的 ESM 之 no-bundle 服务加载模块，浏览器通过 `import` 语句按需请求模块，Vite dev server 首次启动时拦截请求，实时编译并返回结果，在模块解析方面，对于裸模块，Vite 将 `import`  语句中的第三方依赖重写为预构建后的路径 `/node_modules/.vite/react.js`，对于项目源码如  `./App.vue`，Vite 动态编译为浏览器可执行的 ES Module
+2. 中间件机制：基于 Koa 的轻量级开发服务器 Vite dev server 拦截浏览器请求，按需编译文件，调用对应插件将 Vue/React 组件转化为 CSS + JS，将 CSS 文件转换为 JS 文件并通过 `<style>` 标签动态注入，通过 esbuild 将 JS/TS 文件转换为浏览器兼容的 ES 模块，而对于静态资源则直接返回解析后的 URL
+3. 依赖预构建：Vite 扫描入口文件如  `index.html`，分析所有  `import`  语句，递归收集依赖列表，以 esbuild 打包 CommonJS/UMD 模块为 ES Module，并 Tree-Shaking 及缓存预构建结果，生成预构建的依赖文件默认置于 `node_modules/.vite` 目录，浏览器后续直接复用缓存而无需重复编译，生成 `metadata.json`，记录模块的依赖图谱和哈希值以验证缓存，浏览器通过 URL 中的查询哈希参数强缓存预构建的模块，若 `package.json` 或  `lockfile` 变化，Vite 自动重新预构建并更新哈希值
 4. 热更新优化：服务端与客户端通过  `/@vite/client`  建立的 WebSocket 连接传递 HMR 事件，Vite 通过  `chokidar`  监听文件变化并标记为  `HMR Boundary`，当某模块更新时，更新事件沿着 ES Module 的 `import`  链向上查找最近的 `accept`  回调，对比 Webpack HMR 全量更新的传统方案，Vite 基于 ES Module 的静态分析实现子模块级更新
-5. 集成 Rollup：Vite 在生产阶段基于 Rollup 打包，通过 ES Module 静态分析做 Tree-shaking 移除无用代码，支持动态  `import`  自动拆包，按需加载，以 Esbuild 作为第三方库来实现  TS 转换和语法降级
+5. 集成 Rollup：Vite 在生产阶段基于 Rollup 打包，通过 ES Module 静态分析做 Tree-shaking 移除无用代码，支持动态 `import` 自动拆包，按需加载，以 esbuild 作为第三方库来实现 TS 转换和语法降级

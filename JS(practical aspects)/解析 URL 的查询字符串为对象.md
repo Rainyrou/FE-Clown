@@ -1,10 +1,6 @@
 ```js
 const parseQuery = (url) => {
-  const queryString = url.includes("?")
-    ? url.split("?")[1].split("#")[0]
-    : url.startsWith("?")
-    ? url.slice(1)
-    : "";
+  const queryString = url.includes("?") ? url.split("?")[1].split("#")[0] : "";
   const obj = {};
   if (!queryString) return obj;
   queryString.split("&").forEach((part) => {

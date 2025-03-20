@@ -2,10 +2,9 @@ Vue 生命周期钩子是基于其响应式系统实现的
 
 初始化 -> 挂载 -> 更新 -> 销毁
 
-在 `mounted` 生命周期钩子中发起请求更为合适而非 `created`，组件渲染依赖于虚拟 DOM，组件在 `created` 生命周期钩子中并未挂载到 DOM 上，此时发起异步请求将导致请求与页面初始渲染同时进行，请求返回的数据可能影响页面渲染
-
 父组件 `created` 钩子 -> 父组件 `beforeMount` 钩子 -> 递归遍历所有子组件 -> 子组件 `created` 钩子 -> 子组件 `beforeMount` 钩子 -> 子组件 `mounted` 钩子 -> 父组件 `mounted` 钩子
 
+在 `created` 生命周期钩子中获取 API 接口数据（不依赖 DOM或SSR），否则使用 `mounted`
 操作 DOM 的钩子：`mounted` + `updated` + `$nextTick`
 
 `$nextTick` 基于事件循环，用于处理 Vue 中的异步更新队列。当你在异步更新队列中修改数据时，视图不会立即更新，Vue 将更新任务放入异步队列中，并在下一个事件循环周期中批量处理，以减少 DOM 操作次数

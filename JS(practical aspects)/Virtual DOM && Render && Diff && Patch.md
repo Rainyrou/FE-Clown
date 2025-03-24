@@ -10,11 +10,43 @@ class VNode {
 const h = (tagName, props, ...children) => {
   const flatChildren = children
     .flat()
-    .map((child) => typeof child === "string" || typeof child === "number")
-    ? { type: "text", value: String(child) }
-    : child;
-  return new VNode(tagName, props, flatChildren.fliter(Boolean));
+    .map((child) =>
+      typeof child === "string" || typeof child === "number" 
+        ? { type: "text", value: String(child) }
+        : child
+    )
+    .filter(Boolean);
+  return new VNode(tagName, props, flatChildren);
 };
+
+const render = (vnode) => {
+  if (vnode.type === "text") return document.createTextNode(vnode.value);
+  const el = document.createElement(vnode.tagName);
+  const props = vnode.props || {};
+  for (const [key, value] of Object.entries(props)) {
+    if (key.startsWith("on") && typeof value === "function") {
+      const eventName = key.slice(2).toLowerCase();
+      el.addEventListener(eventName, value);
+    } else if (key === "style" && typeof value === "object") {
+      Object.assign(el.style, value);
+    } else {
+      el.setAttribute(key, value);
+    }
+  }
+  const children = vnode.children || [];
+  for (const child of children) {
+    if (child) el.appendChild(render(child));
+  }
+  return el;
+};
+
+const vdom = h("div", { id: "app" }, [
+  h("h1", { class: "title" }, "Hello World"),
+  "Plain text node",
+  h("button", { onClick: () => alert("Clicked!") }, "Click me"),
+]);
+const dom = render(vdom);
+document.body.appendChild(dom);
 ```
 
 在浏览器中输入

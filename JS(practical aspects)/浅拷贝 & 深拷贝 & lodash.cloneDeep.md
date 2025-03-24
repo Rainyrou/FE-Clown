@@ -58,6 +58,10 @@ const obj = createDeepObject(10000);
 console.time("Deep Clone");
 const cloned = _deepClone(obj);
 console.timeEnd("Deep Clone");
+console.log(_deepClone(42));
+console.log(_deepClone(new Date()));
+console.log(_deepClone([1, 2, 3, [4, 5]]));
+console.log(_deepClone({ a: 1, b: { c: 2 } }));
 ```
 
 `lodash.cloneDeep` 相比手写深拷贝有以下显著优势：
@@ -104,11 +108,4 @@ const _deepClone = (target, map = new WeakMap()) => {
 `i`：忽略大小写
 `test`：测试字符串是否与正则表达式匹配
 
-测试用例：
 
-```js
-console.log(_deepClone(42));
-console.log(_deepClone(new Date()));
-console.log(_deepClone([1, 2, 3, [4, 5]]));
-console.log(_deepClone({ a: 1, b: { c: 2 } }));
-```

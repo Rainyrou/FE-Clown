@@ -1,4 +1,4 @@
-###### 请求头
+请求头：
 
 - `Content-Type` 报文类型
 - `Content-Length` 内容长度
@@ -11,7 +11,7 @@
 - `Cache-Control` 缓存策略，如 `no-cache`、`max-age` 等
 - `Expires` 缓存策略，已被上面的替代
 
-###### 响应头
+响应头：
 
 * `Content-Type` 报文类型
 * `Content-Length` 内容长度

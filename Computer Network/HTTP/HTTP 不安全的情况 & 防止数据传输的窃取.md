@@ -7,7 +7,7 @@
 ###### 安全性
 
 1. HTTPS
-2. HSTS：HTTP Strict Transport Security 使客户端只能通过 HTTPS 与服务端通信，在响应头中指定`Strict-Transport-Security` 字段实现
+2. HSTS：HTTP Strict Transport Security 使客户端只能通过 HTTPS 与服务端通信，在响应头中指定 `Strict-Transport-Security` 字段实现
 3. TLS 配置：禁用弱加密算法，使用安全的密码套件，启用 TLS 1.2 或更高版本
 4. 双向 SSL/TLS 认证：除服务端认证，客户端也提供证书，实现双向 SSL/TLS 认证
 5. CT：Certificate Transparency 是一个公开的日志系统，用于记录和检测 SSL/TLS 证书，防止证书误发或恶意发放，使用支持 CT 的浏览器和服务，确保访问网站的证书已在 CT 日志中注册

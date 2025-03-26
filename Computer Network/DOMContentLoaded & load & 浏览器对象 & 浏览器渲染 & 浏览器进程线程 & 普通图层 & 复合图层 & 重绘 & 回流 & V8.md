@@ -5,8 +5,26 @@
 页面 -> `text/html`
 图片 -> 图片格式如 `image/webp`、`image/png` 等
 
-DOMContentLoaded：HTML 被完全加载解析即 DOM 树构建完毕时触发，但不包括 CSS、图片和 iframe 等的加载
+DOMContentLoaded/DOM Ready：HTML 被完全加载解析即 DOM 树构建完毕时触发，但不包括 CSS、图片和 iframe 等的加载
 load：整个页面及其所有静态资源如 CSS、图片和 iframe 等均加载完毕时触发
+
+```js
+window.addEventListener("DOMContentLoaded", () => {
+  const domReadyTime =
+    performance.timing.domContentLoadedEventEnd -
+    performance.timing.navigationStart; 
+  console.log(`${domReadyTime} ms`);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const [navEntry] = performance.getEntriesByType("navigation");
+  const domReadyTime = navEntry.domContentLoadedEventEnd;
+  console.log(`${domReadyTime} ms`);
+});
+```
+
+`navigationStart` -> 浏览器开始导航
+`domContentLoadedEventEnd` -> DOMContentLoaded 事件触发完成
 
 1. window：浏览器全局对象，作为变量和函数的全局作用域
 2. screen：提供屏幕信息如宽高

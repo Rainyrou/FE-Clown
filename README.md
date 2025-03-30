@@ -6,7 +6,7 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 
 免责声明：这个知识库只是本人用于自学目的，并不作为商业用途或，没有任何不可告人的目的。我在学习的过程中参考了很多互联网上的公开资源，若发现有任何侵权行为，恳请您的原谅并告知。我将立即根据要求通过链接注明原始来源或删除有争议的材料。这个知识库只是我学习旅程的证明，我尊重所有创作者的知识产权，向你们致以最崇高的敬意 🌟
 
-#### 大厂面试情况（2023.10.1 ~ 2025.03.27）
+#### 大厂面试情况（2023.10.1 ~ 2025.03.28）
 
 ###### OC：
 
@@ -58,8 +58,8 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 
 ###### 待面：
 
-字节懂车帝
+字节懂车帝二面
 
-字节飞书商业化
+字节飞书商业化一面
 
-蚂蚁国际
+蚂蚁国际二面

@@ -110,3 +110,60 @@ export const useBottonLock = (wait = 5000) => {
   return [isLocked, handleClick];
 };
 ```
+
+9. 手写 `useCounter` 定时器：
+
+```js
+export const useCounter = (initialVal = 0, step = 1, interval = 1000) => {
+  const [count, setCount] = useState(initialVal);
+  const timeRef = useRef(null);
+
+  const start = () => {
+    if (!timeRef.current)
+      timeRef.current = setInterval(
+        () => setCount((pre) => pre + step),
+        interval
+      );
+  };
+
+  const stop = () => {
+    if (timeRef.current) {
+      clearInterval(timeRef.current);
+      timeRef.current = null;
+    }
+  };
+
+  const reset = () => setCount(initialVal);
+
+  useEffect(() => {
+    return () => {
+      if (timeRef.current) clearInterval(timeRef.current);
+    };
+  }, []);
+
+  return { count, start, stop, reset };
+};
+```
+
+10. 手写 `useHover`：
+
+```js
+export const useHover = () => {
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
+    node.addEventListener("mouseenter", handleMouseEnter);
+    node.addEventListener("mouseleave", handleMouseEnter);
+    return () => {
+      node.removeEventListener("mouseenter", handleMouseEnter);
+      node.removeEventListener("mouseleave", handleMouseEnter);
+    };
+  }, []);
+  return [ref, hovered];
+};
+```

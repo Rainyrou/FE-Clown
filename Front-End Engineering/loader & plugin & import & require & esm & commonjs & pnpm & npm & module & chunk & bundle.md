@@ -139,8 +139,25 @@ class FileListPlugin {
 module.exports = FileListPlugin;
 ```
 
-`import`：ES Module，其为 ES6 引入的模块导入语法，在编译时执行，允许静态分析，支持 Tree Shaking，支持动态导入模块，返回一个 Promise，循环引用时，未初始化的模块返回部分导出为空的对象
-`require`：CommonJS，其为 Node.js 特有的模块导入语法，在运行时执行，不支持 Tree Shaking，支持动态导入模块，循环引用时，在解析阶段建立导出和导入的绑定关系，但模块是按顺序执行的，未初始化的模块被访问时抛出 ReferenceError
+`import`：ES Module，其为 ES6 引入的模块导入语法，在编译时执行，允许静态分析，支持 Tree Shaking，支持动态导入模块，导入的为原模块的动态绑定引用，循环引用时，未初始化的模块返回部分导出为空的对象
+`require`：CommonJS，其为 Node.js 特有的模块导入语法，在运行时执行，不支持 Tree Shaking，支持动态导入模块，导入的为原模块的拷贝，循环引用时，在解析阶段建立导出和导入的绑定关系，但模块是按顺序执行的，未初始化的模块被访问时抛出 ReferenceError
+
+```js
+// a.js
+export var a = 1;
+export function modify() {
+  a = 2;
+}
+
+// b.js
+import { a, modify } from "./a.js";
+console.log(a); // 1
+modify();
+console.log(a); // 2
+```
+
+ES Module 导入的为原模块的动态绑定引用，而非原模块的拷贝。`a.js` 中的变量 `a` 与 `b.js` 中导入的 `a` 指向同一内存地址，而 `modify` 函数修改 `a.js` 中的变量 `a`，因此所有导入 `a` 的地方均同步更新
+
 ES Module：`import` 和 `export` 模块导入导出语法，在编译时执行，支持静态分析，支持同步和异步加载模块，浏览器原生支持 ESM，通过 `<script type="module">` 直接执行，Node.js 通过 `.mjs` 扩展名或 `package.json` 中的`"type": "module"` 支持 ESM
 CommonJS：`require` 和 `module.exports` 模块导入导出语法，在运行时执行，各个文件均为一个 module，有其独立的作用域，同步加载模块，用于 Node.js 环境，其模块系统的实现基于 Node.js 的 `Module` 核心模块
 

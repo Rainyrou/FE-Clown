@@ -21,9 +21,9 @@ const flattenArray = (arr) => {
   while (stk.length) {
     const next = stk.pop();
     if (Array.isArray(next)) stk.push(...next);
-    else ans.push(next);
+    else ans.unshift(next);
   }
-  return ans.reverse();
+  return ans;
 };
 
 console.log(flattenArray([1, 2, 3, [4, [5]], 1, 2, 6, 7]));

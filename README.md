@@ -24,6 +24,8 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 
 字节 TikTok 国际化产品与技术
 
+字节懂车帝
+
 ###### 三面挂：
 
 字节 Data-AML
@@ -58,8 +60,4 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 
 ###### 待面：
 
-字节懂车帝二面
-
-字节飞书商业化一面
-
-蚂蚁国际二面
+蚂蚁国际三面

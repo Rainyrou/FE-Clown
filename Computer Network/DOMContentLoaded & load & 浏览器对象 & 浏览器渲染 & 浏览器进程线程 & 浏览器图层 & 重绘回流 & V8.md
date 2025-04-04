@@ -12,7 +12,7 @@ load：整个页面及其所有静态资源如 CSS、图片和 iframe 等均加�
 window.addEventListener("DOMContentLoaded", () => {
   const domReadyTime =
     performance.timing.domContentLoadedEventEnd -
-    performance.timing.navigationStart; 
+    performance.timing.navigationStart;
   console.log(`${domReadyTime} ms`);
 });
 
@@ -55,8 +55,9 @@ class LayoutObject {
 - 浏览器将默认图层和独立复合图层传递给 GPU，GPU 负责默认图层光栅化（即将绘制记录转换为像素数据）和复合图层纹理管理，合成器线程合并各个图层并生成最终图像
 - JavaScript 执行、布局计算和绘制操作均在同一主线程上依次进行，避免多线程操作 DOM 时出现的竞态问题，但同时，定时器、网络和 GPU 等任务则由定时器线程、网络线程和 GPU 或其他线程处理，再通过事件队列通知主线程更新
 
-普通图层：默认图层类型，其渲染包括布局、绘制和合成，这些操作在 CPU 执行
-复合图层：为优化特定操作如动画效果而硬件加速即将某元素变为一个复合图层如 `translate3d`、`translateZ`、`transform`, `opacity`, `filter` 和 `will-change` 等，各个复合图层在 GPU 中单独绘制，因此互不影响，文档流即为一个复合图层，`absolute` 和 `fixed` 虽脱离文档流，但其仍属于同一默认复合图层，而开启硬件加速的元素变为另一复合图层，其独立于文档流的默认复合图层
+RenderLayer 渲染层（普通图层）：浏览器渲染流程中的第一层级，与 DOM 和 LayoutObject 一一对应，决定元素的层叠关系即 z 轴空间，其在 CPU 执行布局计算、绘制和合成等操作，通过根元素、定位属性、`opacity`、`transform`、`filter`、`mask`、`mix-blend-mode` 和 `overflow: hidden` 等触发层叠上下文
+GraphicsLayer图形层：浏览器生成最终图像内容的层级，其存储于共享内存，拥有独立的图形上下文，生成该层的位图并将位图作为纹理上传至GPU并参与最终绘制，此外非合成层会与父层共享图形层
+CompositingLayer合成层（复合图层）：为优化特定操作如动画效果而硬件加速即将某元素变为一个复合图层如`position: fixed`、`<video>`、`<canvas>`、`<iframe>`、`translate3d`、`translateZ`、`transform`、`opacity` 和`filter` + `will-change` 等，在 GPU 中独立合成位图，文档流即为一个复合图层，`absolute` 和 `fixed` 虽脱离文档流，但其仍属于同一默认复合图层，而开启硬件加速的元素则变为另一复合图层，其独立于文档流的默认复合图层
 
 重绘：元素的外观变化但几何属性不变时触发重绘，浏览器需更新元素外观但无需重新计算元素的几何属性及页面布局，触发重绘的操作：修改 `color`、`background-color` 和 `visibility` 的值
 回流：元素的几何属性变化时触发回流，浏览器需重新计算元素的几何属性及页面布局，触发回流的操作：设置 `style` 或 CSS 伪类，修改元素的几何属性如 `width`、`height`、`padding`、`border` 和 `margin`，增删可见 DOM 元素，刷新页面或修改视口

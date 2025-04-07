@@ -26,6 +26,27 @@ f(); // undefined
 
 在函数内部，`var` 声明的变量被提升到其所在作用域的顶部，但只提升声明，不提升赋值，因此在打印a时，局部变量已存在，其值为 `undefined` 且局部变量覆盖了全局变量
 
+```js
+function test() {
+  var a = 1;
+  setTimeout(function () {
+    alert(a);
+    a = 3;
+  }, 1000);
+  a = 2;
+  setTimeout(function () {
+    alert(a);
+    a = 4;
+  }, 3000);
+}
+test();
+alert(0);
+```
+
+```
+0 2 3
+```
+
 ###### 定义全局变量
 
 1. 在非严格模式下于全局作用域中直接为未声明的变量赋值

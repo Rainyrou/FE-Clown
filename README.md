@@ -10,7 +10,9 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 
 ###### OC：
 
-美团核心本地商业-业务研发某组 ✅
+字节懂车帝某大前端组 ✅
+
+美团核心本地商业-业务研发某大前端组 ✅
 
 滴滴网约车技术部 & 花小猪打车部 某双组 ✅
 
@@ -23,8 +25,6 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 ###### HR 面挂：
 
 字节 TikTok 国际化产品与技术
-
-字节懂车帝
 
 ###### 三面挂：
 

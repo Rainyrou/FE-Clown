@@ -2,9 +2,10 @@
 
 ```JavaScript
 function _curry(fn) {
+  // curried 负责收集参数
   function curried(...args) {
     const context = this;
-    if (fn.length >= args.length) {
+    if (args.length >= fn.length) {
       return fn.apply(context, args);
     } else {
       return function (...newArgs) {

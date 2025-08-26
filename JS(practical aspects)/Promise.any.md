@@ -1,6 +1,7 @@
 ```js
 Promise._any = function (promises) {
   return new Promise((resolve, reject) => {
+	promises = [...promises];
     if (promises.length === 0) 
 	    return reject(new AggregateError([], "No promises provided"));
     const errors = [];

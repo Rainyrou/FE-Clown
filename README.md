@@ -10,7 +10,7 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 
 ###### OC：
 
-字节懂车帝某大前端组 ✅
+字节懂车帝研发部某大前端组 ✅
 
 美团核心本地商业-业务研发某大前端组 ✅
 
@@ -25,6 +25,8 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 ###### HR 面挂：
 
 字节 TikTok 国际化产品与技术
+
+蚂蚁国际-全球技术
 
 ###### 三面挂：
 
@@ -57,7 +59,3 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 小红书\*3 （基础架构 + 效率平台 + 其他）
 
 蔚来\*4（H5 + 供应链 + 其他）
-
-###### 待面：
-
-蚂蚁国际三面

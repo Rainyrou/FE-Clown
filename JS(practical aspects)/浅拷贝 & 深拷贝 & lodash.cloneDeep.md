@@ -31,8 +31,8 @@ const _deepClone = (target) => {
             } else {
               const clonedChild = Array.isArray(value) ? [] : {};
               clone[key] = clonedChild;
-              map.set(value, clonedChild);
-              stack.push({ source: value, clone: clonedChild });
+              map.set(value, clone[key]);
+              stack.push({ source: value, clone: clone[key] });
             }
           }
         } else {
@@ -84,7 +84,7 @@ const _shallowClone = target => {
 };
 ```
 
-1. 浅拷贝只拷贝指向引用类型对象的堆内存之指针，拷贝的只是引用，深拷贝拷贝引用类型对象的所有属性到一个新对象，若其属性仍引用其他对象，则递归进行深拷贝。浅拷贝只拷贝对象第一层属性，而深拷贝递归拷贝对象所有层级
+1. 浅拷贝只拷贝指向引用数据类型对象的堆内存之指针，拷贝的是引用即对象的第一层属性，而深拷贝拷贝引用数据类型对象的所有属性至一个新的对象中，若其属性仍引用其他对象，则递归进行深拷贝即递归拷贝对象的所有层级
 2. WeakMap  为一组键值对的集合，其键为引用数据类型，其持有的是对象的弱引用，当无对 WeakMap 键的强引用时，这些键对应的对象可被垃圾回收
 
 未处理循环引用导致无限递归或爆栈

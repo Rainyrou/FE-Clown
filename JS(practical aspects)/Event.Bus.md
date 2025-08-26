@@ -29,9 +29,9 @@ function onBar(e) {
 
 emitter.on("type", onFoo);
 emitter.on("type", onBar);
-emitter.emit("type", { a: "b" }); // foo {a: "b"} bar {a: "b"}
+emitter.emit("type", { a: "b" }); // foo { a: "b" } bar { a: "b" }
 emitter.off("type", onBar);
-emitter.emit("type", { a: "b" }); // foo {a: "b"}
+emitter.emit("type", { a: "b" }); // foo { a: "b" }
 ```
 
 ```JavaScript

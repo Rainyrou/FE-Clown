@@ -3,7 +3,7 @@
 | 错误类型                | 触发场景                | 捕获方式                  |
 | ------------------- | ------------------- | --------------------- |
 | `SyntaxError`       | 语法解析失败              | 全局 error 事件           |
-| `TypeError`         | 变量类型错误              | 全局 error 事件           |
+| `TypeError`         | 数据类型错误              | 全局 error 事件           |
 | `ReferenceError`    | 变量引用未定义             | 全局 error 事件           |
 | `Promise Rejection` | 未处理的 reject Promise | unhandledrejection 事件 |
 

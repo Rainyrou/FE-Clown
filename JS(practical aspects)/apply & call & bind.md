@@ -27,7 +27,7 @@ Function.prototype._bind = function (thisArg, ...args) {
   const _this = this;
   thisArg =
     thisArg !== null && thisArg !== undefined ? Object(thisArg) : window;
-  return (...newArgs) => {
+  return function (...newArgs) {
     const fn = Symbol();
     thisArg[fn] = _this;
     const res = thisArg[fn](...args, ...newArgs);

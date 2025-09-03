@@ -2,7 +2,7 @@
 const _deepClone = (target) => {
   if (typeof target !== "object" || target === null) return target;
   const map = new WeakMap();
-  const stack = [];
+  const stk = [];
   const rootClone = (() => {
     const constructor = target.constructor;
     if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) {
@@ -14,9 +14,9 @@ const _deepClone = (target) => {
     map.set(target, cloned);
     return cloned;
   })();
-  stack.push({ source: target, clone: rootClone });
-  while (stack.length > 0) {
-    const { source, clone } = stack.pop();
+  stk.push({ source: target, clone: rootClone });
+  while (stk.length) {
+    const { source, clone } = stk.pop();
     for (const key in source) {
       if (source.hasOwnProperty(key)) {
         const value = source[key];
@@ -29,10 +29,9 @@ const _deepClone = (target) => {
             if (map.has(value)) {
               clone[key] = map.get(value);
             } else {
-              const clonedChild = Array.isArray(value) ? [] : {};
-              clone[key] = clonedChild;
+              clone[key] = Array.isArray(value) ? [] : {};
               map.set(value, clone[key]);
-              stack.push({ source: value, clone: clone[key] });
+              stk.push({ source: value, clone: clone[key] });
             }
           }
         } else {

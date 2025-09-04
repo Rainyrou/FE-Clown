@@ -11,8 +11,8 @@ shouldComponentUpdate(nextProps, nextState) {
 }
 ```
 
-3. `useContext` & 自定义 Hook：`useContext` 用于访问 `context` 上下文对象，在组件树上层通过 `Provider` 组件包裹子组件并传递上下文对象的值 `value`，当 `value` 变化时，所有嵌套在 `Provider` 内部的子组件均重新渲染，而上下文对象频繁更新势必导致不必要的重新渲染，因此只传递必要的 `value`，将上下文对象拆分成多个 Context，各个 Context 只负责一部分属性，允许组件只订阅其所需数据，同时自定义 Hook 在上下文对象中提取所需数据，只在相应数据变化时重新渲染组件
-4. 生产版本：因为开发版包含额外的调试信息和警告
+4. `useContext` & 自定义 Hook：`useContext` 用于访问 `context` 上下文对象，在组件树上层通过 `Provider` 组件包裹子组件并传递上下文对象的值 `value`，当 `value` 变化时，所有嵌套在 `Provider` 内部的子组件均重新渲染，而上下文对象频繁更新势必导致不必要的重新渲染，因此只传递必要的 `value`，将上下文对象拆分成多个 Context，各个 Context 只负责一部分属性，允许组件只订阅其所需数据，同时自定义 Hook 在上下文对象中提取所需数据，只在相应数据变化时重新渲染组件
+5. 生产版本：因为开发版包含额外的调试信息和警告
 
 构建生产版本：
 

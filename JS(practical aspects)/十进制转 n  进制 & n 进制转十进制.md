@@ -1,0 +1,45 @@
+n 小于等于 16
+
+十进制转 n 进制：
+
+```js
+const convert = (decimal, base) => {
+  if (base < 2 || base > 16) throw new Error("Base must be between 2 and 16.");
+  if (decimal === 0) return "0";
+  const digits = "0123456789abcdef";
+  let ans = "",
+    tempDecimal = decimal;
+  while (tempDecimal > 0) {
+    const remain = tempDecimal % base;
+    ans = digits[remain] + ans;
+    tempDecimal = Math.floor(tempDecimal / base);
+  }
+  return ans;
+};
+
+console.log(convert(10, 2)); // 1010
+console.log(convert(255, 16)); // ff
+console.log(convert(10, 8)); // 12
+```
+
+n 进制转十进制：
+
+```js
+const convert = (str, base) => {
+  if (base < 2 || base > 16) throw new Error("Base must be between 2 and 16.");
+  const digits = "0123456789abcdef";
+  let ans = 0;
+  const lowerStr = str.toLowerCase();
+  for (let i = 0; i < lowerStr.length; i++) {
+    const value = digits.indexOf(lowerStr[i]);
+    if (value === -1 || value >= base)
+      throw new Error(`Invalid character for base ${base}.`);
+    ans = ans * base + value;
+  }
+  return ans;
+};
+
+console.log(convert("1010", 2)); // 10
+console.log(convert("ff", 16)); // 255
+console.log(convert("12", 8)); // 10
+```

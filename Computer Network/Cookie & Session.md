@@ -18,7 +18,7 @@ Cookie 为一小段文本信息，服务端将 Cookie 发送到客户端，客�
 
 1. Name 和 Value：Cookie 由 Name 和 Value 的键值对组成，以 `=` 分隔
 2. Expires/Max-Age：指定 Cookie 的生命时间，默认为会话级别
-3. Domain：指定接收 Cookie 的域，默认向创建 Cookie 的域发送 Cookie
+3. Domain：指定接收 Cookie 的域，默认为创建 Cookie 的域
 4. Path：指定 Cookie 的有效路径，默认为创建 Cookie 的页面路径
 5. Secure：指定 Cookie 只能通过 HTTPS 发送
 6. HttpOnly：JavaScript 及其他脚本无法访问 Cookie，防止 XSS 攻击

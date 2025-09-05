@@ -24,11 +24,11 @@ Function.prototype._call = function (thisArg, ...args) {
 
 ```JavaScript
 Function.prototype._bind = function (thisArg, ...args) {
-  const _this = this;
   thisArg =
     thisArg !== null && thisArg !== undefined ? Object(thisArg) : window;
+  const _this = this,
+    fn = Symbol();
   return function (...newArgs) {
-    const fn = Symbol();
     thisArg[fn] = _this;
     const res = thisArg[fn](...args, ...newArgs);
     delete thisArg[fn];

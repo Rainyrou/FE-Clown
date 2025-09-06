@@ -37,7 +37,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 Chromium 118+采用单主线程 + 多协作线程模型
 
-- 主线程串行处理解析任务，HTML 解析器流式解析 HTML 生成 DOM 树，解析 CSS 生成 CSS Object Model 树，若遇到内联且无 async/defer 的 JavaScript 则立即停止 DOM 解析，下载并执行 JavaScript，而 CSS 加载虽不阻塞 DOM 的解析，但由于后续 Layout 树依赖于 CSS Object Model 树，因此 CSS 加载阻塞 Layout 树生成
+- 主线程串行处理解析任务，HTML 解析器流式解析 HTML 生成 DOM 树，解析 CSS 生成 CSS Object Model 树，若遇到内联且无 async/defer 的 JavaScript 则立即停止 DOM 解析，加载并执行 JavaScript，有 async/defer 的 JavaScript 则与 DOM 解析并行加载执行，多个 async 的 JavaScript 分别在加载后立即执行，在 HTML 中的执行顺序无法保证，而多个 defer 的 JavaScript 则保持在 HTML 中的执行顺序，而 CSS 加载虽不阻塞 DOM 的解析，但由于后续 Layout 树依赖于 CSS Object Model 树，因此 CSS 加载阻塞 Layout 树生成
 - DOM 树和 CSS Object Model 树结合生成 Layout 树
 - 浏览器遍历 Layout 树，通过 Box Layout Algorithm 为每个 LayoutObject 计算出其具体的位置和尺寸，这一过程包括级联计算（通过y样式引擎合并继承样式、作者样式和用户代理样式）、规则匹配优化（通过 Hash 过滤器查找匹配的 CSS 规则且通过 BloomFilter 过滤不匹配的分支）和生成最终样式（计算层叠权重后得到最终样式）
 - 布局计算完成后，主线程遍历 Layout 树执行绘制操作，将各个 LayoutObject 转换为绘制指令，生成绘制操作记录，并将其提交给合成器线程

@@ -7,6 +7,13 @@ class EventBus {
     if (!this.eventMap[eventName]) this.eventMap[eventName] = [];
     this.eventMap[eventName].push(callback);
   }
+  once(eventName, callback) {
+    const onceCallback = (...args) => {
+      callback(...args);
+      this.off(eventName, onceCallback);
+    };
+    this.on(eventName, onceCallback);
+  }
   emit(eventName, ...args) {
     this.eventMap[eventName].forEach((callback) => callback(...args));
   }
@@ -18,20 +25,16 @@ class EventBus {
 }
 
 const emitter = new EventBus();
+const onFoo = (e) => console.log("foo（可多次触发）:", e);
+const onOnceBar = (e) => console.log("bar（仅触发一次）:", e);
 
-function onFoo(e) {
-  console.log("foo", e);
-}
-
-function onBar(e) {
-  console.log("bar", e);
-}
-
-emitter.on("type", onFoo);
-emitter.on("type", onBar);
-emitter.emit("type", { a: "b" }); // foo { a: "b" } bar { a: "b" }
-emitter.off("type", onBar);
-emitter.emit("type", { a: "b" }); // foo { a: "b" }
+emitter.on("test", onFoo);
+emitter.once("test", onOnceBar);
+emitter.emit("test", { data: "first" });
+emitter.emit("test", { data: "second" });
+// foo（可多次触发）: { data: "first" }
+// bar（仅触发一次）: { data: "first" }
+// foo（可多次触发）: { data: "second" }
 ```
 
 ```JavaScript
@@ -96,11 +99,6 @@ eventBus.subscribe('test', fn1);
 const { unSubscribe } = eventBus.subscribe('test', fn2);
 unSubscribe();
 eventBus.emit('test', 'extra parameter2');
-```
-
-输出结果：
-
-```
-print extra parameter extra parameter2
-111111
+// print extra parameter extra parameter2
+// 111111
 ```

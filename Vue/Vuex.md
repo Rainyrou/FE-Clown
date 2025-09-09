@@ -2,14 +2,14 @@
 
 dispatch -> actions -> commit -> mutations -> state -> getters -> dispatch
 
-Vuex 是全局状态管理库，本质上为一个 Vue 插件，通过 `Vue.use` 初始化 Vuex，在底层上调用 `install` 方法通过 `mixin` 注入 `$store` 到所有组件实例中，在每个组件的 `beforeCreate` 钩子中，若组件选项存在 `store`，则将该 `store` 实例赋值给所有组件实例的 `$store` 属性，这样每个组件均可通过 `this.$store` 访问到 Vuex Store。它基于 Flux 架构，使用单一状态树，所有组件状态均存储于一个全局对象 `store` 中，将状态树分割为 module，每个模块均有独立的 `state`、`getters`、`mutations` 和 `actions`，它们被注册到全局命名空间中，模块的状态被递归合并到全局对象 `store` 的状态树中，但其操作仍是局部的。Vuex 保证单向数据流，以可预测的方式保证状态变化，即通过 `dispatch` 触发  `actions` 来执行异步操作再通过 `commit` 提交 `mutations` 同步修改 `state`，Vuex 抽离组件的共享状态，统一管理，其状态存储为响应式，用于不同视图依赖于同一状态的复杂场景，确保状态的一致性和数据的可靠性。它支持时间旅行调试，我们在任何时候可以回溯和重置状态变化，同时支持插件，允许执行自定义逻辑
+Vuex 为全局状态管理库，通过 `Vue.use` 初始化 Vuex，底层通过调用 `install` 和 `mixin` 注入 `$store` 至所有组件实例，在组件的生命周期中将 `$store` 注入到组件实例，在组件中通过 `this.$store` 访问 Store。其为基于 Flux 架构的单一状态树，将状态树分割为 module，各个模块均有独立的 `state`、`getters`、`mutations` 和 `actions`，其被注册至全局命名空间，模块状态递归合并至 Store 全局状态树。Vuex 以单向数据流、响应式、可预测的方式确保状态变化，即通过 `dispatch` 触发  `actions` 执行异步操作再通过 `commit` 提交 `mutations` 同步修改 `state`
+
+Pinia：Vuex 精神继承者，与 TypeScript 兼容， 轻量，压缩后仅有 1KB，结构扁平化，无模块嵌套，将状态树分割为 `store`，各个 `store` 均有独立的 `state`、`getters` 和 `actions`，移除 `mutations`，直接在 `actions` 中修改 `state` 且支持同步和异步操作
 
 - State：Vuex 存储的核心，存储所有组件的共享状态，在底层上通过 `Vue.observable` 使其变为响应式，在组件中通过 `this.$store.state` 访问或通过 `mapState` 函数将 `store` 中多个 `state` 映射到组件的计算属性
 - Getters：与 Vue `computed` 类似，用于获取全局 `state`，若依赖的 `state` 变化，`getters` 重新计算，触发依赖 `getters` 组件的重新渲染，在组件中通过 `this.$store.getters` 调用或通过 `mapGetters` 函数将 `store` 中的 `getters` 映射到组件的计算属性
 - Mutations：接收参数为字符串类型的 `type` 事件和 `handler` 回调，在组件中通过 `this.$store.commit` 调用，当 `mutations` 提交时，Vuex 查找并执行相应 `mutations`
 * Actions：接收参数为一个与 `store` 实例有相同属性和方法的 `context` 对象，或通过解构赋值直接获取 `state`、`getters`、`commit` 和 `dispatch`，在组件中通过 `this.$store.dispatch` 调用，返回一个 Promise 对象，支持链式调用即提交多个 `mutations`
-
-Pinia：Vuex 精神继承者，与 TypeScript 兼容， 轻量，压缩后仅有 1KB，结构扁平化，没有模块嵌套，将状态管理分割成 `store`，每个 `store` 均为独立的响应式对象，无需手动添加，移除 `mutations`，直接在 `actions` 中修改 `state`，`actions` 支持同步和异步
 
 ```js
 let _Vue = null;

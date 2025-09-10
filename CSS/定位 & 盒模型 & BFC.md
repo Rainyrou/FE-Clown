@@ -60,11 +60,8 @@ overflow: auto/hidden
 盒模型的组成部分包括：
 
 1. Content：元素的实际内容，其尺寸由 `width` 和 `height` 属性决定
-
 2. Padding：内边距是内容周围的空间，位于内容和边框之间。它可以增加元素的大小。使用 `padding-top`、`padding-right`、`padding-bottom`、`padding-left` 或简写属性 `padding` 来设置
-
 3. Border：边框包围着内容和内边距，为元素定义了一个边界。它也可以增加元素的大小。使用 `border-width`、`border-style`、`border-color` 或简写属性 `border` 进来设置
-
 4. Margin：外边距是元素外部的空间，位于边框和其他元素之间。它不会增加元素的实际大小，但会影响元素与其周围元素的距离。使用 `margin-top`、`margin-right`、`margin-bottom`、`margin-left` 或简写属性 `margin` 来设置
 
 盒模型种类：
@@ -88,3 +85,10 @@ overflow: auto/hidden
 
 1. BFC 是内部的盒子，在垂直方向上，一个接一个地放置
 2. 垂直方向的距离由 `margin` 决定，属于同一个 BFC 的两个相邻盒子的 `margin` 发生重叠
+
+触发 BFC 的条件：
+
+- display: flex/grid/inline-block
+- position: absolute/fixed
+- float: left/right
+- overflow: auto/hidden

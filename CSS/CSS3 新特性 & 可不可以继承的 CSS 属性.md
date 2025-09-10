@@ -56,10 +56,7 @@
 
 - `color`
 - `visibility`
-- `font-family`
-- `font-size`
-- `font-weight`
-- `font-style`：字体样式如斜体
+- `font-size/font-weight/font-family/font-style`
 - `line-height`：行高
 - `text-align`：文本对齐方式
 - `text-transform`：文本转换如大写
@@ -69,11 +66,6 @@
 不可继承的：
 
 - `position`
-- `height`
-- `width`
-- `padding`
-- `border`
-- `margin`
-- `z-index`
+- `height/width/padding/border/margin/z-index`
 - `box-sizing`
 - `background`

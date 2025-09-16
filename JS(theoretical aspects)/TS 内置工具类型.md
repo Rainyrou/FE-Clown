@@ -65,7 +65,9 @@ type MyParameters<T extends (...args: any[]) => any> = T extends (
 `ReturnType` 用于提取函数 `T` 的返回类型
 
 ```ts
-type MyReturnType<T extends Function> = T extends (...args: any[]) => infer U
+type MyReturnType<T extends (...args: any[]) => any> = T extends (
+  ...args: any[]
+) => infer U
   ? U
   : never;
 ```

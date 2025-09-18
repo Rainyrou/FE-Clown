@@ -92,3 +92,10 @@ overflow: auto/hidden
 - position: absolute/fixed
 - float: left/right
 - overflow: auto/hidden
+
+margin 重叠：垂直方向上相邻块级元素间的 `margin` 不相加，而以较大值为 `margin`
+
+解决方案：
+
+1. `padding` 或 `border` 
+2. 触发 BFC

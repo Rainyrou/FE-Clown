@@ -6,5 +6,5 @@ Vite
 
 1. no-bundle 服务 & 中间件机制：Vite 在开发阶段无需打包而基于浏览器天然支持的 ESM 的 no-bundle 服务加载模块，浏览器通过 `import`  语句按需请求模块，Vite dev server 首次启动时拦截浏览器请求，实时编译并返回结果，调用对应插件将 `import`  语句中的第三方依赖重写为预构建后的路径 `/node_modules/.vite/react.js`，将 Vue/React 组件转换为 JavaScript 和 CSS，将 CSS 转换为 JavaScript 并通过 `<style>` 标签动态注入，将 JavaScript/TypeScript 转换为 ES Module，而对于静态资源则返回解析后的 URL
 2. 依赖预构建：Vite 扫描入口文件，分析所有 `import`  语句，递归收集依赖列表，以 Esbuild 打包 CommonJS/UMD 为 ES Module 并缓存预构建结果，浏览器后续直接复用缓存，生成的 `metadata.json` 记录模块的依赖图谱和哈希值以验证缓存，浏览器通过 URL 的哈希参数强缓存预构建模块，若 `package.json`  或  `lockfile`  变化，自动重新预构建并更新哈希参数
-3. 热更新优化：Vite 自动注入 `/@vite/client` HMR 客户端脚本，服务端与客户端据此建立 WebSocket 连接以传递热更新事件，通过  `chokidar` 监听文件变化并标记为  `HMR Boundary`，当某模块更新时，更新事件沿着 ES Module 的 `import`  链向上查找最近的 `accept`  回调，对比Webpack 的全量热更新方式，此种方式优化子模块级更新
+3. 热更新优化：Vite 自动注入 `/@vite/client` HMR 客户端脚本，服务端与客户端据此建立 WebSocket 连接以传递热更新事件，通过  `chokidar` 监听文件变化并标记为  `HMR Boundary`，当某模块更新时，更新事件沿着 ES Module 的 `import`  链向上查找最近的 `accept`  回调，对比 Webpack 的全量热更新方式，此种方式优化子模块级更新
 4. 集成 Rollup：Vite 在生产阶段基于 Rollup 打包，通过 ES Module 静态分析做 Tree-shaking 移除无用代码，支持动态 `import`  自动拆包，按需加载，以 Esbuild 实现 TypeScript 转换和语法降级

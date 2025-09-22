@@ -1,4 +1,4 @@
-`JSON.parse` 不能解析的数据：
+`JSON.parse` 无法解析的数据：
 
 * undefined
 * Function

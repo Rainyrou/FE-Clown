@@ -220,3 +220,68 @@ console.log(treeToArray(testData));
 ]
 ```
 
+###### React 树形结构组件
+
+```js
+const treeData = {
+  list: [
+    {
+      id: "1",
+      name: "folder1",
+      children: [
+        {
+          id: "11",
+          name: "file1",
+        },
+        {
+          id: "12",
+          name: "file2",
+        },
+      ],
+    },
+    {
+      id: "2",
+      name: "folder2",
+      children: [
+        {
+          id: "21",
+          name: "folder3",
+          children: [
+            {
+              id: "211",
+              name: "file3",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "3",
+      name: "file4",
+    },
+  ],
+};
+
+const TreeNode = ({ node }) => {
+  return (
+    <>
+      {node.name}
+      {node?.children?.map?.((child) => (
+        <TreeNode key={child.id} node={child} />
+      ))}
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <>
+      {treeData.list.map((node) => (
+        <TreeNode key={node.id} node={node} />
+      ))}
+    </>
+  );
+};
+
+export default App;
+```

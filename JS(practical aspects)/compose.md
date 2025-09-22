@@ -3,13 +3,13 @@ function compose(arr) {
   return function (ctx) {
     function next() {
       if (arr.length) {
-        let func = arr.shift();
-        func(ctx, next);
+        const fn = arr.shift();
+        fn(ctx, next);
       }
     }
     if (arr.length) {
-      let func = arr.shift();
-      func(ctx, next);
+      const fn = arr.shift();
+      fn(ctx, next);
     }
   };
 }

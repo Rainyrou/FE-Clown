@@ -1,3 +1,34 @@
+```js
+const JSON2DOM = (json) => {
+  if (json.type === "text") return document.createTextNode(json.content);
+  if (json.type === "comment") return document.createComment(json.content);
+  const element = document.createElement(json.tag.toLocaleLowerCase());
+  for (const key in json.attributes)
+    element.setAttribute(key, json.attributes[key]);
+  for (const child of json.children) element.appendChild(JSON2DOM(child));
+  return element;
+}
+```
+
+```js
+const DOM2JSON = (node) => {
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent.trim();
+    return text ? { type: "text", content: text } : null;
+  }
+  if (node.nodeType === Node.COMMENT_NODE)
+    return { type: "comment", content: node.textContent };
+  const obj = {
+    tag: node.tagName.toLowerCase(),
+    attributes: {},
+    children: [],
+  };
+  for (const attr of node.attributes) obj.attributes[attr.name] = attr.value;
+  for (const item of node.children) obj.children.push(DOM2JSON(item));
+  return obj;
+};
+```
+
 ###### 数组转树：
 
 递归：

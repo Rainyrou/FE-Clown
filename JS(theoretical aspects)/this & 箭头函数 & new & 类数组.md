@@ -269,6 +269,15 @@ a(); // Uncaught ReferenceError: temp is not defined
 4. `arguments` 对象：箭头函数不创建自己的 `arguments` 对象，其捕获所在词法作用域的 `arguments` 对象，而普通函数有其 `arguments` 对象，其为类数组，包含函数调用时传入的所有参数，通过索引访问各个参数且有表示参数数量的 `length` 属性
 5. `prototype` 属性：箭头函数无，而普通函数有
 
+
+String -> 字符串类型，类型转换函数调用
+new String -> 对象类型，构造函数调用
+
+```js
+String('abc') instanceof String → false
+new String('abc') instanceof String → true
+```
+
 ###### 类数组
 
 类数组具有索引和 `length` 属性，不继承数组原型，无数组内置方法

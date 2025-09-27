@@ -16,7 +16,7 @@ Service Worker：
 2. 唤醒机制：Service Worker 通过事件监听器如 `fetch`、`push` 和 `sync` 等响应异步事件，当事件触发时，Service Worker 被唤醒，处理完后等待下一事件
 3. 安全机制：Service Worker 脚本必须与页面同源，可通过  `Service-Worker-Allowed`  头部扩展其作用域，而在生产环境必须使用 HTTPS，防止 XSS 攻击篡改 Service Worker 脚本
 
-WebSocket：基于 TCP，默认端口为 80 和 443，其不受同源策略限制，提供持久化双向实时通信通道，建立连接只需客户端和服务端一次 HTTP 握手，而后通过 WebSocket 连接通信，数据传输采用二进制帧格式且客户端发送的数据需通过  `Masking-Key`  进行掩码处理
+WebSocket：基于 TCP，默认端口为 80 和 443，其不受同源策略限制，提供持久化双向实时通信通道，建立连接只需客户端和服务端一次 HTTP 握手，而后通过 WebSocket 连接通信，通过二进制帧格式传输数据且通过  `Masking-Key`  进行掩码处理
 
 1. 客户端首次发送的 GET 请求中 `Upgrade: websocket`  和  `Connection: Upgrade` 表示协议升级为 WebSocket
 

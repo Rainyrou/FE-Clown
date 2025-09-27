@@ -25,6 +25,26 @@ var test = obj.prop.getFullname;
 console.log(test()); // 1
 ```
 
+```js
+const obj = {
+  value: 10,
+  normal: function () {
+    return this.value;
+  },
+  arrow: () => this.value,
+};
+
+console.log(obj.normal()); // 10
+console.log(obj.arrow()); // undefined
+
+const normal = obj.normal;
+const arrow = obj.arrow;
+const obj2 = { value: 20, normal, arrow };
+
+console.log(obj2.normal()); // 20
+console.log(obj2.arrow()); // undefined
+```
+
 对象字面量不构成独立的词法作用域
 
 String -> 字符串类型，类型转换函数调用

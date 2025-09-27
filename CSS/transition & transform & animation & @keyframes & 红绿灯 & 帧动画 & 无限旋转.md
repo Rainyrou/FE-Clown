@@ -145,5 +145,23 @@ JavaScript 动态操作：通过 DOM 的 `CSSKeyframesRule` 接口访问和动�
 
 帧动画的关键为逐帧跳转而非平滑过渡：
 
-1. `timing-function: step-end/steps(n, end)`）：动画在各帧结束时直接跳转至下一状态，无中间过渡
-2. `@keyframes` 定义各帧的固定状态，帧与帧间无渐变
+* `timing-function: step-end/steps(n, end)`）：动画在各帧结束时直接跳转至下一状态，无中间过渡
+- `@keyframes` 定义各帧的固定状态，帧与帧间无渐变
+
+```css
+.sprite-animation {
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframs spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+```

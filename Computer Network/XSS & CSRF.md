@@ -9,7 +9,7 @@ XSS：攻击者通过页面对用户输入过滤不足的漏洞，将恶意 HTML
 - 通过转义函数和模板引擎过滤和转义输入以确保其不被解释为代码
 - 避免使用 `eval`、`innerHTML` 和 `document.write` 等将字符串作为代码执行或插入 HTML 的 API
 - 设置 Cookie 时，`HttpOnly` 防止 JavaScript 通过 `document.cookie` 获取，`Secure` 确保 Cookie 只通过 HTTPS 传输
-- 通过 HTTP 头部或 HTML meta 标签的 Content Security Policy 限制页面可执行的脚本来源
+- 通过 HTTP 头部字段或 HTML meta 标签的 Content Security Policy 限制页面可执行的脚本来源
 
 CSRF：通过浏览器同源请求自动携带会话信息的机制，在用户已登录目标页面的情况下，攻击者诱使用户触发其构造的恶意请求，让目标页面误以为是用户的自发操作，从而执行未授权的恶意行为
 

@@ -20,19 +20,6 @@ Vue.js & React.js：JavaScript 库
 - Vue2  在初始化组件时通过 `Object.defineProperty`  递归遍历 `data` 所有属性并为其添加 `getter` 和 `setter`，每个组件实例均关联一个 `watcher` 实例，其用于追踪组件的渲染依赖，当访问属性时触发 `getter` 收集依赖即将当前组件的 `watcher`  实例添加至对应 `dep`  实例中，当修改属性时触发 `setter` 通知对应 `dep` 实例的 `watcher`  实例执行更新操作，重新渲染组件，`Object.defineProperty` 无法直接监听增删对象属性、通过数组索引赋值和修改数组长度等操作，因此 Vue2 通过  `$set`  和 `$delete`  方法增删对象属性，通过重写数组的变异方法手动触发依赖更新
 - Vue3 重构响应式，通过 `Proxy` 修复 Vue2 响应式存在的缺陷，在运行时动态代理完整对象，拦截对象的所有属性操作而无需逐个劫持，按需递归即在访问嵌套对象时才递归创建代理，通过 `WeakMap`  和 `Set` 存储依赖关系，避免重复收集和内存泄漏，读取响应式数据时触发 `track`  将当前副作用函数收集到依赖集合中，修改响应式数据时触发 `trigger`，查找并执行依赖于该属性的所有副作用函数
 
-`Proxy` 拦截以下类型的操作：
-
-1. 定义属性 `Object.defineProperty`
-2. 获取属性 `get`
-3. 设置属性 `set`
-4. 删除属性 `deleteProperty`
-5. 检查属性 `has`
-6. 获取对象的自有属性键 `Object.getOwnPropertyNames`
-7. 获取对象的属性描述符 `Object.getOwnPropertyDescriptor`
-8. 获取原型 `Object.getPrototypeOf`
-9. 设置原型 `Object.setPrototypeOf`
-10. 调用函数 `apply`
-
 ```js
 const targetMap = new WeakMap();
 let activeEffect = null;
@@ -83,7 +70,6 @@ state.count++;
 
 3. **Diff 算法**：
 
-- 虚拟 DOM 为解决浏览器性能问题而生，其为树形结构的 JavaScript 对象即在 JavaScript 模拟 DOM 树，状态更新于虚拟 DOM 上，在内存中操作 JavaScript 对象比在浏览器上高效，将虚拟 DOM 映射为真实 DOM，再由浏览器渲染，通过 Diff 算法比较新旧虚拟 DOM 树中节点的差异并根据差异对真实 DOM 进行最小量更新。虚拟 DOM 抽象浏览器渲染过程，不再局限于浏览器 DOM，真正实现跨平台能力
 - Vue2 Diff 算法采用双指针比较新旧虚拟节点的子节点列表，同层级 vnode 比较，若新的 vnode 存在而旧的不存在则创建新节点，反之则删除旧节点。在处理子节点时通过新前、新后、旧前和旧后四个指针比较，复用现有节点，避免不必要的 DOM 操作
 
 3. 头头比较（oldStartVnode 与 newStartVnode）：若相同，则指针均往后移

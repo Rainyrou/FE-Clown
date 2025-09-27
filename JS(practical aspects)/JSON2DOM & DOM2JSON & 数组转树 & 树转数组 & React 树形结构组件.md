@@ -36,18 +36,17 @@ const DOM2JSON = (node) => {
 ```js
 const arrayToTree = (data, pid) => {
   const result = [];
+  const getChildren = (data, result, pid) => {
+    for (const item of data) {
+      if (item.pid === pid) {
+        const newItem = { ...item, children: [] };
+        result.push(newItem);
+        getChildren(data, newItem.children, item.id);
+      }
+    }
+  };
   getChildren(data, result, pid);
   return result;
-};
-
-const getChildren = (data, result, pid) => {
-  for (const item of data) {
-    if (item.pid === pid) {
-      const newItem = { ...item, children: [] };
-      result.push(newItem);
-      getChildren(data, newItem.children, item.id);
-    }
-  }
 };
 
 const testData = [
@@ -168,13 +167,13 @@ console.log(JSON.stringify(arrayToTree(testData), null, 2));
 ```js
 const treeToArray = (data) => {
   let result = [];
-  data.forEach((item) => {
+  for (const item of data) {
     result.push(item);
     if (item.children) {
       result = result.concat(treeToArray(item.children));
       delete item.children;
     }
-  });
+  }
   return result;
 };
 

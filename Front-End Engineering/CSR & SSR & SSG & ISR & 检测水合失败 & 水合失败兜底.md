@@ -43,3 +43,14 @@ ISR：增量静态再生，服务端提前构建编译并生成静态 HTML，用
 | Router Cache        | RSC Payload                | Client | Reduce server requests on navigation            | User session or time-based      |
 
 ![[Pasted image 20250405174357.png]]
+
+检测水合失败：
+
+* Hydration 容错机制（React18）：从根节点开始递归遍历服务器端渲染的 HTML 与客户端 React 生成的虚拟 DOM，比较两者的标签类型、文本、属性和层级关系等，当检测到不匹配时通过浏览器控制台输出对应错误信息
+* JS 全局错误捕获机制
+* DOM 渲染检测
+
+SSR 水合失败兜底：
+
+* React Error Boundary（React16）：捕获子组件树的 JavaScript 错误并以回退 UI 为兜底（若在 Suspense 边界中则以 Suspense fallback 兜底），当水合失败时，React 在错误边界中通过 `componentDidCatch` 和 `resetErrorBoundary` 方法自定义错误处理逻辑并重置错误边界状态，重新执行水合过程
+* Hydration 容错机制（React18）：渐进式水合 + 选择性水合 + 自动检测和修复错误机制，当水合失败时，React 通过 `popHydrationState` 方法抛出错误并通过内部错误处理机制捕获，在 `ReactFiberWorkLoop.new.js` 文件自定义错误处理逻辑，通过服务器端文本替换为客户端文本以修复文本差异，通过更新相应属性值以修复属性差异，通过销毁旧组件树并构造新组件树以修复 ​​DOM 结构差异，若自动修复失败，则以 CSR 替代 SSR

@@ -27,9 +27,9 @@ n 进制转十进制：
 ```js
 const convert = (str, base) => {
   if (base < 2 || base > 16) throw new Error("Base must be between 2 and 16.");
-  const digits = "0123456789abcdef";
+  const digits = "0123456789abcdef",
+    lowerStr = str.toLowerCase();
   let ans = 0;
-  const lowerStr = str.toLowerCase();
   for (let i = 0; i < lowerStr.length; i++) {
     const value = digits.indexOf(lowerStr[i]);
     if (value === -1 || value >= base)

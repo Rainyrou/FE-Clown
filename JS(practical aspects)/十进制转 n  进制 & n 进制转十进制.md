@@ -29,12 +29,14 @@ const convert = (str, base) => {
   if (base < 2 || base > 16) throw new Error("Base must be between 2 and 16.");
   const digits = "0123456789abcdef",
     lowerStr = str.toLowerCase();
-  let ans = 0;
-  for (let i = 0; i < lowerStr.length; i++) {
-    const value = digits.indexOf(lowerStr[i]);
-    if (value === -1 || value >= base)
+  let ans = 0,
+    power = 1;
+  for (let i = lowerStr.length - 1; i >= 0; i--) {
+    const val = digits.indexOf(lowerStr[i]);
+    if (val === -1 || val >= base)
       throw new Error(`Invalid character for base ${base}.`);
-    ans = ans * base + value;
+    ans += val * power;
+    power *= base;
   }
   return ans;
 };

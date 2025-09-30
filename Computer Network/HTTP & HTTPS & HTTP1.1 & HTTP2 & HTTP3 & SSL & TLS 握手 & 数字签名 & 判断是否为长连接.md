@@ -39,18 +39,18 @@ HTTP3：
 
 SSL/TLS 握手：
 
-1. ClientHello：客户端发送一个 ClientHello 给服务端，其包含客户端支持的 TLS 版本，可接受的密码套件（密钥交换算法、对称加密算法、消息认证码算法）及客户端生成的随机数 Client Random
-2. ServerHello：服务端返回一个 ServerHello，从客户端提供的选项中选择 TLS 版本和密码套件，并提供服务端生成的随机数 Server Random 和证书，必要时还提供 ServerKeyExchange，提供更多加密相关的参数，接着服务端发送 ServerHelloDone，表示服务端 Hello 阶段结束
-3. 客户端响应：客户端发送 ClientKeyExchange，若服务端请求认证，则客户端发送证书，接着发送 ChangeCipherSpec 和 Finished，告诉服务端后续消息使用之前协商的密码套件进行加密，Finished 包含前面消息的校验值，以验证握手过程的完整性
-4. 服务端响应：服务端发送 ChangeCipherSpec 和 Finished，Finished 包含前面消息的校验值，以验证握手过程的完整性
-5. 加密传输：一旦客户端和服务端交换 Finished，即完成 TLS 握手，双方使用选定的加密算法和密钥进行加密数据传输
+1. 客户端发送 ClientHello 给服务端，其包含客户端支持的 TLS 版本，加密组合（格式：密钥交换算法-对称加密算法-消息认证码算法）及生成的随机数 Client Random
+2. 服务端返回 ServerHello（选择的 TLS 版本、加密组合及生成的随机数 Server Random）、Certificate（服务端域名、CA 签名、公钥、证书有效期和证书链）、ServerKeyExchange（可选）和 CertificateRequest（可选，双向认证）
+3. 客户端验证服务端 Certificate，生成 Pre-Master Secret，发送 ClientKeyExchange（加密后的 Pre-Master Secret）、ChangeCipherSpec（切换加密模式）、Finished（验证握手完整性）、Certificate（可选，与服务端 CertificateRequest 匹配，双向认证）和 CertificateVerify（可选，双向认证）
+4. 服务端解密获取 Pre-Master Secret，验证客户端 Finished 消息及其身份（可选，双向认证），发送 ChangeCipherSpec（切换加密模式）和 Finished（验证握手完整性）
+5. 客户端接收、解密并验证服务端  Finished  消息，后续双方通过协商的加密算法通信
 
 数字签名：
 
 1. 发送方 A 生成消息哈希，以其私钥加密生成数字签名
 2. 发送方 A 发送原始消息和数字签名到接收方 B
-3. 接收方B 接收到消息后，通过发送方 A 的公钥解密数字签名，获取哈希值 1
-4. 接收方 B计算接收到的消息之哈希，获取哈希值 2
+3. 接收方 B 接收到消息后，通过发送方 A 的公钥解密数字签名，获取哈希值 1
+4. 接收方 B 计算接收到的消息之哈希，获取哈希值 2
 5. 若哈希值 1 等于哈希值 2，则数字签名验证成功，消息来源于发送方 A 且未被篡改
 
 判断是否为长连接：

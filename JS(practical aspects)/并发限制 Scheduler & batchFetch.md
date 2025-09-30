@@ -16,7 +16,7 @@ class Scheduler {
   usingRun(promiseCreator) {
     this.usingTasks.push(promiseCreator);
     promiseCreator().then(() => {
-      promiseCreator.resolve();
+      promiseCreator.resolve(); 
       this.usingMove(promiseCreator);
       if (this.tasks.length) this.usingRun(this.tasks.shift());
     });
@@ -37,6 +37,8 @@ addTask(2000, 2);
 addTask(3000, 3);
 addTask(1000, 1); // 2 4 3 1
 ```
+
+* `add` 方法返回新的 Promise (P)，其接收 `resolve` 参数，`promiseCreator.resolve = resolve` 将 Promise (P) 的 `resolve` 函数挂载至 `promiseCreator` 函数对象上，如此一来，一旦 `promiseCreator` 执行且完成时，我们通过其 `resolve` 控制外部 Promise (P) 的状态，`promiseCreator.resolve()` 通知 `addTask` 的调用者任务已完成，要知道 `console.log` 只有在 Promise (P) 被 resolved 时才执行
 
 尽可能以 max 并发数并发请求且按照顺序返回结果
 

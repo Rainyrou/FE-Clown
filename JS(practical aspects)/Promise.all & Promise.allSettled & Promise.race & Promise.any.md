@@ -170,6 +170,8 @@ Promise._race([
 ```js
 Promise._any = function (promises) {
   return new Promise((resolve, reject) => {
+	if (promises == null || typeof promises[Symbol.iterator] !== "function")
+      throw new TypeError(`${promises} is not an iterator`);
 	promises = [...promises];
     if (promises.length === 0) 
 	    return reject(new AggregateError([], "No promises provided"));

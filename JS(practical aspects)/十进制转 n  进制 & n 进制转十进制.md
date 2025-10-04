@@ -3,16 +3,16 @@ n 小于等于 16
 十进制转 n 进制：
 
 ```js
-const convert = (decimal, base) => {
+const convert = (num, base) => {
   if (base < 2 || base > 16) throw new Error("Base must be between 2 and 16.");
-  if (decimal === 0) return "0";
+  if (num === 0) return "0";
   const digits = "0123456789abcdef";
   let ans = "",
-    tempDecimal = decimal;
-  while (tempDecimal > 0) {
-    const remain = tempDecimal % base;
+    cur = num;
+  while (cur > 0) {
+    const remain = cur % base;
     ans = digits[remain] + ans;
-    tempDecimal = Math.floor(tempDecimal / base);
+    cur = Math.floor(cur / base);
   }
   return ans;
 };

@@ -2,7 +2,6 @@
 
 ```JavaScript
 function _curry(fn) {
-  // curried 负责收集参数
   function curried(...args) {
     const context = this;
     if (args.length >= fn.length) {
@@ -16,6 +15,8 @@ function _curry(fn) {
   return curried;
 }
 ```
+
+`fn.length` 返回该函数期望接收的参数个数
 
 测试用例：
 

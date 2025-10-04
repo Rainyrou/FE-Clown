@@ -30,24 +30,15 @@ MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关�
 | attributeName | 修改的属性名                                                               |
 | oldValue      | 变化前的值，当 `attributeOldValue` 或 `characterDataOldValue` 为 `true` 时 |
 
-```js
-const targetNode = document.getElementById("target");
+页面流畅性由浏览器绘制帧率 FPS 决定，当每秒绘制帧数大于等于 60 时，页面流畅
 
-const config = {
-  childList: true,
-  attributes: true,
-  subtree: true,
-  characterData: true,
-};
-
-const observer = new MutationObserver((mutationList, observer) => {
-  for (const mutation of mutationList) {
-    if (mutation.type === "childList") console.log("子节点发生变化", mutation);
-    else if (mutation.type === "attributes")
-      console.log("属性发生变化", mutation.attributeName);
-  }
-});
-
-observer.observe(targetNode, config);
-observer.disconnect();
 ```
+1s / 60帧 = 16.67ms/帧
+```
+
+![[Pasted image 20241116091325.png]]
+
+`setTimeout` 和 `setInterval` 的缺陷：其为宏任务，需等待浏览器所有同步任务及高优先级任务执行完毕才执行，此外其为手动设置，浏览器无法保证回调函数与屏幕刷新同步（渲染过度 & 渲染不足）
+
+`requestAnimationFrame` 同步浏览器刷新率，保证回调在浏览器下一次重绘前执行
+`requestIdleCallback` 在浏览器主线程空闲时（当前帧任务执行完后，在下一帧开始前的空闲阶段）执行低优先级的延迟任务如后台数据同步和日志记录

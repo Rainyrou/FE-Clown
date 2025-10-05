@@ -1,3 +1,5 @@
+###### 类型强制 & 非强制字段
+
 | 场景         | 方案                           | 特点                 |
 | ---------- | ---------------------------- | ------------------ |
 | 定义强制/非强制字段 | 通过可选修饰符 `?`                  | 静态类型结构             |
@@ -53,3 +55,32 @@ const user2: User<false> = {
   name: "Rainyrou",
 };
 ```
+
+###### 以属性值来为类型
+
+`as const` + `typeof`
+
+```ts
+const config = {
+  status: "success",
+  code: 200,
+} as const;
+
+type StatusType = typeof config.status; // "success"
+```
+
+```ts
+const directions = {
+  up: "UP",
+  down: "DOWN",
+  left: "LEFT",
+  right: "RIGHT",
+} as const;
+
+type Direction = (typeof directions)[keyof typeof directions];
+```
+
+###### 条件类型分配
+
+1. 定义条件类型 `T extends U ? X : Y`，其中 `T` 为泛型类型参数且该参数为联合类型（裸类型参数 -> 未被包裹于其他类型
+2. 当 `T` 传入联合类型时，TypeScript 自动对各个成员应用条件判断并将合并结果为新联合类型

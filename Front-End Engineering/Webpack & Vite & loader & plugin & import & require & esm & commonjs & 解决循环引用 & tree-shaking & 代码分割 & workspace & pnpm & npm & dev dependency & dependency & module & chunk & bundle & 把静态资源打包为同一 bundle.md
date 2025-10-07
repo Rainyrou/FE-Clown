@@ -1,5 +1,16 @@
 参考文章：[美团点餐 - Webpack 之 Loader 和 Plugin 简介](https://juejin.cn/post/6844903489458405390?searchId=20241117171358EFAC48295E488CE488B5)
 
+Webpack：静态模块打包器，用于构建 JavaScript 应用程序，以一种相对一致且开放的处理方式加载所有资源文件并将其合并打包成浏览器兼容的 Web 资源，其忽略具体资源类型的差异，将所有文件统一视为 module，同一套代码实现诸多特性，以相同的加载、解析、依赖管理、优化和合并流程实现打包并借助 loader & plugin 开放接口将资源差异处理逻辑交由社区实现，建立统一资源构建模型，项目冷启动时 Webpack 递归打包整个项目的依赖树，在生产和开发阶段均打包，通过构建一至多个 bundle 文件来管理模块间的依赖关系，这样的全量编译方式及 JavaScript 语言本身的性能限制导致较慢的构建速度
+
+Webpack 解析配置文件 `webpack.config.js`，根据 Entry、Output、Loader、Plugin 和 Mode 等配置初始化，启用其内置在相应环境变量下的优化并实例化 `Compiler` 对象，构建时创建记录本次构建所有信息的 `Compilation` 对象，Webpack 从入口点开始解析文件，通过 AST 分析 import/require 语句，递归解析所有依赖项并构建包含所有模块及其依赖关系的依赖图，对于 CommonJS，Webpack 运行时注入的 webpack_require 模拟 CommonJS 模块加载机制处理循环依赖（模块缓存、部分执行等），返回已执行部分的 exports 对象；对于 ES Module，Webpack 通过静态分析处理循环依赖，Webpack 本身只支持 JavaScript，Loader 可将其他文件类型转换为有效的 module 并将其加入到依赖图中，而基于 Webpack 的事件钩子系统，Plugins 提供直接参与 Webpack 打包过程的机制，在构建的特定时刻添加自定义构建步骤，经过上述过程 Webpack 将源代码转换为最终的输出代码，其根据配置中的 `output` 字段将处理后的模块打包成一至多个 bundle 文件并输出到指定目录中，之后触发 `done` 事件，若构建过程中发生错误则显示错误信息甚至回滚到构建前的状态
+
+Vite：
+
+1. no-bundle 服务 & 中间件机制：Vite 在开发阶段无需打包而基于浏览器天然支持的 ESM 的 no-bundle 服务加载模块，浏览器通过 `import`  语句按需请求模块，Vite dev server 首次启动时拦截浏览器请求，实时编译并返回结果，调用对应插件将 `import`  语句中的第三方依赖重写为预构建后的路径 `/node_modules/.vite/react.js`，将 Vue/React 组件转换为 JavaScript 和 CSS，将 CSS 转换为 JavaScript 并通过 `<style>` 标签动态注入，将 JavaScript/TypeScript 转换为 ES Module，而对于静态资源则返回解析后的 URL
+2. 依赖预构建：Vite 扫描入口文件，分析所有 `import`  语句，递归收集依赖列表，以 Esbuild 打包 CommonJS/UMD 为 ES Module 并缓存预构建结果，浏览器后续直接复用缓存，生成的 `metadata.json` 记录模块的依赖图谱和哈希值以验证缓存，浏览器通过 URL 的哈希参数强缓存预构建模块，若 `package.json`  或  `lockfile`  变化，自动重新预构建并更新哈希参数
+3. 热更新优化：Vite 自动注入 `/@vite/client` HMR 客户端脚本，服务端与客户端据此建立 WebSocket 连接以传递热更新事件，通过  `chokidar` 监听文件变化并标记为  `HMR Boundary`，当某模块更新时，更新事件沿着 ES Module 的 `import`  链向上查找最近的 `accept`  回调，对比 Webpack 的全量热更新方式，此种方式优化子模块级更新
+4. 集成 Rollup：Vite 在生产阶段基于 Rollup 打包，通过 ES Module 静态分析做 Tree-shaking 移除无用代码，支持动态 `import`  自动拆包，按需加载，以 Esbuild 实现 TypeScript 转换和语法降级
+
 Loader：将其他格式的文件转换为 Webpack 支持打包的 module 即模块化非 JavaScript，通过转义以兼容旧版本浏览器及跨平台支持并减少构建产物打包体积，其本质为函数，支持同步、异步操作及链式调用，Webpack 检查 `import` 或 `require` 引入的非 JavaScript 文件配置中的 `module.rules` 并以相应 Loader 进行处理 ，Webpack 打包时按数组从右向左或从下到上的顺序将目标资源交由 Loader 处理
 
 ```
@@ -139,8 +150,8 @@ class FileListPlugin {
 module.exports = FileListPlugin;
 ```
 
-`import`：ES Module，其为 ES6 引入的模块导入语法，在编译时执行，允许静态分析，支持 Tree Shaking，支持动态导入模块，导入的为原模块的动态绑定引用，循环引用时，未初始化的模块返回部分导出为空的对象
-`require`：CommonJS，其为 Node.js 特有的模块导入语法，在运行时执行，不支持 Tree Shaking，支持动态导入模块，导入的为原模块的拷贝，循环引用时，在解析阶段建立导出和导入的绑定关系，但模块是按顺序执行的，未初始化的模块被访问时抛出 ReferenceError
+`import`：ES Module，其为 ES6 模块导入语法，在编译时执行（静态分析 Tree Shaking），支持动态导入模块，导入为原模块的动态绑定引用，循环引用时，未初始化的模块返回部分导出为空的对象
+`require`：CommonJS，其为 Node.js 模块导入语法，在运行时执行（不支持静态分析），支持动态导入模块，导入为原模块的拷贝，循环引用时，未初始化的模块被访问时抛出 ReferenceError
 
 ```js
 // a.js
@@ -158,8 +169,29 @@ console.log(a); // 2
 
 ES Module 导入的为原模块的动态绑定引用，而非原模块的拷贝。`a.js` 中的变量 `a` 与 `b.js` 中导入的 `a` 指向同一内存地址，而 `modify` 函数修改 `a.js` 中的变量 `a`，因此所有导入 `a` 的地方均同步更新
 
-ES Module：`import` 和 `export` 模块导入导出语法，在编译时执行，支持静态分析，支持同步和异步加载模块，浏览器原生支持 ESM，通过 `<script type="module">` 直接执行，Node.js 通过 `.mjs` 扩展名或 `package.json` 中的`"type": "module"` 支持 ESM
-CommonJS：`require` 和 `module.exports` 模块导入导出语法，在运行时执行，各个文件均为一个 module，有其独立的作用域，同步加载模块，用于 Node.js 环境，其模块系统的实现基于 Node.js 的 `Module` 核心模块
+ES Module：`import` 和 `export` 模块导入导出语法（浏览器 -> `<script type="module">`，Node.js -> `.mjs` 扩展名/在 `package.json` 设置 `"type": "module"`），在编译时执行（静态分析），同步异步加载模块
+CommonJS：`require` 和 `module.exports` 模块导入导出语法（Node.js 原生支持），在运行时执行，同步加载模块
+
+解决循环引用：
+
+循环引用（循环依赖）：两个及以上模块相互引用，形成闭环。直接循环依赖如模块 A 引入模块 B，模块 B 引入模块 A；间接循环依赖链路更长如模块 A 引入模块 B，模块 B 引入模块 C，模块 C 引入模块 A​，无论哪种表现形式，本质为模块间相互引用导致未初始化即被使用（执行顺序不确定性，先有鸡还是先有蛋）
+
+Webpack 从入口点开始解析文件，通过 AST import/require 语句，递归解析所有依赖项并构建包含所有模块及其依赖关系的依赖图，对于 CommonJS，Webpack 运行时注入的 webpack_require 模拟 CommonJS 模块加载机制处理循环依赖（模块缓存检测、部分执行等），返回已执行部分的 exports 对象；对于 ES Module，Webpack 通过静态分析处理循环依赖（模块缓存检测、实时绑定、静态提升等）
+
+Vite 基于原生支持和最小化干预的策略，扫描入口文件，分析所有 `import` 语句，递归收集依赖列表，以 Esbuild 打包 CommonJS/UMD 为 ES Module（模块缓存检测、实时绑定、静态提升等）
+
+Tree-Shaking：ES Module 的依赖关系在编译时是确定的，支持静态分析即在不执行代码的情况下分析模块的导入导出以判断哪些部分是可达的，哪些部分是死代码（无法到达 -> 在某些条件下如 `return` 语句后永远无法执行的代码 + 无用计算结果如未被使用的函数返回值 + 只写不读的变量），满足 Tree-Shaking 的条件，通过解析模块的导入导出，识别模块间的依赖关系并构建模块依赖图，遍历所有模块并以 `usedExports` 标记未被引用的模块导出，在构建时移除未被使用的 JavaScript 代码，减少构建产物大小
+
+局限性：
+
+- 无法分析动态导入和 CommonJS 的依赖关系
+- 无法移除有副作用的模块
+
+代码分割：通过静态分析获取模块间的依赖关系，哪些模块是可拆分的，哪些模块是相互依赖的，哪些模块是共享的，哪些模块是首屏所需的，根据模块依赖图采取以下策略：
+
+- 通过入口分割拆分不同页面代码，为各个入口点生成独立 Chunk，各个 Chunk 仅包含该入口点所需代码
+- 通过动态 `import` 按需加载，当运行时代码执行至动态 `import` 部分时，Webpack 或 Vite 据此生成并加载独立 Chunk
+- 通过 Webpack `optimization.splitChunks` 和 Vite `rollupOptions.manualChunks` 提取多模块间共享部分为独立 Chunk，避免重复加载相同模块
 
 Workspace：
 
@@ -181,3 +213,37 @@ Dependency：在生产阶段运行时必须存在的依赖（框架/核心库/�
 Module：分割程序所得到的独立片段即模块，各个模块执行特定任务且可被其他模块按需引用
 Chunk：由多个 module 组成，代码分割即将代码分割为多个 chunks，按需加载对应的 chunk
 Bundle：构建过程的最终输出
+
+通过配置 `module.rules` 匹配指定资源类型及 `url-loader` 和 `style-loader` 将静态资源转换为 Base64 或 CSS 字符串内联至同一 JavaScript Bundle 中
+
+```js
+const path = require("path");
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg|gif|svg|webp)$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 8192,
+              encoding: "base64",
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
+};
+```

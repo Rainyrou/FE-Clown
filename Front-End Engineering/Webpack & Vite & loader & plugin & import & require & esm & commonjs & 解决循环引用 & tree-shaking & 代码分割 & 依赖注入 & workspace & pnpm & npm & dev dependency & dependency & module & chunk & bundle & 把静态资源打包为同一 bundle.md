@@ -193,6 +193,9 @@ Tree-Shaking：ES Module 的依赖关系在编译时是确定的，支持静态�
 - 通过动态 `import` 按需加载，当运行时代码执行至动态 `import` 部分时，Webpack 或 Vite 据此生成并加载独立 Chunk
 - 通过 Webpack `optimization.splitChunks` 和 Vite `rollupOptions.manualChunks` 提取多模块间共享部分为独立 Chunk，避免重复加载相同模块
 
+依赖注入：实现控制反转，组件只需声明依赖，而无需关心依赖实现细节，而容器提供依赖，记录"依赖标识（Token）→ 依赖创建方式（Provider）"的映射关系，通过分析获取模块间的依赖关系，构建模块依赖图并拓扑排序，通过 Provider 创建实例，根据生命周期规则（单例/多例）缓存依赖实例，容器通过 Token 查找解析后的依赖实例，再通过组件暴露的注入点（属性、构造函数参数、函数参数、配置声明等）传递实例至组件中
+
+
 Workspace：
 
 - 符号链接：A 包依赖 B 包，按传统发布流程需先发布 B 包至 npm，A 包通过 npm registry 加载 B 包，但 Workspace（Monorepo）直接在 A 包的 `node_modules` 目录下创建指向 B 包源代码的符号链接

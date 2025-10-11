@@ -14,7 +14,7 @@ function sum(...args) {
   const allArgs = [...args];
   const fn = (...newArgs) => {
     allArgs.push(...newArgs);
-    return fn;
+    return fn; // 链式收集
   };
   fn.sumoff = () => allArgs.reduce((a, b) => a + b, 0);
   return fn;
@@ -75,18 +75,10 @@ async function sum(...args) {
 
 ```js
 function promisify(fn) {
-  if (typeof fn !== "function") throw new TypeError(`${fn} is not a function`);
   return function (...args) {
-    return new Promise((resolve, reject) => {
-	  // Node.js 标准回调格式 err + result
-      function callback(err, ...results) {
-        if (err) return reject(err);
-        if (results.length === 1) return resolve(results[0]);
-        return resolve(results);
-      }
-      args.push(callback);
-      fn.call(this, ...args);
-    });
+    return new Promise((resolve, reject) =>
+      fn(...args, (err, result) => (err ? reject(err) : resolve(result)))
+    );
   };
 }
 

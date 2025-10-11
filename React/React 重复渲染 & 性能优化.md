@@ -1,3 +1,11 @@
+重复渲染：
+
+- 自身状态更新：组件内部调用 `setState` 或 `useState` 的更新函数，在当前组件对应的 Fiber 节点上创建更新对象并将其添加至该 Fiber 节点的更新队列
+- 父组件渲染： React 默认采用父组件更新 → 子组件递归更新的策略，父组件重新渲染时生成新虚拟 DOM 树，其包含子组件的虚拟 DOM 节点，导致所有子组件被标记为需要协调，从而触发子组件重新渲染
+- Hooks： `useEffect` & `useMemo` & `useCallback` -> 依赖项变化 + `React.memo` -> 组件 `props` + `shouldComponentUpdate` -> 返回 `true`
+
+性能优化：
+
 1. 自动批处理：React 在事件处理函数中自动批处理更新，合并多次更新为一次
 2. `useEffect` & `useRef`：`useEffect` -> 浅比较， `useRef` -> 持久化存储
 3. `shouldComponentUpdate` & `PureComponent` & `React.memo` & `useMemo` & `useCallback`
@@ -13,42 +21,3 @@ shouldComponentUpdate(nextProps, nextState) {
 
 4. `useContext` & 自定义 Hook：`useContext` 用于访问 `context` 上下文对象，在组件树上层通过 `Provider` 组件包裹子组件并传递上下文对象的值 `value`，当 `value` 变化时，所有嵌套在 `Provider` 内部的子组件均重新渲染，而上下文对象频繁更新势必导致不必要的重新渲染，因此只传递必要的 `value`，将上下文对象拆分成多个 Context，各个 Context 只负责一部分属性，允许组件只订阅其所需数据，同时自定义 Hook 在上下文对象中提取所需数据，只在相应数据变化时重新渲染组件
 5. 生产版本：因为开发版包含额外的调试信息和警告
-
-构建生产版本：
-
-- 通过 Create React App 构建，运行以下命令生成生产版本：
-
-```bash
-npm run build
-```
-
-在项目中生成 `build/` 目录，其包含优化后的生产代码
-
-- 单文件构建，通过引入 UMD 格式的生产版本来使用 React：
-
-```html
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-```
-
-验证生产模式是否正确启用：
-
-通过 React DevTools 判断应用程序的当前模式：
-
-- 生产模式：React DevTools 图标背景为深色
-
-![[Pasted image 20241117164837.png]]
-
-- 开发模式：React DevTools 图标背景为红色
-
-![[Pasted image 20241117164849.png]]
-
-Webpack 的生产构建优化：
-
-```js
-module.exports = {
-  mode: 'production',
-};
-```
-
-Webpack v4+ 提供默认的生产模式，自动启用 Tree Shaking 和作用域提升

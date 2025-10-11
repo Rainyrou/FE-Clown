@@ -167,3 +167,34 @@ export const useHover = () => {
   return [ref, hovered];
 };
 ```
+
+11. 手写 `useRedoUndo`：
+
+```js
+export const useRedoUndo = (initialState) => {
+  const [history, setHistory] = useState(initialState);
+  const [curIndex, setCurIndex] = useState(0);
+  const state = history[curIndex];
+  const setState = (newState) => {
+    const nextState =
+      typeof newState === "function" ? newState(state) : newState;
+    if (newState === state) return;
+    const newHistory = history.slice(0, curIndex + 1);
+    newHistory.push(nextState);
+    setHistory(newHistory);
+    setCurIndex(newHistory.length - 1);
+  };
+  const canUndo = curIndex > 0;
+  const canRedo = curIndex < history.length - 1;
+  const undo = () => {
+    if (canUndo) setCurIndex(curIndex - 1);
+  };
+  const redo = () => {
+    if (canRedo) setCurIndex(curIndex + 1);
+  };
+  return { state, setState, canUndo, canRedo, undo, redo };
+};
+```
+
+执行撤销 -> 回到上一状态
+执行重做 -> 未执行新操作，回到撤销前的状态，其仍保存于 `history` 数组中（在未通过 `setState` 更新状态的情况下）

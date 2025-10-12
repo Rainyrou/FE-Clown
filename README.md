@@ -1,12 +1,12 @@
 ## FE-Clown
 
-#### Disclaimer:
+#### 心里话:
 
-Disclaimer: This knowledge base is solely for my personal learning purposes and is not intended for commercial use or any nefarious objectives. In the process of my studies, I have referred to many publicly available resources on the internet. Should there be any instance of copyright infringement, I earnestly request your forgiveness and to be informed. I will immediately take necessary actions to attribute the original source via a link or remove the contentious material as required. This knowledge base serves as a testament to my learning journey, and I hold the utmost respect for the intellectual property rights of all creators, extending my highest regards to you all 🌟. Additionally, the section on the Frontend Business Development Guide represents my personal reflections, while the specific code parts are demos I have written during my usual practice.
+- 笔记仅供自用（样式都一言难尽 o((⊙﹏⊙))o.），为实战面经 150+ 篇整理，无商业用途
 
-免责声明：这个知识库只是本人用于自学目的，并不作为商业用途或，没有任何不可告人的目的。我在学习的过程中参考了很多互联网上的公开资源，若发现有任何侵权行为，恳请您的原谅并告知。我将立即根据要求通过链接注明原始来源或删除有争议的材料。这个知识库只是我学习旅程的证明，我尊重所有创作者的知识产权，向你们致以最崇高的敬意 🌟
+* 非小镇做题家，败多胜少，作为两年前端大厂 & 外企实习的见证，仍需加倍努力，希望自己能做到条件反射的程度
 
-#### 大厂面试情况（2023.10.1 ~ 2025.09.30）
+#### 大厂面试情况（2023.10.1 ~ 2025.09.30，面经自 2025 年 6 月加入小米后不再更新，均收录于所整理的笔记中）
 
 ###### OC：
 
@@ -42,10 +42,6 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 
 快手效率工程
 
-###### 一面过拒：
-
-理想 AIHR 数据分析
-
 ###### 一面挂：
 
 腾讯\*5（微信邮箱 + 微信公众号 + 微信小店 + PCG QQ + TME）
@@ -57,5 +53,3 @@ Disclaimer: This knowledge base is solely for my personal learning purposes and 
 快手商业化
 
 小红书\*3 （基础架构 + 效率平台 + 其他）
-
-蔚来\*4（H5 + 供应链 + 其他\*2）

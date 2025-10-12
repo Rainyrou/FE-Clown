@@ -1,4 +1,4 @@
-Promise 用于解决回调地狱，为异步操作的成功或失败分配事件处理程序，其有 pending、resolved 和 rejected 状态，状态变化不可逆即只能从 pending 转换为 resolved/rejected，而无法反过来
+Promise 解决回调地狱，为异步操作的成功或失败分配事件处理程序，有 pending、resolved 和 rejected 状态，通过构造函数的执行器函数 `resolve` 和 `reject` 实现状态变化，状态变化不可逆即从 pending 转换为 resolved/rejected而无法反向
 
 1. `new Promise`：创建新的 Promise 对象，参数为带有 `resolve` 和 `reject` 参数的回调，当异步操作成功时调用 `resolve`，失败时调用 `reject`
 2. `Promise.prototype.then(onFulfilled, onRejected)`：添加 `onFulfilled` 和 `onRejected` 的回调，在 Promise resolved 或 rejectd 时调用 `onFulfilled` 或 `onRejected`

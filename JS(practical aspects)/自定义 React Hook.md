@@ -1,61 +1,4 @@
-1. 手写轮询：
-
-```js
-export const usePolling = (callback, interval, isActive = true) => {
-  const [isPolling, setIsPolling] = useState(isActive);
-  useEffect(() => {
-    if (!isPolling) return;
-    const intervalId = setInterval(() => callback(), interval);
-    return () => clearInterval(intervalId);
-  }, [callback, interval, isPolling]);
-  const togglePolling = () => setIsPolling((pre) => !pre);
-  return { isPolling, togglePolling };
-};
-```
-
-2. 手写登陆拦截：
-
-```js
-export const useAuthRedirect = (redirectToLogin = true) => {
-  const history = useHistory();
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("auth_token");
-    if (!isLoggedIn && redirectToLogin) history.push("/login");
-  }, [history, redirectToLogin]);
-};
-```
-
-3. 手写事件监听：
-
-```js
-export const useEventListener = (event, handler, element = window) => {
-  useEffect(() => {
-    if (typeof handler !== "function") return;
-    element.addEventListener(event, handler);
-    return () => element.removeEventListener(event, handler);
-  }, [event, handler, element]);
-};
-```
-
-4. 手写监听浏览器窗口
-
-```js
-export const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-  useEffect(() => {
-    const handleSize = () =>
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", handleSize);
-    return () => window.removeEventListener("resize", handleSize);
-  }, []);
-  return windowSize;
-};
-```
-
-5. 手写类组件中 setState 的功能并支持设置回调函数：
+1. 手写类组件中 setState 的功能并支持设置回调函数：
 
 ```js
 export const useStateWithCallback = (initialValue) => {
@@ -75,9 +18,7 @@ export const useStateWithCallback = (initialValue) => {
 };
 ```
 
-6. 手写 `useQuery`：
-
-7. 手写 `usePrevious` 以保存上一状态的值
+2. 手写 `usePrevious` 以保存上一状态的值
 
 ```js
 export const usePrevious = (value) => {
@@ -87,7 +28,117 @@ export const usePrevious = (value) => {
 };
 ```
 
-8. 手写按钮锁即点击后 5s 内无法重复点击
+3. 手写 `useFetch`：
+
+```js
+export const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(response.status);
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(true);
+      }
+    };
+    url && fetchData();
+    return () => controller.abort();
+  }, [url]);
+  return { data, loading, error };
+};
+```
+
+4. 手写登陆拦截：
+
+```js
+export const useAuthRedirect = (redirectToLogin = true) => {
+  const history = useHistory();
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("auth_token");
+    if (!isLoggedIn && redirectToLogin) history.push("/login");
+  }, [history, redirectToLogin]);
+};
+```
+
+5. 手写轮询：
+
+```js
+export const usePolling = (callback, interval, isActive = true) => {
+  const [isPolling, setIsPolling] = useState(isActive);
+  useEffect(() => {
+    if (!isPolling) return;
+    const intervalId = setInterval(() => callback(), interval);
+    return () => clearInterval(intervalId);
+  }, [callback, interval, isPolling]);
+  const togglePolling = () => setIsPolling((pre) => !pre);
+  return { isPolling, togglePolling };
+};
+```
+
+6. 手写事件监听：
+
+```js
+export const useEventListener = (event, handler, element = window) => {
+  useEffect(() => {
+    if (typeof handler !== "function") return;
+    element.addEventListener(event, handler);
+    return () => element.removeEventListener(event, handler);
+  }, [event, handler, element]);
+};
+```
+
+7. 手写监听浏览器窗口
+
+```js
+export const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  useEffect(() => {
+    const handleSize = () =>
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener("resize", handleSize);
+    return () => window.removeEventListener("resize", handleSize);
+  }, []);
+  return windowSize;
+};
+```
+
+8. 手写 `useHover`：
+
+```js
+export const useHover = () => {
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
+    node.addEventListener("mouseenter", handleMouseEnter);
+    node.addEventListener("mouseleave", handleMouseEnter);
+    return () => {
+      node.removeEventListener("mouseenter", handleMouseEnter);
+      node.removeEventListener("mouseleave", handleMouseEnter);
+    };
+  }, []);
+  return [ref, hovered];
+};
+```
+
+9. 手写按钮锁即点击后 5s 内无法重复点击
 
 ```js
 export const useBottonLock = (wait = 5000) => {
@@ -111,7 +162,7 @@ export const useBottonLock = (wait = 5000) => {
 };
 ```
 
-9. 手写 `useCounter` 定时器：
+10. 手写 `useCounter` 定时器：
 
 ```js
 export const useCounter = (initialVal = 0, step = 1, interval = 1000) => {
@@ -142,29 +193,6 @@ export const useCounter = (initialVal = 0, step = 1, interval = 1000) => {
   }, []);
 
   return { count, start, stop, reset };
-};
-```
-
-10. 手写 `useHover`：
-
-```js
-export const useHover = () => {
-  const [hovered, setHovered] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const handleMouseEnter = () => setHovered(true);
-    const handleMouseLeave = () => setHovered(false);
-    node.addEventListener("mouseenter", handleMouseEnter);
-    node.addEventListener("mouseleave", handleMouseEnter);
-    return () => {
-      node.removeEventListener("mouseenter", handleMouseEnter);
-      node.removeEventListener("mouseleave", handleMouseEnter);
-    };
-  }, []);
-  return [ref, hovered];
 };
 ```
 

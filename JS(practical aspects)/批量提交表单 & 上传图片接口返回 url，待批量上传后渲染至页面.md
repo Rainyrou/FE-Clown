@@ -72,3 +72,30 @@ document
     batchSubmitForms(".batch-form", "/api/batch-save")
   );
 ```
+
+```js
+const uploadImage = (file) =>
+  new Promise((resolve, reject) =>
+    setTimeout(
+      () => resolve(`https://cdn.example.com/${file.name}_${Date.now()}.webp`),
+      Math.random() * 2000 + 1000
+    )
+  );
+
+const batchFetch = async (fileList) => {
+  if (fileList.length === 0) return;
+  const uploadPromises = Array.from(fileList).map((file) => uploadImage(file));
+  try {
+    const urls = await Promise.all(uploadPromises);
+    urls.forEach((url) => {
+      const img = document.createElement("img");
+      img.src = url;
+      img.style.maxWidth = "100px";
+      img.style.maxHeight = "100px";
+      document.body.appendChild(img);
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+```

@@ -82,7 +82,7 @@ const uploadImage = (file) =>
     )
   );
 
-const batchFetch = async (fileList) => {
+const batchUpload = async (fileList) => {
   if (fileList.length === 0) return;
   const uploadPromises = Array.from(fileList).map((file) => uploadImage(file));
   try {

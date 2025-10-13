@@ -7,7 +7,8 @@
 | `ReferenceError`    | 变量引用未定义             | 全局 error 事件           |
 | `Promise Rejection` | 未处理的 reject Promise | unhandledrejection 事件 |
 
-1. 全局错误捕获机制：通过  `ErrorBoundary`  全局捕获 React 组件渲染错误并返回降级 UI，通过 `Vue.config.errorHandler`  全局捕获 Vue 组件渲染错误，`window.addEventListener` 分别监听 `error`（支持跨域脚本错误，需 CORS 配置  `crossorigin="anonymous"`）和 `unhandledrejection` 事件捕获同步和异步错误，同步错误携带完整堆栈信息，而异步错误由于浏览器本身的事件循环机制导致其无法沿调用栈回溯其在创建时的堆栈信息，因此监控 SDK 以  `try/catch` 包装部分全局异步 API 和全局事件 API，捕获 JavaScript 错误时劫持异步 API 注入异步错误堆栈上下文并抛出错误
+
+1. 全局错误捕获机制：通过 `ErrorBoundary` 和 `errorHandler` 全局捕获 React/Vue 组件渲染错误并返回兜底 UI，`window.addEventListener` 分别监听 `error` 和 `unhandledrejection` 事件捕获同步（未被捕获的全局运行时错误）和异步错误（未被处理的 rejected Promise），同步错误携带完整堆栈信息，而异步错误由于浏览器事件循环机制导致其无法沿调用栈回溯其在创建时的堆栈信息，因此监控 SDK 以  `try/catch` 包装部分全局异步 API 和全局事件 API，捕获 JavaScript 错误时劫持异步 API 注入异步错误堆栈上下文并抛出错误
 
 ```js
 window.addEventListener("error", (event) => {

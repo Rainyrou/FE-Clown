@@ -1,4 +1,26 @@
-1. 手写类组件中 setState 的功能并支持设置回调函数：
+1. 手写实现一次 setState 一次更新：
+
+```js
+import { useState } from "react";
+import { flushSync } from "react-dom";
+
+export const useImmediateState = (initialState) => {
+  const [state, setState] = useState(initialState);
+  const setImmediateState = (newState) => flushSync(() => setState(newState));
+  return [state, setImmediateState];
+};
+
+export const DemoComponent = () => {
+  const [count, setCount] = useImmediateState(0);
+  const handleClick = () => {
+    setCount((pre) => pre + 1);
+    setCount((pre) => pre + 1);
+  };
+  return <button onClick={handleClick}>{count}</button>;
+};
+```
+
+2. 手写类组件中 setState 的功能并支持设置回调函数：
 
 ```js
 export const useStateWithCallback = (initialValue) => {
@@ -18,7 +40,7 @@ export const useStateWithCallback = (initialValue) => {
 };
 ```
 
-2. 手写 `usePrevious` 以保存上一状态的值
+3. 手写 `usePrevious` 以保存上一状态的值
 
 ```js
 export const usePrevious = (value) => {
@@ -28,7 +50,7 @@ export const usePrevious = (value) => {
 };
 ```
 
-3. 手写 `useFetch`：
+4. 手写 `useFetch`：
 
 ```js
 export const useFetch = (url) => {
@@ -58,7 +80,7 @@ export const useFetch = (url) => {
 };
 ```
 
-4. 手写登陆拦截：
+5. 手写登陆拦截：
 
 ```js
 export const useAuthRedirect = (redirectToLogin = true) => {
@@ -70,7 +92,7 @@ export const useAuthRedirect = (redirectToLogin = true) => {
 };
 ```
 
-5. 手写轮询：
+6. 手写轮询：
 
 ```js
 export const usePolling = (callback, interval, isActive = true) => {
@@ -85,7 +107,7 @@ export const usePolling = (callback, interval, isActive = true) => {
 };
 ```
 
-6. 手写事件监听：
+7. 手写事件监听：
 
 ```js
 export const useEventListener = (event, handler, element = window) => {
@@ -97,7 +119,7 @@ export const useEventListener = (event, handler, element = window) => {
 };
 ```
 
-7. 手写监听浏览器窗口
+8. 手写监听浏览器窗口
 
 ```js
 export const useWindowSize = () => {
@@ -115,7 +137,7 @@ export const useWindowSize = () => {
 };
 ```
 
-8. 手写 `useHover`：
+9. 手写 `useHover`：
 
 ```js
 export const useHover = () => {
@@ -138,7 +160,7 @@ export const useHover = () => {
 };
 ```
 
-9. 手写按钮锁即点击后 5s 内无法重复点击
+10. 手写按钮锁即点击后 5s 内无法重复点击
 
 ```js
 export const useBottonLock = (wait = 5000) => {
@@ -162,7 +184,7 @@ export const useBottonLock = (wait = 5000) => {
 };
 ```
 
-10. 手写 `useCounter` 定时器：
+11. 手写 `useCounter` 定时器：
 
 ```js
 export const useCounter = (initialVal = 0, step = 1, interval = 1000) => {
@@ -196,7 +218,7 @@ export const useCounter = (initialVal = 0, step = 1, interval = 1000) => {
 };
 ```
 
-11. 手写 `useRedoUndo`：
+12. 手写 `useRedoUndo`：
 
 ```js
 export const useRedoUndo = (initialState) => {

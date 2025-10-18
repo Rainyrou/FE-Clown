@@ -1,3 +1,5 @@
+ 数组遍历方法：for of & for in & forEach & map & filter（创建新数组，包含满足函数条件的元素） & reduce（改变原数组，分别对各个元素执行函数） & every（返回布尔值，判断各个元素是否满足函数条件） & some（返回布尔值，判断是否有数组元素满足函数条件） & find（通过函数查找数组元素并返回首个满足函数条件的元素） & findIndex（通过函数查找数组元素并返回首个满足函数条件的元素索引）
+
 `for...of`：用于遍历可迭代对象的值，其调用对象的 `[Symbol.iterator]` 方法获取迭代器对象，再通过迭代器对象的 `next` 方法遍历所有返回值
 
 `for...in`：用于遍历可迭代对象的可枚举字符串键，其不依赖于 ES6 的迭代器协议，遍历对象原型链上的可枚举字符串属性，通过 `hasOwnProperty` 方法过滤继承的属性
@@ -28,6 +30,6 @@
 - 第二个参数 `mapFn`：类似数组的 `map` 方法，在元素添加至新数组前执行映射
 - 第三个参数 `thisArg`：指定 `mapFn` 的 `this` 指向
 
-就地改变数组的方法：`push` + `pop` + `unshift` + `shift` + `sort` + `reverse` + `fill` + `splice`
+改变原数组的方法：`push` + `pop` + `unshift` + `shift` + `sort` + `reverse` + `splice`
 
 返回新数组的方法：`Array.from` + `new Array` + `map` + `flatMap` + `filter` + `concat` + `slice`

@@ -13,11 +13,11 @@ Vue.js & React.js：JavaScript 库
 1. **Template & JSX**
 
 - Vue 采用基于 HTML 的模板语法，提供数据驱动的视图层框架，允许开发者声明式地将 DOM 绑定到底层 Vue 实例的数据
-* JSX 是 React 中一种类似 XML 的语法扩展，使得在 JavaScript 代码中可编写类似 HTML 的代码，更接近函数式编程，其提供一种简单直观的方式来声明 UI，实际为一种语法糖，通过 Babel 转换为 JavaScript，通过 `React.createElement` 生成虚拟 DOM，通过 `ReactDOM.render` 将虚拟 DOM 转换为真实 DOM 并插入到页面中
+* JSX 为 React 中类似 XML 的语法扩展，使得在 JavaScript 代码中可编写类似 HTML 的代码，更接近函数式编程，其提供一种简单直观的方式来声明 UI，实际为一种语法糖，通过 Babel 转换为 JavaScript，通过 `React.createElement` 生成虚拟 DOM，通过 `ReactDOM.render` 将虚拟 DOM 转换为真实 DOM 并插入到页面中
 
 2. **响应式**：
 
-- Vue2  在初始化组件时通过 `Object.defineProperty`  递归遍历 `data` 所有属性并为其添加 `getter` 和 `setter`，每个组件实例均关联一个 `watcher` 实例，其用于追踪组件的渲染依赖，当访问属性时触发 `getter` 收集依赖即将当前组件的 `watcher`  实例添加至对应 `dep`  实例中，当修改属性时触发 `setter` 通知对应 `dep` 实例的 `watcher`  实例执行更新操作，重新渲染组件，`Object.defineProperty` 无法直接监听增删对象属性、通过数组索引赋值和修改数组长度等操作，因此 Vue2 通过  `$set`  和 `$delete`  方法增删对象属性，通过重写数组的变异方法手动触发依赖更新
+- Vue2  在初始化组件时通过 `Object.defineProperty`  递归遍历 `data` 所有属性并为其添加 `getter` 和 `setter`，每个组件实例均关联一个 `watcher` 实例，其用于追踪组件的渲染依赖，当访问属性时触发 `getter` 收集依赖即将当前组件的 `watcher`  实例添加至对应 `dep`  实例中，当修改属性时触发 `setter` 通知对应 `dep` 实例的 `watcher`  实例执行更新操作，重新渲染组件，`Object.defineProperty` 无法直接监听增删对象属性、通过数组索引赋值和修改数组长度等操作，因此 Vue2 通过  `$set`  和 `$delete`  方法增删对象属性，通过重写数组变异方法 `push` + `pop` + `unshift` + `shift` + `sort` + `reverse` + `splice` 手动触发依赖更新，通过原型链劫持继承原生方法，在重写逻辑中注入依赖通知以保证原功能不丢失、响应式不失效，只重写数组变异方法，不重写非变异方法是因为原数组不变，无需触发依赖更新 + 若需使用新数组结果，赋值操作触发 setter 触发更新
 - Vue3 重构响应式，通过 `Proxy` 修复 Vue2 响应式存在的缺陷，在运行时动态代理完整对象，拦截对象的所有属性操作而无需逐个劫持，按需递归即在访问嵌套对象时才递归创建代理，通过 `WeakMap`  和 `Set` 存储依赖关系，避免重复收集和内存泄漏，读取响应式数据时触发 `track`  将当前副作用函数收集到依赖集合中，修改响应式数据时触发 `trigger`，查找并执行依赖于该属性的所有副作用函数
 
 ```js
@@ -72,10 +72,10 @@ state.count++;
 
 - Vue2 Diff 算法采用双指针比较新旧虚拟节点的子节点列表，同层级 vnode 比较，若新的 vnode 存在而旧的不存在则创建新节点，反之则删除旧节点。在处理子节点时通过新前、新后、旧前和旧后四个指针比较，复用现有节点，避免不必要的 DOM 操作
 
-3. 头头比较（oldStartVnode 与 newStartVnode）：若相同，则指针均往后移
-4. 尾尾比较（oldEndVnode 与 newEndVnode）：若相同，则指针均往前移
-5. 头尾比较（oldStartVnode 与 newEndVnode）：若相同，表明旧头节点移动至尾部，相应指针调整
-6. 尾头比较（oldEndVnode 与 newStartVnode）：若相同，表明旧尾节点移动至头部，相应指针调整
+头头比较（oldStartVnode 与 newStartVnode）：若相同，则指针均往后移
+尾尾比较（oldEndVnode 与 newEndVnode）：若相同，则指针均往前移
+头尾比较（oldStartVnode 与 newEndVnode）：若相同，表明旧头节点移动至尾部，相应指针调整
+尾头比较（oldEndVnode 与 newStartVnode）：若相同，表明旧尾节点移动至头部，相应指针调整
 
 以上步骤重复进行直至新旧节点的开始或结束指针交叉为止，再进行增删节点等操作
 

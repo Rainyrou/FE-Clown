@@ -1,9 +1,9 @@
-Promise 解决回调地狱，为异步操作的成功或失败分配事件处理程序，有 pending、resolved 和 rejected 状态，通过构造函数的执行器函数 `resolve` 和 `reject` 实现状态变化，状态变化不可逆即从 pending 转换为 resolved/rejected而无法反向
+Promise 解决回调地狱，为异步操作的成功或失败分配事件处理程序，有 pending、resolved 和 rejected 状态，通过构造函数的执行器函数 `resolve` 和 `reject` 实现状态变化，状态变化不可逆即从 pending 转换为 resolved/rejected 而无法反向
 
-1. `new Promise`：创建新的 Promise 对象，参数为带有 `resolve` 和 `reject` 参数的回调，当异步操作成功时调用 `resolve`，失败时调用 `reject`
-2. `Promise.prototype.then(onFulfilled, onRejected)`：添加 `onFulfilled` 和 `onRejected` 的回调，在 Promise resolved 或 rejectd 时调用 `onFulfilled` 或 `onRejected`
-3. `Promise.prototype.catch(onRejected)`：添加 `onRejected` 的回调，在 Promise rejectd 时调用 `onRejected`
-4. `Promise.prototype.finally(onFinally)`：添加 `onFinally` 的回调，无论 Promise resolved 或 rejectd 均调用
+1. `new Promise`：创建新 Promise 对象，参数为带有 `resolve` 和 `reject` 参数的回调，当异步操作成功时调用 `resolve`，失败时调用 `reject`
+2. `.then(onFulfilled, onRejected)`：参数为 `onFulfilled` 和 `onRejected` 回调，在 Promise resolved 或 rejectd 时调用 `onFulfilled` 或 `onRejected`；若传参为非函数则等同于 `.then(null)`，此时传递前一 Promise 结果；`.then`  返回值若为 Promise 本身则导致死循环
+3. `.catch(onRejected)`：参数为 `onRejected` 回调，在 Promise rejectd 时调用 `onRejected`；`.catch`  返回值若为 Promise 本身则导致死循环
+4. `.finally(onFinally)`：参数为 `onFinally` 回调，无论 Promise resolved 或 rejectd 均调用，回调本身不接收任何参数，其返回值为前一 Promise 结果，但若抛出异常则返回异常 Promise 对象
 
 静态方法：
 
@@ -23,7 +23,7 @@ const isPromise = (obj) =>
 
 Generator 对象遵循 ES6 迭代器协议，通过在函数名前添加星号定义，内部通过 `yield` 暂停函数执行 ，通过 `next` 恢复函数执行，调用 Generator 返回指针对象
 
-Async/Await 为 Generator 和 Promise 的语法糖，解决回调地狱、Generator 手动控制 `next` 和 Promise 链式调用等问题，以同步形式代码实现异步编程
+Async/Await 为 Generator 和 Promise 的语法糖，解决回调地狱、Generator  手动控制 `next` 和 Promise 链式调用等问题，以同步形式代码实现异步编程，`await` 本质为暂停当前 `async` 函数执行并将 `await` 对应行代码后的逻辑（即下一行及之后的代码）包装为新微任务，当 `await` 等待的 Promise 为 rejected 时，其中断当前 `async` 函数执行并将其返回的 Promise 也为 rejected
 
 异步编程即设法让其类似同步编程，在等待耗时任务完成时，不阻塞主线程，继续处理其他任务，待耗时任务完成后，再回过头来执行其后续逻辑
 

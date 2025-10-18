@@ -40,7 +40,7 @@ export const useStateWithCallback = (initialValue) => {
 };
 ```
 
-3. 手写 `usePrevious` 以保存上一状态的值
+3. 手写 `usePrevious` 以实现函数引用稳定和函数内部逻辑最新
 
 ```js
 export const usePrevious = (value) => {
@@ -50,7 +50,21 @@ export const usePrevious = (value) => {
 };
 ```
 
-4. 手写 `useFetch`：
+4. 手写 `useStableCallback` 以保存上一状态的值：
+
+```js
+export const useStableCallback = (callback) => {
+  const callbackRef = useRef(callback);
+  useEffect(() => (callbackRef.current = callback), [callback]);
+  const stableCallback = useCallback(
+    (...args) => callbackRef.current(...args),
+    []
+  );
+  return stableCallback;
+};
+```
+
+5. 手写 `useFetch`：
 
 ```js
 export const useFetch = (url) => {

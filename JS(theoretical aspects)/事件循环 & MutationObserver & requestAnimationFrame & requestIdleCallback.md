@@ -1,9 +1,7 @@
-浏览器：用户交互事件 -> 一个宏任务 -> 所有微任务 -> requestAnimationFrame -> DOM 渲染 + CSS 计算 + 布局+ 绘制 -> requestIdleCallback
+浏览器：一个宏任务 -> 所有微任务 -> requestAnimationFrame -> DOM 渲染 + CSS 计算 + 布局+ 绘制 -> requestIdleCallback
 
 宏任务队列：`script` 代码块、`setTimeout` 和 `setInterval`
-微任务队列：`Promise` 回调、`async` `await`、`process.nextTick`、`MutationObserver`
-渲染任务队列：DOM 渲染、CSS 计算、布局（Reflow）、绘制（Repaint）
-延迟任务队列：`requestIdleCallback` 注册的任务如后台数据同步和日志记录
+微任务队列：`Promise` 回调、`async/await`、`process.nextTick`、`MutationObserver`
 
 Node.js 的事件循环与浏览器的是完全不同的概念，V8 引擎解析 JavaScript，而 libuv 库调用 Node.js API，将不同任务分配给不同线程而形成事件循环，以异步方式将执行结果返回给 V8 引擎
 
@@ -13,7 +11,7 @@ MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关�
 
 | 配置选项            | 作用                              |
 | --------------- | ------------------------------- |
-| childList       | 监听子节点的增删                        |
+| childList       | 监听子节点增删                         |
 | attributes      | 监听属性值变化                         |
 | subtree         | 是否监听节点及其子节点                     |
 | characterData   | 监听节点及其子节点文本/内容变化                |

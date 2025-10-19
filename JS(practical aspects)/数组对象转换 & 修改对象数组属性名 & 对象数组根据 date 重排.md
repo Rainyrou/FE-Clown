@@ -88,7 +88,7 @@ const list = [
 console.log(arrayToObject(list)); // { clown: 666, Alice: 30, Bob: 40, Charlie: 50 }
 ```
 
-改变对象数组属性名：
+修改对象数组属性名：
 
 ```js
 const data = [

@@ -1,3 +1,7 @@
+###### 链式累加
+
+变式一：
+
 ```js
 function add(...args) {
   const sum = args.reduce((a, b) => a + b, 0);
@@ -8,6 +12,8 @@ function add(...args) {
 
 console.log(add(1, 2, 3)(4, 5)(6)()); // 21
 ```
+
+变式二：
 
 ```js
 function sum(...args) {
@@ -24,6 +30,25 @@ console.log(sum(1, 2).sumoff()); // 3
 console.log(sum(1, 2)(3).sumoff()); // 6
 console.log(sum(1)(2)(3)(4).sumoff()); // 10
 ```
+
+变式三：
+
+```js
+const add = (a, b) =>
+  new Promise((resolve) => setTimeout(() => resolve(a + b), 1000));
+
+const calculate = async (...nums) => {
+  let sum = 0;
+  for (let i = 0; i < nums.length; ++i) sum = await add(sum, nums[i]);
+  return sum;
+};
+
+calculate(1, 2, 3, 4)
+  .then((res) => console.log(res))
+  .catch((err) => console.error(err));
+```
+
+###### promisify
 
 根据题意：改写 sum 函数
 
@@ -71,7 +96,7 @@ async function sum(...args) {
 }
 ```
 
-`util.promisify` 将基于回调的函数转换为返回 Promise 的函数
+`promisify` 将基于回调的函数转换为返回 Promise 的函数
 
 ```js
 function promisify(fn) {

@@ -81,7 +81,7 @@ window.setTimeout = (callback, delay) => {
 };
 ```
 
-2. 堆栈反解与聚合策略：线上环境代码由于兼容编译和压缩打包与开发环境代码存在较大差异，构建时上传 Source Map 文件，建立压缩代码与源代码的映射关系，通过 `mozila/source-map` 库反向解析线上 JavaScript 错误堆栈，定位压缩代码位置即错误堆栈中的  `bundle.js:i:j`，Base64 VLQ 解码 `mappings`  字段查找对应源文件位置，还原原始堆栈，将  `bundle.js` 第 i 行 j 列映射到  `src/index.ts` 第 x 行 y 列，在聚合算法中基于 `name` 错误类型、`message` 消息及反解后的 `stacktrace` 堆栈帧生成 `fingerprint` 唯一指纹，如 Sentry 的堆栈拆分策略即提取堆栈帧中的函数名、文件名和代码行，通过哈希计算生成 `GroupingComponent`，确保相同逻辑错误聚合为同一 Issue，再根据错误影响用户数（如 >5）过滤偶发噪声，避免无效报警，以代码版本判断不同发布时期的错误
+2. 堆栈反解与聚合策略：线上环境代码由于兼容编译和压缩打包与开发环境代码存在较大差异，构建时上传 Source Map 文件，建立压缩代码与源代码的映射关系，通过 `mozila/source-map` 库反向解析线上 JavaScript 错误堆栈，定位压缩代码位置即错误堆栈中的  `bundle.js:i:j`，Base64 VLQ 解码 `mappings`  字段查找对应源文件位置，还原原始堆栈，将  `bundle.js` 第 i 行 j 列映射到  `src/index.ts` 第 x 行 y 列，在聚合算法中基于 `name` 错误类型、`message` 消息及反解后的 `stacktrace` 堆栈帧生成 `fingerprint` 唯一指纹，如 Sentry 的堆栈拆分策略即提取堆栈帧中的函数名、文件名和代码行，通过哈希计算生成 `GroupingComponent`，保证相同逻辑错误聚合为同一 Issue，根据错误影响用户数（如 >5）过滤偶发噪声
 
 ```js
 const rawSourceMap = fs.readFileSync('bundle.js.map');

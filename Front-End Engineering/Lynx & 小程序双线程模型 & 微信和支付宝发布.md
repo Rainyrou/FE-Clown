@@ -14,6 +14,7 @@
 
 - 依赖：`import { xx } from 'react'` -> `import { xx } from '@lynx-js/react'`，处理 React 18 → 17 的 API 降级如 `useId` 自动替换为 `uuid` 库
 - API：检测 `window/document` 相关调用如 `window.location.reload` 并替换为对应的 Lynx API `lynx.reload`，未实现功能通过 `NativeModules`  和自定义元件扩展
+
 * 元件：`div` → `view`、`span` → `text`、`img` → `image`，样式兼容 Lynx
 
 二、生态适配中间层
@@ -33,3 +34,12 @@
 3. 开发阶段：开发 VSCode 插件，基于 ReactLynx 规则在代码编写时实时提示
 
 四、性能优化
+
+小程序：
+
+小程序的 WebView 视图层与 App Service 逻辑层分离，通过 Native 层桥接跨线程通信（基于 JSON 序列化 / 反序列化），视图层负责 UI 渲染和用户交互，逻辑层负责业务逻辑，无法直接操作 DOM，视图层通过 JavaScript 向逻辑层发送请求并等待逻辑层返回结果后渲染页面
+
+跨端框架扮演翻译角色：
+
+1. 编译时转换：将跨端框架源码转换为 AST -> 根据平台差异应用对应转换规则，替换元件、依赖和 API -> 生成目标代码
+2. 运行时适配：模拟浏览器环境模拟，适配器模式（业务侧调用跨端框架 API，根据运行时环境抹平平台差异） + 条件编译（编写平台特有代码）

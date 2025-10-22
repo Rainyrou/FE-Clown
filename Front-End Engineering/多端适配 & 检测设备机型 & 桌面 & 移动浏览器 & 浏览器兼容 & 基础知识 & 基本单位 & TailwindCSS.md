@@ -25,13 +25,31 @@ Ideal Viewport：页面在移动端展示的理想大小，在浏览器调试移
 
 布局视口和视觉视口等于理想视口，`device-width` 即理想视口宽度，因此设置 `width=device-width` 即布局视口等于理想视口，而 `initial-scale` = 理想视口宽度 / 视觉视口宽度，因此设置为 1，1 个 CSS 像素等于 1 个设备独立像素
 
-3. vh & vw & Flex 弹性布局 & Grid 网格布局 & 响应式图片
+3. vh & vw & Flex 弹性布局 & Grid 网格布局 & 响应式图片 & 跨域字体
 
 即将视觉视口宽度 `window.innerWidth` 和高度 `window.innerHeight` 等分为 100 份，借助 PostCSS 的 `postcss-px-to-viewport` 插件来完成布局计算
 
 ![[Pasted image 20241015142400.png]]
 
 通过  `srcset`/`sizes`  或  `<picture>`  标签，根据设备像素比例或视口宽度自动加载对应分辨率的图片
+
+跨域字体：
+
+- 服务端配置 CORS，为其字体文件资源响应设置  `Access-Control-Allow-Origin`  头部字段
+- 字体转换为 Base64 格式
+- 通过  `new FontFace`  构造字体对象，通过  `crossOrigin: 'anonymous'`  让浏览器允许其匿名跨域加载，再将该字体对象添加至文档中
+
+高清适配：
+
+* 内部分辨率 = CSS 宽高 × 物理像素比：
+
+```js
+const scale = window.devicePixelRatio || 1;
+canvas.width = cssWidth * scale;
+canvas.height = cssHeight * scale;
+const ctx = canvas.getContext('2d');
+ctx.scale(scale, scale);
+```
 
 4. 媒体查询
 

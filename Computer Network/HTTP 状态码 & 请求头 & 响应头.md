@@ -18,6 +18,7 @@
 - 501 Not Implemented：服务端暂不支持请求所需功能
 - 502 Bad Gateway：服务端作为网关或代理时，从上游服务端接收到无效响应
 - 503 Service Unavailable：服务端暂时无法处理请求
+- 504 Gateway Timeout：网关超时，从上游服务端未接收到响应
 
 请求头：
 

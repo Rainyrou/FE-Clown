@@ -26,7 +26,7 @@
 - `Content-Length` 内容长度
 - `Accept` 允许接收的数据类型
 * `Accept-Encoding` 允许接收的压缩方式
-- `Cookie` 用户凭证，包含服务器通过 `Set-Cookie` 响应头部字段发送的一个或多个 Cookie
+- `Cookie` 用户凭证，包含服务器通过 `Set-Cookie` 响应头部字段发送的一或多个 Cookie
 - `Connection` 完成传输后是否关闭 TCP 连接，`keep-alive`（保持连接）和 `close`（关闭连接）
 - `Host` 访问的主机域名，指定请求的目标服务器
 - `User-Agent` 浏览器类型，标识发起请求的客户端类型

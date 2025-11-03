@@ -57,7 +57,7 @@ class LayoutObject {
 
 RenderLayer 渲染层（普通图层）：浏览器渲染流程中的第一层级，与 DOM 和 LayoutObject 一一对应，决定元素的层叠关系即 z 轴空间，其在 CPU 执行布局计算、绘制和合成等操作，通过根元素、定位属性、`opacity`、`transform`、`filter`、`mask`、`mix-blend-mode` 和 `overflow: hidden` 等触发层叠上下文
 GraphicsLayer 图形层：浏览器生成最终图像的层级，其存储于共享内存，拥有独立的图形上下文，生成该层的位图并将位图作为纹理上传至 GPU 并参与最终绘制，此外非合成层与父层共享图形层
-CompositingLayer 合成层（复合图层）：为优化特定操作如动画效果而硬件加速即将某元素变为一个复合图层如`position: fixed`、`<video>`、`<canvas>`、`<iframe>`、`translate3d`、`translateZ`、`transform`、`opacity` 和`filter` + `will-change` 等，在 GPU 中独立合成图像，文档流即为一个复合图层，`absolute` 和 `fixed` 虽脱离文档流，但其仍属于同一默认复合图层，而开启硬件加速的元素则变为另一复合图层，其独立于文档流的默认复合图层
+CompositingLayer 合成层（复合图层）：为优化特定操作如动画效果而硬件加速即将某元素变为复合图层如主动触发即静态生效 + 强制创建 `transform(3D)/will-change/overflow: scroll/auto/iframe/video/canvas/backdrop-filter`、被动触发即条件触发 + 优化性能 `transform(2D)/opacity/filter/position: fixed/sticky/z-index` 等，在 GPU 中独立合成图像，文档流即为复合图层，开启硬件加速的元素则为另一复合图层
 
 重绘：元素的外观变化但几何属性不变时触发重绘，浏览器需更新元素外观但无需重新计算元素的几何属性及页面布局，触发重绘的操作：修改 `color`、`background-color` 和 `visibility` 的值
 回流：元素的几何属性变化时触发回流，浏览器需重新计算元素的几何属性及页面布局，触发回流的操作：设置 `style` 或 CSS 伪类，修改元素的几何属性如 `width`、`height`、`padding`、`border` 和 `margin`，增删可见 DOM 元素，刷新页面或修改视口

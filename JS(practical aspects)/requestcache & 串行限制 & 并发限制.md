@@ -1,3 +1,37 @@
+实现 requestcache 函数，若为相同 URL 则直接返回缓存，超过限制则使用 LRU策略
+
+```js
+class RequestCache {
+  constructor(capacity) {
+    this.map = new Map();
+    this.capacity = capacity;
+  }
+
+  request(url) {
+    if (this.map.has(url)) {
+      const promise = this.map.get(url);
+      this.map.delete(url);
+      this.map.set(url, promise);
+      return promise;
+    }
+    const promise = (async () => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(response.status);
+        const result = await response.json();
+        return result;
+      } catch (err) {
+        throw new Error(err);
+      }
+    })();
+    this.map.set(url, promise);
+    if (this.map.size > this.capacity)
+      this.map.delete(this.map.keys().next().value);
+    return promise;
+  }
+}
+```
+
 ###### 串行限制
 
 变式一：

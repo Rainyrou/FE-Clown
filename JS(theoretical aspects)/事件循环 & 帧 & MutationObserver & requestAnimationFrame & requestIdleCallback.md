@@ -12,6 +12,8 @@ Node.js：V8 引擎解析 JavaScript，libuv 库调用 Node.js API 将不同任�
 - 检查阶段：执行  `setImmediate`  调度的回调
 - 关闭回调阶段：执行关闭事件的回调
 
+帧为浏览器渲染流程的载体（渲染引擎），事件循环为 JavaScript 单线程的调度机制（JavaScript 引擎）
+
 MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关系以树形结构形式存储，浏览器记录任何对 DOM 树的增删改操作并存储于内部的 Mutation Record 队列。在浏览器的事件循环中，在执行完当前宏任务后，`MutationObserver` 的回调函数作为微任务执行，其遍历内部的 Mutation Record 队列，处理记录的 DOM 变化，此种按需触发机制比持续遍历完整 DOM 树的轮询机制有更佳的性能，但其无法直接监听样式变化和事件的增删操作
 
 | 配置选项        | 作用                                      |

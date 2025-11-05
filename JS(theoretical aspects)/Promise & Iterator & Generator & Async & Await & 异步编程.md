@@ -21,9 +21,19 @@ const isPromise = (obj) =>
   typeof obj.catch === "function";
 ```
 
-Generator 对象遵循 ES6 迭代器协议，通过在函数名前添加星号定义，内部通过 `yield` 暂停函数执行 ，通过 `next` 恢复函数执行，调用 Generator 返回指针对象
+Iterator：
 
-Async/Await 为 Generator 和 Promise 的语法糖，解决回调地狱、Generator  手动控制 `next` 和 Promise 链式调用等问题，以同步形式代码实现异步编程，`await` 本质为暂停当前 `async` 函数执行并将 `await` 对应行代码后的逻辑（即下一行及之后的代码）包装为新微任务，当 `await` 等待的 Promise 为 rejected 时，其中断当前 `async` 函数执行并将其返回的 Promise 也为 rejected
+- 遵循 ES6 迭代器协议，调用 `Symbol.iterator` 返回 Iterator 本身
+- 调用 `next` 返回由当前元素 value 和是否结束 done 构成的对象
+- done 为 false -> value 为当前元素 + done 为 true -> value 为遍历结束值
+- 内部通过数组索引和对象属性指针维护遍历状态
+
+Generator：
+
+* 遵循 ES6 迭代器协议，调用 `Symbol.iterator` 返回 Generator 本身，通过在函数名前添加星号定义
+* 内部调用 `yield` 暂停函数执行 ，调用 `next` 恢复函数执行，调用 Generator 函数返回指针对象
+
+Async/Await 为 Generator 和 Promise 的语法糖，解决回调地狱、Generator  手动控制 `next` 和 Promise 链式调用等问题，以同步形式代码实现异步编程，`await`  本质为暂停当前 `async` 函数执行并将  `await`  对应行代码后的逻辑（即下一行及之后的代码）包装为新微任务，当 `await` 等待的 Promise 为 rejected 时，其中断当前 `async` 函数执行并将其返回的 Promise 也为 rejected
 
 异步编程即设法让其类似同步编程，在等待耗时任务完成时，不阻塞主线程，继续处理其他任务，待耗时任务完成后，再回过头来执行其后续逻辑
 

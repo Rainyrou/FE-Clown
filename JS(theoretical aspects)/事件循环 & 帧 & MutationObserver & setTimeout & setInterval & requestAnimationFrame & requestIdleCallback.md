@@ -43,7 +43,12 @@ MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关�
 
 ![[Pasted image 20241116091325.png]]
 
+主线程阻塞时 `setTimeout` 和 `setInterval` 的行为：定时器线程计时 + 回调入队，主线程执行回调，`setTimeout` 一次计时一次入队，主线程阻塞后延迟执行且无回调堆积，`setInterval` 重复计时多次入队，主线程阻塞后批量执行，若为同一 `setInterval` 源且尚未执行的任务则丢弃新任务
+
+定时器延迟时间超过主线程阻塞时 `setTimeout` 和 `setInterval` 的行为：`setTimeout` 根据延迟时间执行（无额外延迟且无回调堆积），`setInterval` 根据时间间隔重复执行且无回调堆积
+
 `setTimeout` 和 `setInterval` 的缺陷：其为宏任务，需等待浏览器所有同步任务及高优先级任务执行完毕才执行，此外其为手动设置，浏览器无法保证回调函数与屏幕刷新同步（渲染过度 & 渲染不足）
 
 `requestAnimationFrame` 同步浏览器刷新率，保证回调在浏览器下一次重绘前执行
+
 `requestIdleCallback` 在浏览器主线程空闲时（当前帧任务执行完后，在下一帧开始前的空闲阶段）执行低优先级的延迟任务如后台数据同步和日志记录

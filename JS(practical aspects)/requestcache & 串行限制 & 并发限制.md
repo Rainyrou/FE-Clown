@@ -84,14 +84,13 @@ pipeline(5)
 变式三：
 
 ```js
-const mergePromise = (promisesFn) => {
-  let sequence = Promise.resolve();
+const mergePromise = async (promisesFn) => {
   const ans = [];
-  promisesFn.forEach(
-    (promiseFn) =>
-      (sequence = sequence.then(() => promiseFn()).then((res) => ans.push(res)))
-  );
-  return sequence.then(() => ans);
+  for (const promiseFn of promisesFn) {
+    const result = await promiseFn();
+    ans.push(result);
+  }
+  return ans;
 };
 
 const timeout = (time) =>

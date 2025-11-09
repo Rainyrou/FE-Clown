@@ -1,3 +1,50 @@
+解析 Markdown 标题语法为指定格式文本：
+
+```js
+const parseHeadings = (markdownText, format = "html") =>
+  markdownText.replace(/^(#{1,6})\s+(.+)$/gm, (all, hashes, content) => {
+    const level = hashes.length,
+      text = content.trim();
+    if (format === "html") return `<h${level}>${text}</h${level}>`;
+    if (typeof format === "function") return format(level, text);
+    return all;
+  });
+
+const md = `
+# 这是 H1
+## 这是 H2
+这是一个段落。
+###   这是 H3（前面有空格）
+无效的 # 标题
+####### 这不是 H7
+`;
+const htmlOutput = parseHeadings(md, "html");
+console.log(htmlOutput);
+
+/*
+--- HTML 输出 ---
+<h1>这是 H1</h1>
+<h2>这是 H2</h2>
+这是一个段落。
+<h3>这是 H3（前面有空格）</h3>
+无效的 # 标题
+####### 这不是 H7
+*/
+
+const customFormat = (level, text) => `[标题 ${level}] - ${text}`;
+const customOutput = parseHeadings(md, customFormat);
+console.log(customOutput);
+
+/*
+[标题 1] - 这是 H1
+[标题 2] - 这是 H2
+这是一个段落。
+[标题 3] - 这是 H3（前面有空格）
+无效的 # 标题
+####### 这不是 H7
+*/
+```
+
 模板引擎：
 
 ```js

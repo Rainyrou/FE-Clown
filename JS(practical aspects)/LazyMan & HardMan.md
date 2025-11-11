@@ -17,7 +17,7 @@ class lazyMan {
   sleepFn(time) {
     return new Promise((resolve) =>
       setTimeout(() => {
-        console.log(`Wake up after ${time}`);
+	    console.log(`Wake up after ${time}`);
         resolve();
       }, time * 1000)
     );

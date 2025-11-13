@@ -1,3 +1,20 @@
+从根节点开始遍历 DOM 树，打印所有节点的 tagName：
+
+```js
+const dfs = (root = document.documentElement) => {
+  const stk = [root];
+  while (stk.length) {
+    const cur = stk.pop();
+    if (cur.nodeType === 1) console.log(cur.tagName); // 元素节点标识
+    Array.from(cur.childNodes)
+      .reverse()
+      .forEach((child) => stk.push(child));
+  }
+};
+
+dfs();
+```
+
 ```js
 const JSON2DOM = (json) => {
   if (json.type === "text") return document.createTextNode(json.content);

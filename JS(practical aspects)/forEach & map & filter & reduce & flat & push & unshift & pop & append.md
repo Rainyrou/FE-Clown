@@ -105,3 +105,13 @@ const _pop = (arr) => {
   return last;
 };
 ```
+
+7. `append`
+
+```js
+const append = (nums, ...args) => {
+  const arr = Array.isArray(nums) ? [...nums] : [];
+  const filtered = args.filter((item) => item !== undefined && item !== null);
+  return [...arr, ...filtered];
+};
+```

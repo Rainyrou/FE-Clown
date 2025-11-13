@@ -14,8 +14,8 @@ const createModel = (hook) => {
     const value = hook();
     return <Context.Provider value={value}>{children}</Context.Provider>;
   };
-  const useContextCostom = useContext(Context);
-  return { Provider, useContext: useContextCostom };
+  const useCustomContext = useContext(Context);
+  return { Provider, useContext: useCustomContext };
 };
 
 const Store = createModel(useStore);
@@ -85,7 +85,7 @@ export const useStateWithCallback = (initialValue) => {
 };
 ```
 
-3. 手写 `usePrevious` 以实现函数引用稳定和函数内部逻辑最新
+3. 手写 `usePrevious` 以保存上一状态的值：以实现函数引用稳定和函数内部逻辑最新
 
 ```js
 export const usePrevious = (value) => {
@@ -95,7 +95,7 @@ export const usePrevious = (value) => {
 };
 ```
 
-4. 手写 `useStableCallback` 以保存上一状态的值：
+4. 手写 `useStableCallback` 以实现函数引用稳定和函数内部逻辑最新：
 
 ```js
 export const useStableCallback = (callback) => {

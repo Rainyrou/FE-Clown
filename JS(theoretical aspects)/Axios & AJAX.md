@@ -1,8 +1,3 @@
-1. Axios：通过 `CancelToken` 创建取消令牌，在发送请求时携带，通过调用 `cancel` 取消请求
-2. XMLHttpRequest：通过调用 `XMLHttpRequest.abort` 取消请求
-3. Fetch：通过 `AbortController` 创建实例信号，在发送请求时携带，当信号触发时通过 `abort` 取消请求
-4. WebSocket：通过调用 `WebSocket.close` 取消请求
-
 Axios：基于 Promise，其作为函数/对象，当作为函数调用时，实际调用 `Axios.prototype.request` 方法，当作为对象使用时，其封装 `request` 方法并预设请求方法类型，Axios 初始化时自动创建实例（可通过 `axios.create(config)` 手动创建），其配置默认请求参数，合并配置对象，在请求发送前，其遍历并执行注册的所有请求拦截器，请求拦截器处理请求数据，而在响应返回给调用者前，其逆序遍历并执行注册的所有响应拦截器，响应拦截器处理响应数据
 
 Axios 拦截器（Promise 链中间件）基于 JavaScript 异步特性、Promise 链及拦截和修改请求响应的机制，在请求发送/响应到达前后自定义逻辑，请求拦截器在Promise 链前端添加，响应拦截器在Promise 链后端添加以链式调用，其内部维护两个拦截器列表分别用于请求和响应拦截器，在拦截器链中若任一拦截器抛出错误或返回 rejected Promise，后续拦截器不再执行，通过 catch 捕获错误

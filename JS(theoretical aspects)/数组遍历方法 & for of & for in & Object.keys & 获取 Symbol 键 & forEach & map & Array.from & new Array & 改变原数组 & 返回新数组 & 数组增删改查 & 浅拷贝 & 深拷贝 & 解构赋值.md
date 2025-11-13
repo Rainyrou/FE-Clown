@@ -33,3 +33,18 @@
 改变原数组的方法：`push` + `pop` + `unshift` + `shift` + `sort` + `reverse` + `splice`
 
 返回新数组的方法：`Array.from` + `new Array` + `map` + `flatMap` + `filter` + `concat` + `slice`
+
+Add：`push/unshift/splice/concat`
+Delete：`pop/shift/splice`
+Update：`splice/=`
+Search：`indexOf/find/findIndex/includes/filter/every/some`
+
+浅拷贝只拷贝指向引用数据类型对象的堆内存指针，只拷贝对象的第一层属性，而深拷贝拷贝引用数据类型对象的所有属性至新对象中，若其属性值围仍引用其他对象，则递归拷贝对象的所有层级
+
+浅拷贝：`lodash.clone/Object.assign/[...arr]/arr.slice/Array.from`
+深拷贝：`lodash.cloneDeep/structuredClone/JSON.stringify+parse`
+
+解构赋值基于 JavaScript 引擎对模式匹配和可迭代对象的内部处理机制
+
+* 数组解构（可迭代协议）：调用 `[Symbol.iterator]` 方法获取迭代器对象，JavaScript 引擎依次调用迭代器对象的 `next` 方法直至目标列表的所有变量均赋值
+* 对象解构（属性查找，与通过点运算符或方括号查找对象属性本质相同）：将解构模式中的属性名视为目标键， 通过这些键在右侧的 JavaScript 对象上进行属性查找

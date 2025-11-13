@@ -4,18 +4,17 @@
 class ArrayReader {
   constructor(arr) {
     this.arr = arr;
-    this.idx = idx;
+    this.idx = 0;
   }
   getReader() {
     return this;
   }
   read(n = 1) {
-    if (!Number.isInteger(n) || n <= 0)
-      throw new Error("Parameter must be a positive integer");
+    if (n <= 0) throw new Error("");
     if (this.idx >= this.arr.length) return [];
-    const res = this.arr.slice(this.idx, this.idx + n);
+    const ans = this.arr.splice(this.idx, this.idx + n);
     this.idx += n;
-    return res;
+    return ans;
   }
 }
 ```

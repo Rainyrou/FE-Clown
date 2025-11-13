@@ -35,6 +35,13 @@ window.addEventListener("DOMContentLoaded", () => {
 7. location：提供与当前 URL 交互的属性和方法
 8. navigator：提供有关浏览器的信息如浏览器版本和操作系统
 
+新 Tab 开启新进程：
+
+* 现代浏览器默认新 Tab 开启新进程，但存在同站进程复用优化，本质为浏览器多进程架构下的"隔离优先、优化兜底"设计
+* 早期浏览器为单进程架构，所有 Tab、JavaScript 执行、DOM 渲染和网络请求置于同一进程，一个 Tab 崩溃即导致整个浏览器卡死且恶意脚本可能通过进程共享窃取其他 Tab 数据，现代浏览器为多进程架构，通过进程隔离将不同功能模块拆分至独立进程，避免单点故障和数据泄露
+* 各个 Tab 默认对应一个独立渲染进程，一个 Tab 崩溃导致当前渲染进程中断，而其他 Tab 不受影响，各个渲染进程运行于沙箱中，无法直接访问系统资源或其他进程，多进程通过 CPU 多核特性多并行处理多个 Tab 的渲染和 JavaScript 执行
+* 同站（协议 + 域名 + 端口）进程复用优化即同站新 Tab 复用已有渲染进程，共享内存中的公共资源，减少内存占用
+
 Chromium 118+采用单主线程 + 多协作线程模型
 
 - 主线程串行处理解析任务，HTML 解析器流式解析 HTML 生成 DOM 树，解析 CSS 生成 CSS Object Model 树，若遇到内联且无 async/defer 的 JavaScript 则立即停止 DOM 解析，加载并执行 JavaScript，有 async/defer 的 JavaScript 则与 DOM 解析并行加载执行，多个 async 的 JavaScript 分别在加载后立即执行，在 HTML 中的执行顺序无法保证，而多个 defer 的 JavaScript 则保持在 HTML 中的执行顺序，而 CSS 加载虽不阻塞 DOM 的解析，但由于后续 Layout 树依赖于 CSS Object Model 树，因此 CSS 加载阻塞 Layout 树生成

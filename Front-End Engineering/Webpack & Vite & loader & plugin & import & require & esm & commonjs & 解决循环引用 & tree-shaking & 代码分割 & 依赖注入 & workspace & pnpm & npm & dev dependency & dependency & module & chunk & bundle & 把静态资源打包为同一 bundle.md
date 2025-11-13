@@ -38,8 +38,8 @@ module.exports = function (source, sourceMap?, data?) {
 
 Loader 的使用：
 
-1. 在 `webpack.config.js` 中配置
-2. 通过内联使用，在 `import` 语句中显示指定
+- 在 `webpack.config.js` 中配置
+- 通过内联使用，在 `import` 语句中显示指定
 
 自定义 Loader：
 
@@ -187,6 +187,12 @@ Tree-Shaking：ES Module 的依赖关系在编译时是确定的，支持静态�
 - 无法分析动态导入和 CommonJS 的依赖关系
 - 无法移除有副作用的模块
 
+动态导入实现 Tree-Shaking：
+
+- 强制使用 ES Module + 强制无副作用代码标注（配置  `sideEffects: false`）
+- 路径静态化：模板字符串固定前缀，通过 Webpack `optimization.splitChunks` 和 Vite `rollupOptions.manualChunks` 预解析所有可能的目标模块，将各个模块打包为独立 Chunk 且静态识别并移除 Chunk 内未被引用的成员
+- 编译&运行阶段 Tree-Shaking
+
 代码分割：通过静态分析获取模块间的依赖关系，哪些模块是可拆分的，哪些模块是相互依赖的，哪些模块是共享的，哪些模块是首屏所需的，根据模块依赖图采取以下策略：
 
 - 通过入口分割拆分不同页面代码，为各个入口点生成独立 Chunk，各个 Chunk 仅包含该入口点所需代码
@@ -203,10 +209,10 @@ Workspace：
 
 npm & pnpm：
 
-1. 安装速度：npm 安装依赖比 pnpm 慢，复制完整依赖比复制硬链接和符号链接慢
-2. 存储策略：当通过 npm 于不同项目安装相同依赖时，其存储这些依赖于各个项目的 `node_modules` 中，而 pnpm 在根目录通过硬链接将依赖存储于全局内容可寻址存储，依赖无论安装几次，在硬盘上只存储一次，同时在 `node_modules` 中为各个包创建硬链接或符号链接，项目据此访问全局存储的依赖
-3. 依赖关系：在 npm/yarn 的扁平化结构中，某包可访问未在其 `package.json` 中声明但在根目录被依赖提升的依赖，pnpm 维持严格的依赖关系树，在根目录通过硬链接将依赖存储于全局内容可寻址存储，再在各个包的 `node_modules` 中通过符号链接确保其只能访问其 `package.json` 中明确声明的依赖
-4. Monorepo 支持 & 兼容性：pnpm 原生支持 Monorepo，兼容性不如 npm，命令参数和选项有所差异
+* 安装速度：npm 安装依赖比 pnpm 慢，复制完整依赖比复制硬链接和符号链接慢
+* 存储策略：当通过 npm 于不同项目安装相同依赖时，其存储这些依赖于各个项目的 `node_modules` 中，而 pnpm 在根目录通过硬链接将依赖存储于全局内容可寻址存储，依赖无论安装几次，在硬盘上只存储一次，同时在 `node_modules` 中为各个包创建硬链接或符号链接，项目据此访问全局存储的依赖
+* 依赖关系：在 npm/yarn 的扁平化结构中，某包可访问未在其 `package.json` 中声明但在根目录被依赖提升的依赖，pnpm 维持严格的依赖关系树，在根目录通过硬链接将依赖存储于全局内容可寻址存储，再在各个包的 `node_modules` 中通过符号链接确保其只能访问其 `package.json` 中明确声明的依赖
+* Monorepo 支持 & 兼容性：pnpm 原生支持 Monorepo，兼容性不如 npm，命令参数和选项有所差异
 
 Dev Dependency：在开发测试编译构建必须存在的依赖（测试/构建/格式化/类型定义工具），其不具有传递性；由工具链加载和执行如构建工具打包代码、Babel  编译 ES6 → ES5、Jest  单元测试，其作用在构建阶段结束后完成，不被打包至最终生产 Bundle
 

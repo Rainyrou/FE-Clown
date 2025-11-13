@@ -528,11 +528,7 @@ vw = (px / window.innerWidth) * 100
 Pixel Per Inch：描述屏幕/图片清晰度
 Dot Per Inch：点可为屏幕/图片像素点或打印机的墨点
 Device Independent Pixels：iOS 尺寸单位为 pt，Android 的尺寸单位为 dp，React Native 中未明确指定单位，但其实均为设备独立像素
-Device Pixel Ratio：即物理像素和 DIP 的比值，通过 `window.devicePixelRatio`（JavaScript）、`min-device-pixel-ratio`（媒体查询）和 `PixelRatio.get`（React Native）获取
-
-React Native 开发 App 时，原型图基于物理像素，为适配所有机型，在写样式时将物理像素转换为设备独立像素如给定元素高度为 200px，某设备像素比为 2，则给定的 height 应为 200px / 2 = 100dp
-
-Web 页面的缩放系数 = CSS 像素 / 设备独立像素
+Device Pixel Ratio：即设备像素比=物理像素/逻辑像素，通过 `window.devicePixelRatio`（JavaScript）、`min-device-pixel-ratio`（媒体查询）和 `PixelRatio.get`（React Native）获取
 
 Viewport：当前屏幕可见区域，在 Web 中与浏览器窗口相同，不包括浏览器 UI 和菜单栏等
 Layout Viewport：页面布局的基准窗口，在 Web 中布局视口即浏览器窗口但不包括 margin、border 和滚动条，在移动端中布局视口默认为 980px，保证 PC 浏览器页面在移动端浏览器上的呈现，用户可手动放大，通过 `document.documentElement.clientWidth` 和 `document.documentElement.clientHeight` 获取

@@ -1,4 +1,4 @@
-`instanceof`  用于判断 JavaScript 对象的构造函数的  prototype 属性是否出现于该 JavaScript 对象的原型链上
+`instanceof`  用于判断 JavaScript 对象的构造函数的  prototype 属性是否在该 JavaScript 对象的原型链上
 
 ```JavaScript
 const _instanceof = (target, fn) => {

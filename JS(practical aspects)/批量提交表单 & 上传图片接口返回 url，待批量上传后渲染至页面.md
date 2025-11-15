@@ -73,6 +73,8 @@ document
   );
 ```
 
+上传图片接口返回 url，待批量上传后渲染至页面：
+
 ```js
 const uploadImage = (file) =>
   new Promise((resolve, reject) =>

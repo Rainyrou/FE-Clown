@@ -13,3 +13,5 @@
 - 跨域 HTTP 请求
 - 跨域 DOM 访问：不同源 Iframe
 - 跨域存储访问：不同源脚本无法访问和修改彼此的 `Cookie`、`LocalStorage` 和 `SessionStorage`
+
+Postman：与服务端建立 HTTP 连接，发送请求和返回响应，无同源策略和 CORS 校验机制，只要服务端正常处理请求并返回响应，Postman 均不进行任何拦截，直接展示服务端响应

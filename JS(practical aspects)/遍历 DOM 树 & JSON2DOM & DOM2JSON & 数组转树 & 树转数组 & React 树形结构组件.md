@@ -19,7 +19,7 @@ dfs();
 const JSON2DOM = (json) => {
   if (json.type === "text") return document.createTextNode(json.content);
   if (json.type === "comment") return document.createComment(json.content);
-  const element = document.createElement(json.tag.toLocaleLowerCase());
+  const element = document.createElement(json.tag.toLowerCase());
   for (const key in json.attributes)
     element.setAttribute(key, json.attributes[key]);
   for (const child of json.children) element.appendChild(JSON2DOM(child));
@@ -29,10 +29,8 @@ const JSON2DOM = (json) => {
 
 ```js
 const DOM2JSON = (node) => {
-  if (node.nodeType === Node.TEXT_NODE) {
-    const text = node.textContent.trim();
-    return text ? { type: "text", content: text } : null;
-  }
+  if (node.nodeType === Node.TEXT_NODE)
+    return { type: "text", content: node.textContent };
   if (node.nodeType === Node.COMMENT_NODE)
     return { type: "comment", content: node.textContent };
   const obj = {
@@ -41,7 +39,7 @@ const DOM2JSON = (node) => {
     children: [],
   };
   for (const attr of node.attributes) obj.attributes[attr.name] = attr.value;
-  for (const item of node.children) obj.children.push(DOM2JSON(item));
+  for (const child of node.children) obj.children.push(DOM2JSON(child));
   return obj;
 };
 ```
@@ -320,7 +318,7 @@ const TreeNode = ({ node }) => {
   );
 };
 
-const App = () => {
+export const App = () => {
   return (
     <>
       {treeData.list.map((node) => (
@@ -329,6 +327,4 @@ const App = () => {
     </>
   );
 };
-
-export default App;
 ```

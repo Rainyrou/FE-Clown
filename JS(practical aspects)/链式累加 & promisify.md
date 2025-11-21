@@ -17,12 +17,9 @@ console.log(add(1, 2, 3)(4, 5)(6)()); // 21
 
 ```js
 function sum(...args) {
-  const allArgs = [...args];
-  const fn = (...newArgs) => {
-    allArgs.push(...newArgs);
-    return fn; // 链式收集
-  };
-  fn.sumoff = () => allArgs.reduce((a, b) => a + b, 0);
+  const curSum = args.reduce((a, b) => a + b, 0);
+  const fn = (...newArgs) => sum(curSum, ...newArgs);
+  fn.sumoff = () => curSum;
   return fn;
 }
 
@@ -77,9 +74,13 @@ async function sum(...args) {
 })();
 ```
 
-`await` 的作用为"等待一个 Promise 完成并返回其结果"，但 `asyncAdd` 内部调用 `setTimeout`，而 `setTimeout` 的返回值为定时器 ID，新增的 `promisifyAsyncAdd` 函数补全 `cb` 参数 + 将回调转换为 Promise
+* `await` 的作用为"等待一个 Promise 完成并返回其结果"，但 `asyncAdd` 内部调用 `setTimeout`，而 `setTimeout` 的返回值为定时器 ID，`promisifyAsyncAdd` 函数补全 `cb` 参数 + 将回调转换为 Promise
+* `promisifyAsyncAdd` 传递给 `asyncAdd` 的箭头函数即 `cb` 回调，当 `asyncAdd` 内部调用 `cb` 时实参根据顺序直接绑定于箭头函数的形参上
 
 ```js
+const asyncAdd = (a, b, cb) =>
+  setTimeout(() => cb(null, a + b), Math.floor(Math.random() * 1000));
+
 const promisifyAsyncAdd = (a, b) =>
   new Promise((resolve, reject) =>
     asyncAdd(a, b, (err, result) => (err ? reject(err) : resolve(result)))
@@ -94,6 +95,13 @@ async function sum(...args) {
   const right = await sum(...args.slice(half + 1));
   return await promisifyAsyncAdd(left, right);
 }
+
+(async () => {
+  const result1 = await sum(1, 4, 6, 9, 2, 4);
+  const result2 = await sum(3, 4, 9, 2, 5, 3, 2, 1, 7);
+  const result3 = await sum(1, 6, 0, 5);
+  console.log([result1, result2, result3]); // [26, 36, 12]
+})();
 ```
 
 `promisify` 将基于回调的函数转换为返回 Promise 的函数

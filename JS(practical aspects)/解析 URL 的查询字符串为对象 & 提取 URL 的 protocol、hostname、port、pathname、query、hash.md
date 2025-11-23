@@ -57,9 +57,66 @@ console.log(
 );
 ```
 
-非捕获组 `(?:...)` 通过括号进行逻辑分组，但不将其计入最终的 `matches` 结果数组中
+`match` 方法的参数为不含 `g` 修饰符的正则表达式时，其返回数组，数组首元素为与该正则表达式模式相匹配的完整字符串，其他元素为与正则表达式中通过括号定义的捕获组匹配的子字符串
 
-| 符号  | 位置        | **含义**  | 示例       |
-| --- | --------- | ------- | -------- |
-| `^` | 正则最开头     | 字符串起始位置 | `^abc`   |
-| `^` | 方括号 `[` 后 | 匹配非 X   | `[^abc]` |
+```js
+const parseQueryString = (queryString) => {
+  const obj = {};
+  if (!queryString) return obj;
+  queryString.split("&").forEach((part) => {
+    const [key, val = ""] = part.split("=");
+    const decodedKey = decodeURIComponent(key);
+    const decodedVal = decodeURIComponent(val.replace(/\+/g, " "));
+    obj[decodedKey] = obj[decodedKey]
+      ? [].concat(obj[decodedKey], decodedVal)
+      : decodedVal;
+  });
+  return obj;
+};
+
+const parseUrl = (url) => {
+  const result = {
+    protocol: null,
+    hostname: null,
+    port: null,
+    pathname: "/",
+    query: {},
+    hash: "",
+  };
+
+  const protocolMatch = url.match(/^([a-z]+):\/\//);
+  if (protocolMatch) {
+    result.protocol = protocolMatch[1];
+    let rest = url.slice(protocolMatch[0].length);
+    
+    const hashIndex = res.indexOf("#");
+    if (hashIndex !== -1) {
+      result.hash = res.slice(hashIndex + 1);
+      res = res.slice(0, hashIndex);
+    }
+
+    const queryIndex = res.indexOf("?");
+    if (queryIndex !== -1) {
+      const queryString = res.slice(queryIndex + 1);
+      result.query = parseQueryString(queryString);
+      res = res.slice(0, queryIndex);
+    }
+
+    const parts = res.split("/"),
+      hostPortPart = parts[0];
+    if (parts.length > 1) result.pathname = "/" + parts.slice(1).join("/");
+    if (hostPortPart) {
+      const [hostname, portStr] = hostPortPart.split(":");
+      result.hostname = hostname;
+      result.port = portStr ? Number(portStr) : null;
+    }
+  }
+  return result;
+};
+
+console.log(
+  parseUrl(
+    "https://www.example.com:8080/path/to/page?user=test&id=123&id=456&q=a+b#section1"
+  )
+);
+```

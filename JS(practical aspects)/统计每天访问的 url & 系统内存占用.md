@@ -1,4 +1,29 @@
-扫描线算法
+统计每天访问的 url：
+
+```js
+class Tracker {
+  constructor() {
+    this.visited = {};
+  }
+  set(url, date) {
+    if (!this.visited[date]) this.visited[date] = [];
+    this.visited[date].push(url);
+  }
+  get(date) {
+    return this.visited[date];
+  }
+}
+
+const tracker = new Tracker();
+tracker.set("https://github.com/Rainyrou/FE-Clown", "2024-04-05");
+tracker.set("https://github.com/Rainyrou", "2024-04-05");
+tracker.set("https://github.com/Rainyrou/Pocket-React", "2024-04-06");
+
+console.log(tracker.get("2024-04-05")); // [ 'https://github.com/Rainyrou/FE-Clown', https://github.com/Rainyrou' ]
+console.log(tracker.get("2024-04-06")); // [ 'https://github.com/Rainyrou/Pocket-React' ]
+```
+
+查找系统内存占用最大时对应的内存和事件：
 
 ```js
 const findMaxMemoryUsage = (requests) => {
@@ -7,7 +32,7 @@ const findMaxMemoryUsage = (requests) => {
     events.push({ time: start, type: "start", memory, id });
     events.push({ time: end, type: "end", memory, id });
   });
-  // 时间相同时，结束事件优先于开始事件，保证内存释放后再分配
+  // 时间相同时，结束事件先于开始事件以释放内存后再分配
   events.sort((a, b) => a.time - b.time || (a.type === "end" ? -1 : 1));
   let maxMemory = 0,
     curMemory = 0,

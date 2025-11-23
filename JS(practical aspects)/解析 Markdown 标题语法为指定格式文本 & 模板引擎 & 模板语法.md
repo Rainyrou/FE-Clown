@@ -22,7 +22,6 @@ const htmlOutput = parseHeadings(md, "html");
 console.log(htmlOutput);
 
 /*
---- HTML 输出 ---
 <h1>这是 H1</h1>
 <h2>这是 H2</h2>
 这是一个段落。
@@ -72,7 +71,7 @@ String.prototype.render = function (data) {
 - `#?` -> 可选 `#` 用于区分表达式和数据占位符
 - `[\s\S]*?` -> 非贪婪匹配任意字符包括空白字符 `\s` 和非空白字符 `\S`
 - `eval` 执行 JavaScript 代码
-- `with` 将 `data` 对象属性添加至作用域链顶端，直接访问 `data` 对象属性（无需以 `data.xxx` 形式而以 `xxx` 的形式访问） 
+- `with` 将 `data` 对象属性提升至作用域链顶部，可直接以 `xxx` 的形式访问 `data` 对象属性而无需以 `data.xxx` 的形式
 
 测试用例：
 

@@ -30,9 +30,9 @@ const hex2Rgb = (hex) => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-console.log(hex2Rgb("#FF0000")); // "rgb(255, 0, 0)"
-console.log(hex2Rgb("#F00")); // "rgb(255, 0, 0)" (处理了速记)
-console.log(hex2Rgb("0033FF")); // "rgb(0, 51, 255)" (处理了无#)
-console.log(hex2Rgb("#123")); // "rgb(17, 34, 51)" (展开 "112233")
+console.log(hex2Rgb("#FF0000")); // rgb(255, 0, 0)
+console.log(hex2Rgb("#F00")); // rgb(255, 0, 0)"
+console.log(hex2Rgb("0033FF")); // rgb(0, 51, 255)
+console.log(hex2Rgb("#123")); // rgb(17, 34, 51)
 console.log(hex2Rgb("#12345")); // null
 ```

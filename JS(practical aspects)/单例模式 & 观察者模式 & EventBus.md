@@ -1,3 +1,65 @@
+单例模式：
+
+```js
+class Singleton {
+  constructor(name, age) {
+    if (!Singleton.instance) {
+      this.name = name;
+      this.age = age;
+      Singleton.instance = this;
+    }
+    return Singleton.instance;
+  }
+}
+
+const s1 = new Singleton("Clown", 21);
+const s2 = new Singleton("Rain", 19);
+console.log("s1", s1); // s1 Singleton { name: 'Clown', age: 21 }
+console.log("s2", s2); // s1 Singleton { name: 'Clown', age: 21 }
+```
+
+观察者模式：
+
+```JavaScript
+class Subject {
+  constructor() {
+    this.observers = [];
+  }
+  add(observer) {
+    this.observers.push(observer);
+  }
+  delete(observer) {
+    const index = this.observers.indexOf(observer);
+    if (index !== -1) this.observers.splice(index, 1);
+  }
+  notify(data) {
+    this.observers.forEach((observer) => observer.update(data));
+  }
+}
+
+class Observer {
+  update(data) {
+    console.log(`receive data: ${data}`);
+  }
+}
+
+const subject = new Subject();
+const observer1 = new Observer();
+const observer2 = new Observer();
+
+subject.add(observer1);
+subject.add(observer2);
+subject.notify("Hello world!");
+subject.delete(observer1);
+subject.notify("Goodbye world!");
+
+// receive data: Hello world!
+// receive data: Hello world!
+// receive data: Goodbye world!
+```
+
+EventBus：
+
 ```js
 class EventBus {
   constructor() {

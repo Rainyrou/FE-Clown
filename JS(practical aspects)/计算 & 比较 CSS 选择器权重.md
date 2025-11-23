@@ -1,3 +1,7 @@
+- ID/Class -> 字母 + 数字 + 下划线 + 连字符
+- Pseudo-class/Pseudo-element -> 字母 + 连字符
+- `match` 返回最小 CSS 选择器单元数组，扫描 `selector` 字符串，提取与正则表达式中任一模式相匹配的子串并置于结果数组
+
 ```js
 const calculate = (selector) => {
   let id = 0,

@@ -82,15 +82,15 @@ const _shallowClone = target => {
 const _deepClone = (target, map = new WeakMap()) => {
   if (typeof target !== "object" || target === null) return target;
   const constructor = target.constructor;
-  if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name))
+  if (/^(Function|RegExp|Date|Map|Set)/i.test(constructor.name))
     return new constructor(target);
-  const clonedTarget = Array.isArray(target) ? [] : {};
+  const cloned = Array.isArray(target) ? [] : {};
   if (map.has(target)) return map.get(target);
-  map.set(target, clonedTarget);
-  for (const key in target)
-    if (target.hasOwnProperty(key))
-      clonedTarget[key] = _deepClone(target[key], map);
-  return clonedTarget;
+  map.set(target, cloned);
+  for (const key in target) {
+    if (target.hasOwnProperty(key)) cloned[key] = _deepClone(target[key], map);
+  }
+  return cloned;
 };
 ```
 

@@ -26,40 +26,38 @@ console.log(tracker.get("2024-04-06")); // [ 'https://github.com/Rainyrou/Pocket
 查找系统内存占用最大时对应的内存和事件：
 
 ```js
-const findMaxMemoryUsage = (requests) => {
+const find = (requests) => {
   const events = [];
-  requests.forEach(({ id, memory, start, end }) => {
-    events.push({ time: start, type: "start", memory, id });
-    events.push({ time: end, type: "end", memory, id });
+  requests.forEach(({ id, memo, start, end }) => {
+    events.push({ time: start, type: "start", memo, id });
+    events.push({ time: end, type: "end", memo, id });
   });
-  // 时间相同时，结束事件先于开始事件以释放内存后再分配
   events.sort((a, b) => a.time - b.time || (a.type === "end" ? -1 : 1));
-  let maxMemory = 0,
-    curMemory = 0,
+  let maxMemo = 0,
+    curMemo = 0,
     maxIds = [];
   const curIds = new Set();
   for (const event of events) {
     if (event.type === "start") {
-      curMemory += event.memory;
+      curMemo += event.memo;
       curIds.add(event.id);
     } else {
-      curMemory -= event.memory;
+      curMemo -= event.memo;
       curIds.delete(event.id);
     }
-    if (curMemory > maxMemory) {
-      maxMemory = curMemory;
+    if (curMemo > maxMemo) {
+      maxMemo = curMemo;
       maxIds = [...curIds];
     }
   }
-  return { maxMemory, maxIds };
+  return { maxMemo, maxIds };
 };
 
 const requests = [
-  { id: 1, memory: 100, start: 1, end: 5 },
-  { id: 2, memory: 200, start: 2, end: 6 },
-  { id: 3, memory: 150, start: 4, end: 8 },
+  { id: 1, memo: 100, start: 1, end: 5 },
+  { id: 2, memo: 200, start: 2, end: 6 },
+  { id: 3, memo: 150, start: 4, end: 8 },
 ];
 
-const result = findMaxMemoryUsage(requests);
-console.log(result);
+console.log(find(requests)); // { maxMemory: 450, maxIds: [ 1, 2, 3 ] }
 ```

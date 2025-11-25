@@ -41,7 +41,7 @@ Ideal Viewport：页面在移动端展示的理想大小，在浏览器调试移
 
 高清适配：
 
-* 内部分辨率 = CSS 宽高 × 物理像素比：
+- 内部分辨率 = CSS 宽高 × 物理像素比：
 
 ```js
 const scale = window.devicePixelRatio || 1;
@@ -70,6 +70,7 @@ ctx.scale(scale, scale);
 初期在浏览器以 Web 开发形式编写 UI、业务逻辑和接口联调等，无需启动模拟器或连接真机
 
 - Chrome 选择 iPhone SE 宽度 375 直接与设计稿 1：1 对照
+
 * 通过 React Devtool 查看页面内部 State、Store 和 Hooks 等数据
 * 在 Chrome Network 调试 Tab 进行接口联调
 
@@ -453,6 +454,7 @@ IE6 的 CSS 解析器无严格的解析规则，其将 `*` 和 `_` 视为正常�
 
 - 清除浮动
 - 非 IE 中 `padding` 影响 `width` 和 `height`：在盒模型中，不同浏览器对 `width` 和 `height` 的计算方式有所差异，Firefox 等标准浏览器将 `padding` 计算到盒子整体中，而 IE 传统盒模型不会，可通过 `box-sizing: border-box;` 或 `!important` 强制声明，确保宽高计算的一致性
+
 * IE 中 `float` 的双倍 `margin`：通过在浮动元素上添加 `display: inline;` 解决上述问题
 * 不同浏览器标签默认 `margin` 和 `padding` 不同
 
@@ -578,3 +580,32 @@ TailwindCSS：通过 TailwindCSS 和插件系统自定义全局样式变量，�
 5. 字体：根据根元素的 `font-size` 动态调整字体大小
 6. 按钮：通过 `addComponents` 方法设置标准化和深色主题按钮 且提供状态样式如 `hover`、`active` 和 `disabled`
 7. 边框圆角：`theme('screens')` 获取断点信息即屏幕大小，通过媒体查询动态调整元素的边框圆角半径
+
+###### iOS 输入聚焦时页面自动放大
+
+1. Meta Viewport
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+```
+
+- `maximum-scale=1.0`：禁止页面的最大缩放比例大于 1
+- `user-scalable=no`：禁用用户缩放功能
+
+2. 设置输入框默认字体大小
+
+```css
+input,
+textarea {
+    font-size: 16px;
+}
+```
+
+3. 输入框聚焦时 JavaScript 动态调整字体大小，不影响页面其他部分
+
+```js
+document.querySelectorAll("input, textarea").forEach((element) => {
+  element.addEventListener("focus", () => (element.style.fontSize = "16px"));
+  element.addEventListener("blur", () => (element.style.fontSize = ""));
+});
+```

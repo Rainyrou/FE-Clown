@@ -1,9 +1,35 @@
+```js
+document.querySelector("div > p:last-child");
+const tags = document.querySelector("div").getElementsByTagName("p");
+const tags = document.querySelectorAll("div > p");
+const lastP = tags[tags.length - 1];
+```
+
 获取 ul 下各个 li 标签的值：
 
 ```js
 document.querySelectorAll("#myList li").forEach((item) => console.log(item));
 const items = document.getElementById("myList").getElementsByTagName("li");
 for (const item of items) console.log(item);
+```
+
+获取非空 table 项：
+
+```js
+const getNoEmptyTables = () => {
+  const tables = document.querySelectorAll("table");
+  const noEmptyTables = Array.from(tables).filter((table) => {
+    const trs = table.querySelectorAll("tr");
+    return Array.from(trs).some((tr) => {
+      const cells = tr.querySelectorAll("td, th");
+      return Array.from(cells).some((cell) => cell.textContent.trim() !== "");
+    });
+  });
+  return noEmptyTables;
+};
+
+const noEmptyTables = getNoEmptyTables();
+console.log(noEmptyTables);
 ```
 
 从根节点开始遍历 DOM 树，打印所有节点的 tagName：

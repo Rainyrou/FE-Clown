@@ -170,3 +170,41 @@ const batchFetch = (urls, max) => {
   return Promise.all(runners).then(() => results);
 };
 ```
+
+基于 requestIdleCallback 的时间切片调度器：
+
+- `deadline.timeRemaining`：返回当前帧剩余的空闲时间
+- `deadline.didTimeout`：判断 `requestIdleCallback` 的回调是因为浏览器有空闲时间（true）还是因为超时（false）而触发
+
+```js
+const tasks = [];
+let isRun = false;
+
+const scheduler = (task) => {
+  tasks.push(task);
+  if (!isRun) {
+    isRun = true;
+    requestIdleCallback(execute);
+  }
+};
+
+const execute = (deadline) => {
+  while (
+    (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+    tasks.length > 0
+  ) {
+    const curTask = tasks.shift();
+    curTask();
+  }
+  if (tasks.length > 0) requestIdleCallback(execute);
+  else isRun = false;
+};
+
+const createTask = (i) => () => console.log(i);
+
+const run = () => {
+  for (let i = 0; i < 100000; ++i) scheduler(createTask(i));
+};
+
+run();
+```

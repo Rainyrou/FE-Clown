@@ -1,6 +1,6 @@
 1. Promise.all
 
-若通过 `push` 向结果数组添加值则导致：结果数组的顺序 = 异步操作的完成顺序，而非输入的 `promises` 顺序
+若通过 `push` 向结果数组添加值则导致结果数组的顺序 = 异步操作的完成顺序，而非输入的 `promises` 顺序
 
  ```js
 Promise._all = (promises) => {

@@ -1,3 +1,54 @@
+###### 可不可以继承的 CSS 属性
+
+可继承的CSS 属性：
+
+- `color`
+- `visibility`
+- `font-size/font-weight/font-family/font-style`
+- `line-height`：行高
+- `text-align`：文本对齐方式
+- `text-transform`：文本转换如大写
+- `letter-spacing`：字符间距
+- `word-spacing`：单词间距
+
+不可继承的CSS 属性：
+
+- `position`
+- `height/width/padding/border/margin/z-index`
+- `box-sizing`
+- `background`
+
+###### line-height
+
+`line-height: 1.5` 基于当前元素的 `font-size` 计算，随当前字体自动缩放，子元素继承比例系数，根据自身的 `font-size` 动态计算
+`line-height: 150%` 基于父元素的 `font-size` 计算，子元素父元素计算后的固定像素值
+
+```css
+.parent {
+  font-size: 16px;
+  line-height: 1.5;
+  /* 16px * 1.5 = 24px */
+}
+
+.child {
+  font-size: 14px;
+  /* 14px * 1.5 = 21px */
+}
+
+.parent {
+  font-size: 16px;
+  line-height: 150%;
+  /* 16px * 150% = 24px */
+}
+
+.child {
+  font-size: 14px;
+  /* 24px */
+}
+```
+
+###### CSS3 特性
+
 1. 选择器：
 
    - 属性选择器：`[attribute=value]`、`[attribute^=value]`、`[attribute$=value]`、`[attribute*=value]` 等
@@ -52,20 +103,3 @@
 
 11. 媒体查询
 
-可继承的：
-
-- `color`
-- `visibility`
-- `font-size/font-weight/font-family/font-style`
-- `line-height`：行高
-- `text-align`：文本对齐方式
-- `text-transform`：文本转换如大写
-- `letter-spacing`：字符间距
-- `word-spacing`：单词间距
-
-不可继承的：
-
-- `position`
-- `height/width/padding/border/margin/z-index`
-- `box-sizing`
-- `background`

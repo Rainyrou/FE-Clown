@@ -86,12 +86,11 @@ b. 设置 `div.style.top` = 新值：这一变化被加入到渲染队列，但�
 
 ###### 解决方案
 
-1. 避免频繁读取触发重绘回流的 CSS 属性，可将其缓存
-2. 避免在循环中直接操作 CSS 或使用 `DocumentFragment` 批量更新
-3. 修改 CSS 类属性而非直接修改 `style` 属性
-4. 动态修改 CSS
-5. 避免使用 `table` 布局
-6. 使用 `transform`、`opacity` 和 `requestAnimationFrame` 进行动画
+* 避免频繁读取触发重绘回流的 CSS 属性，可将其缓存
+* 避免在循环中直接操作 CSS 或通过 `DocumentFragment` 批量更新
+* 修改 CSS 类属性而非直接修改 `style` 属性
+* 避免使用 `table` 布局
+* 通过 `transform`、`opacity` 和 `requestAnimationFrame` 进行动画
 
 浏览器为多进程的，操作系统为其进程分配 CPU 和内存等使其运行，每打开一个 Tab 页即创建一个独立的浏览器进程（在 Chrome 的 More tools 中打开任务管理器即可看到进程列表，由于 Chrome 的优化机制 Tab 页和进程一一对应的情况并不绝对如合并多个空白 Tab 页），多进程可避免单页面或第三方插件崩溃影响整个浏览器，同时充分利用多核 CPU
 

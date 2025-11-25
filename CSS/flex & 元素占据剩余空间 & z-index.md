@@ -52,7 +52,7 @@
 3. `flex-shrink` 定义项目的缩小比例，默认为 1，即若空间不足则缩小
 4. `flex-basis` 定义在分配多余空间前，项目占据的主轴空间，默认值为 `auto`
 5. `flex` 是 `flex-grow`, `flex-shrink` 和 `flex-basis` 的简写，默认值为 `0 1 auto`
-6. `align-self` 允许单个项目有与其他项目不同的对齐方式，可覆盖 `align-items` 属性，默认为 `auto`，表示继承父元素的 `align-items` 属性，若无父元素则相当于 `stretch`
+6. `align-self` 定义单个项目的对齐方式，覆盖 `align-items` 属性，默认为 `auto`，表示继承父元素的 `align-items` 属性，若无父元素则相当于 `stretch`
 
 `flex: 1` = `flex-grow: 1` + `flex-shrink: 1` + `flex-basis: 0%` 或 `flex-basis: 0px`
 * `flex-grow: 1` 表示该子项允许按比例增长以适应容器空间

@@ -105,7 +105,7 @@ mergePromise([promise1, promise2, promise3]).then((res) => console.log(res));
 
 实现并发限制的异步调度器，保证同时最多执行 2 个任务：
 
-`add` 方法返回新的 Promise (P)，其接收 `resolve` 参数，`promiseCreator.resolve = resolve` 将 Promise (P) 的 `resolve` 函数挂载至 `promiseCreator` 函数对象上，如此一来，一旦 `promiseCreator` 执行且完成时，我们通过其 `resolve` 控制外部 Promise (P) 的状态，`promiseCreator.resolve()` 通知 `addTask` 的调用者任务已完成，要知道 `console.log` 只有在 Promise (P) 被 resolved 时才执行
+`promiseCreator.resolve = resolve` 将 Promise (P) 的 `resolve` 函数挂载至 `promiseCreator` 函数对象上，当 `promiseCreator` 执行完成时，通过 `resolve` 控制外部 Promise (P) 的状态
 
 ```js
 class Scheduler {
@@ -145,7 +145,7 @@ addTask(3000, 3);
 addTask(1000, 1); // 2 4 3 1
 ```
 
-尽可能以 max 并发数并发请求且按照顺序返回结果：
+尽可能以 max 并发数并发请求且根据顺序返回结果：
 
 ```js
 const batchFetch = (urls, max) => {

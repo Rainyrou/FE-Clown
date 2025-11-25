@@ -1,3 +1,11 @@
+获取 ul 下各个 li 标签的值：
+
+```js
+document.querySelectorAll("#myList li").forEach((item) => console.log(item));
+const items = document.getElementById("myList").getElementsByTagName("li");
+for (const item of items) console.log(item);
+```
+
 从根节点开始遍历 DOM 树，打印所有节点的 tagName：
 
 ```js

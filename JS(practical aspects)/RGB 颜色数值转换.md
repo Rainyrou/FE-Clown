@@ -1,3 +1,5 @@
+`toString(16)` 将十进制数字转换为十六进制字符串
+
 ```js
 const range = (num) => num >= 0 && num <= 255;
 
@@ -13,6 +15,8 @@ const rgb2hex = (r, g, b) => {
 };
 ```
 
+`parseInt(..., 16)` 将十六进制字符串转换为十进制数字
+
 ```js
 const hex2Rgb = (hex) => {
   let hexStr = hex.startsWith("#") ? hex.slice(1) : hex;
@@ -23,9 +27,9 @@ const hex2Rgb = (hex) => {
       .join("");
   }
   if (hexStr.length !== 6) return null;
-  const r = parseInt(hexStr.substring(0, 2), 16);
-  const g = parseInt(hexStr.substring(2, 4), 16);
-  const b = parseInt(hexStr.substring(4, 6), 16);
+  const r = parseInt(hexStr.slice(0, 2), 16),
+    g = parseInt(hexStr.slice(2, 4), 16),
+    b = parseInt(hexStr.slice(4, 6), 16);
   if (isNaN(r) || isNaN(g) || isNaN(b)) return;
   return `rgb(${r}, ${g}, ${b})`;
 };

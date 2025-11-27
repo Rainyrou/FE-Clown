@@ -52,3 +52,10 @@ console.log(formatToThousands(123456789.123456789));
 ```js
 const isPhone = (phone) => /^1[3-9]\d{9}$/.test(phone);
 ```
+
+trim：
+
+```js
+const trim = (str) => str.replace(/^\s+|\s+$/g, "");
+console.log(trim(" \n\t Hello World \r\n ")); // Hello World
+```

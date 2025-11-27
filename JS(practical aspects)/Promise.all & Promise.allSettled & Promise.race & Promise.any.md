@@ -83,7 +83,7 @@ test();
 2. Promise.allSettled
 
 ```js
-Promise._allSettled = function (promises) {
+Promise._allSettled = (promises) => {
   return new Promise((resolve, reject) => {
     if (promises == null || typeof promises[Symbol.iterator] !== "function")
       throw new TypeError(`${promises} is not iterable`);
@@ -91,7 +91,7 @@ Promise._allSettled = function (promises) {
     if (promises.length === 0) return resolve([]);
     const values = [];
     let count = 0;
-    promises.forEach((promise, index) => {
+    promises.forEach((promise, index) =>
       Promise.resolve(promise)
         .then(
           (value) => (values[index] = { status: "fulfilled", value }),
@@ -99,8 +99,8 @@ Promise._allSettled = function (promises) {
         )
         .finally(() => {
           if (++count === promises.length) return resolve(values);
-        });
-    });
+        })
+    );
   });
 };
 ```

@@ -1,11 +1,10 @@
-n 小于等于 16
+n -> [2, 16]
 
 十进制转 n 进制：
 
 ```js
 const convert = (num, base) => {
-  if (base < 2 || base > 16) throw new Error("Base must be between 2 and 16.");
-  if (num === 0) return "0";
+  if (num === 0) return "0";
   const digits = "0123456789abcdef";
   let ans = "",
     cur = num;
@@ -26,15 +25,11 @@ n 进制转十进制：
 
 ```js
 const convert = (str, base) => {
-  if (base < 2 || base > 16) throw new Error("Base must be between 2 and 16.");
-  const digits = "0123456789abcdef",
-    lowerStr = str.toLowerCase();
+  const digits = "0123456789abcdef";
   let ans = 0,
     power = 1;
-  for (let i = lowerStr.length - 1; i >= 0; i--) {
-    const val = digits.indexOf(lowerStr[i]);
-    if (val === -1 || val >= base)
-      throw new Error(`Invalid character for base ${base}.`);
+  for (let i = str.length - 1; i >= 0; --i) {
+    const val = digits.indexOf(str[i]);
     ans += val * power;
     power *= base;
   }

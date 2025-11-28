@@ -37,33 +37,27 @@ window.addEventListener("DOMContentLoaded", () => {
 
 新 Tab 开启新进程：
 
-* 现代浏览器默认新 Tab 开启新进程，但存在同站进程复用优化，本质为浏览器多进程架构下的"隔离优先、优化兜底"设计
-* 早期浏览器为单进程架构，所有 Tab、JavaScript 执行、DOM 渲染和网络请求置于同一进程，一个 Tab 崩溃即导致整个浏览器卡死且恶意脚本可能通过进程共享窃取其他 Tab 数据，现代浏览器为多进程架构，通过进程隔离将不同功能模块拆分至独立进程，避免单点故障和数据泄露
-* 各个 Tab 默认对应一个独立渲染进程，一个 Tab 崩溃导致当前渲染进程中断，而其他 Tab 不受影响，各个渲染进程运行于沙箱中，无法直接访问系统资源或其他进程，多进程通过 CPU 多核特性多并行处理多个 Tab 的渲染和 JavaScript 执行
-* 同站（协议 + 域名 + 端口）进程复用优化即同站新 Tab 复用已有渲染进程，共享内存中的公共资源，减少内存占用
+- 现代浏览器默认新 Tab 开启新进程，但存在同站进程复用优化，本质为浏览器多进程架构下的"隔离优先、优化兜底"设计
+- 早期浏览器为单进程架构，所有 Tab、JavaScript 执行、DOM 渲染和网络请求置于同一进程，一个 Tab 崩溃即导致整个浏览器卡死且恶意脚本可能通过进程共享窃取其他 Tab 数据，现代浏览器为多进程架构，通过进程隔离将不同功能模块拆分至独立进程，避免单点故障和数据泄露
+- 各个 Tab 默认对应一个独立渲染进程，一个 Tab 崩溃导致当前渲染进程中断，而其他 Tab 不受影响，各个渲染进程运行于沙箱中，无法直接访问系统资源或其他进程，多进程通过 CPU 多核特性多并行处理多个 Tab 的渲染和 JavaScript 执行
+- 同站（协议 + 域名 + 端口）进程复用优化即同站新 Tab 复用已有渲染进程，共享内存中的公共资源，减少内存占用
 
-Chromium 118+采用单主线程 + 多协作线程模型
+浏览器渲染：
 
-- 主线程串行处理解析任务，HTML 解析器流式解析 HTML 生成 DOM 树，解析 CSS 生成 CSS Object Model 树，若遇到内联且无 async/defer 的 JavaScript 则立即停止 DOM 解析，加载并执行 JavaScript，有 async/defer 的 JavaScript 则与 DOM 解析并行加载执行，多个 async 的 JavaScript 分别在加载后立即执行，在 HTML 中的执行顺序无法保证，而多个 defer 的 JavaScript 则保持在 HTML 中的执行顺序，而 CSS 加载虽不阻塞 DOM 的解析，但由于后续 Layout 树依赖于 CSS Object Model 树，因此 CSS 加载阻塞 Layout 树生成
-- DOM 树和 CSS Object Model 树结合生成 Layout 树
-- 浏览器遍历 Layout 树，通过 Box Layout Algorithm 为每个 LayoutObject 计算出其具体的位置和尺寸，这一过程包括级联计算（通过样式引擎合并继承样式、作者样式和用户代理样式）、规则匹配优化（通过 Hash 过滤器查找匹配的 CSS 规则且通过 BloomFilter 过滤不匹配的分支，根据层叠权重和继承规则生成最终样式）
-- 布局计算完成后，主线程遍历 Layout 树执行绘制操作，将各个 LayoutObject 转换为绘制指令，生成绘制操作记录，并将其提交给合成器线程
-
-```cpp
-class LayoutObject {
-  PhysicalRect FragmentsBoundingBox; // 支持 CSS Fragmentation
-  const ComputedStyle* Style;        // 计算后样式（共享指针）
-  PaintLayer* Layer;                 // 所属图层
-  bool NeedsPaintInvalidation;       // 重绘标记
-  LayoutObject* NextSibling;         // 树形结构指针
-};
-```
-
-- 浏览器将默认图层和独立复合图层传递给 GPU，GPU 负责默认图层光栅化（即将绘制记录转换为像素数据）和复合图层纹理管理，合成器线程合并各个图层并生成最终图像
-- JavaScript 执行、布局计算和绘制操作均在同一主线程上依次进行，避免多线程操作 DOM 时出现的竞态问题，但于此同时，定时器、网络和 GPU 等任务则由定时器线程、异步 HTTP 请求线程和 GPU 或其他线程处理，再通过事件队列通知主线程更新
+- 主线程串行处理解析任务，HTML 解析器流式解析 HTML 字节流，将 HTML 标签拆分为 Token 并通过 DOM 构造器逐 Token 生成 DOM 树
+- CSS 解析器解析 CSS 字节流，将其转换为结构化 CSS Token，再生成 CSS Object Model 树，样式引擎根据用户代理样式 -> 用户样式 -> 作者样式的优先级合并样式，通过 BloomFilter 过滤不匹配的 CSS 选择器分支，通过 Hash 过滤器查找匹配的 CSS 规则，最终根据继承规则、层叠上下文和特异性生成各个 DOM 节点的计算样式
+- DOM 树和 CSS Object Model 树结合生成 Layout 树，具体来说，遍历 DOM 树过滤不可见 DOM 节点，为可见 DOM 节点创建 LayoutObject 并将 CSS Object Model 树的计算样式附着于 LayoutObject 上
+- 浏览器遍历 Layout 树，基于盒模型布局算法，以包含块为单位，自上而下从左往右递归计算为各个 LayoutObject 的几何属性，Float/Position/Flex/Grid 等布局触发专属算法分支如 Flex 布局的主轴/交叉轴空间分配和 Grid 的网格轨道计算
+- 布局计算基于脏值传播机制，若某 LayoutObject 的几何属性变化则标记其为脏节点并递归标记所有依赖它的父子节点，重新计算脏节点的页面布局
+- 主线程遍历 Layout 树执行绘制操作，根据绘制顺序将各个 LayoutObject 转换为绘制指令，生成绘制记录
+- 基于层叠上下文将 Layout 树拆分为绘制层，同一绘制层内的绘制指令根据顺序执行，不同绘制层的绘制相互独立
+- 主线程将绘制记录和绘制层信息提交给合成器线程，合成器线程执行图层化，将绘制层拆分为默认图层和复合图层，构建图层树并计算各个图层的变换矩阵
+- 光栅化线程通过分块光栅化策略将各个图层拆分为 256x256/512x512 瓦片，仅光栅化视口内和即将进入视口的瓦片，将绘制记录转换为像素数据，默认图层按需光栅化，复合图层的光栅化结果持久存储于 GPU
+- GPU 线程接收光栅化后的像素纹理，通过合成器管线执行图层合成，根据 z-index 顺序混合各复合图层纹理，应用变换和滤镜，最终生成帧缓冲区的像素数据，再通过显示控制器输出至屏幕
+- 主线程的渲染任务遵循「JavaScript 执行 → 样式计算 → 布局绘制 → 图层合成」的单帧调度逻辑，任一环节耗时超过 16.6ms 触发丢帧；DOM/CSSOM 为非线程安全数据结构，主线程串行处理其修改/读取操作以避免竞态问题，而定时器/网络请求/GPU 任务由定时器/异步HTTP请求/合成器线程处理，完成后通过事件队列通知主线程更新
 
 RenderLayer 渲染层（普通图层）：浏览器渲染流程中的第一层级，与 DOM 和 LayoutObject 一一对应，决定元素的层叠关系即 z 轴空间，其在 CPU 执行布局计算、绘制和合成等操作，通过根元素、定位属性、`opacity`、`transform`、`filter`、`mask`、`mix-blend-mode` 和 `overflow: hidden` 等触发层叠上下文
-GraphicsLayer 图形层：浏览器生成最终图像的层级，其存储于共享内存，拥有独立的图形上下文，生成该层的位图并将位图作为纹理上传至 GPU 并参与最终绘制，此外非合成层与父层共享图形层
+GraphicsLayer 图形层：浏览器生成最终图像的层级，其存储于共享内存，有独立的图形上下文，生成该层的位图并将位图作为纹理上传至 GPU 并参与最终绘制，此外非合成层与父层共享图形层
 CompositingLayer 合成层（复合图层）：为优化特定操作如动画效果而硬件加速即将某元素变为复合图层如主动触发即静态生效 + 强制创建 `transform(3D)/will-change/overflow: scroll/auto/iframe/video/canvas/backdrop-filter`、被动触发即条件触发 + 优化性能 `transform(2D)/opacity/filter/position: fixed/sticky/z-index` 等，在 GPU 中独立合成图像，文档流即为复合图层，开启硬件加速的元素则为另一复合图层
 
 重绘：元素的外观变化但几何属性不变时触发重绘，浏览器需更新元素外观但无需重新计算元素的几何属性及页面布局，触发重绘的操作：修改 `color`、`background-color` 和 `visibility` 的值
@@ -86,11 +80,11 @@ b. 设置 `div.style.top` = 新值：这一变化被加入到渲染队列，但�
 
 ###### 解决方案
 
-* 避免频繁读取触发重绘回流的 CSS 属性，可将其缓存
-* 避免在循环中直接操作 CSS 或通过 `DocumentFragment` 批量更新
-* 修改 CSS 类属性而非直接修改 `style` 属性
-* 避免使用 `table` 布局
-* 通过 `transform`、`opacity` 和 `requestAnimationFrame` 进行动画
+- 避免频繁读取触发重绘回流的 CSS 属性，可将其缓存
+- 避免在循环中直接操作 CSS 或通过 `DocumentFragment` 批量更新
+- 修改 CSS 类属性而非直接修改 `style` 属性
+- 避免使用 `table` 布局
+- 通过 `transform`、`opacity` 和 `requestAnimationFrame` 进行动画
 
 浏览器为多进程的，操作系统为其进程分配 CPU 和内存等使其运行，每打开一个 Tab 页即创建一个独立的浏览器进程（在 Chrome 的 More tools 中打开任务管理器即可看到进程列表，由于 Chrome 的优化机制 Tab 页和进程一一对应的情况并不绝对如合并多个空白 Tab 页），多进程可避免单页面或第三方插件崩溃影响整个浏览器，同时充分利用多核 CPU
 

@@ -9,21 +9,21 @@ const _get = (obj, path, val) => {
         .split(".")
         .filter(Boolean);
   for (const key of keys) {
-    if (obj == null) return val;
+    if (!obj) return val;
     obj = obj[key];
   }
-  return obj == null ? val : obj;
+  return obj || val;
 };
 ```
 
-`lodash.set`：
+`lodash.set`：修改根对象并返回根对象而非嵌套层级的子对象
 
 ```js
 const _set = (obj, path, val) => {
   const keys = Array.isArray(path)
     ? path
     : path
-        .replace(/\[(\d+)\]/g, ".$1")
+        .replace(/\[(\d+)\]/g, (all, match) => `.${match}`)
         .split(".")
         .filter(Boolean);
   let cur = obj;

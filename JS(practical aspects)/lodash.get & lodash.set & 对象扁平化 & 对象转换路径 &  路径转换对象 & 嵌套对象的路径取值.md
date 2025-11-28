@@ -1,3 +1,42 @@
+`lodash.get`：
+
+```js
+const _get = (obj, path, val) => {
+  const keys = Array.isArray(path)
+    ? path
+    : path
+        .replace(/\[(\d+)\]/g, (all, match) => `.${match}`)
+        .split(".")
+        .filter(Boolean);
+  for (const key of keys) {
+    if (obj == null) return val;
+    obj = obj[key];
+  }
+  return obj == null ? val : obj;
+};
+```
+
+`lodash.set`：
+
+```js
+const _set = (obj, path, val) => {
+  const keys = Array.isArray(path)
+    ? path
+    : path
+        .replace(/\[(\d+)\]/g, ".$1")
+        .split(".")
+        .filter(Boolean);
+  let cur = obj;
+  for (let i = 0; i < keys.length - 1; ++i) {
+    const key = keys[i];
+    if (!cur[key]) cur[key] = isNaN(Number(keys[i + 1])) ? {} : [];
+    cur = cur[key];
+  }
+  cur[keys[keys.length - 1]] = val;
+  return obj;
+};
+```
+
 对象扁平化：
 
 `Object.assign` 将一至多个源对象的可枚举属性浅拷贝至目标对象并返回目标对象

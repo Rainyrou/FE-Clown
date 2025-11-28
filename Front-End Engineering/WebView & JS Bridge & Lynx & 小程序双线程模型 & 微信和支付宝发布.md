@@ -5,8 +5,8 @@ WebView 为 Mobile 端操作系统提供的嵌入式浏览器渲染引擎组件�
 
 判断 WebView 加载完成：
 
-1. iOS 和 Android WebView 监控页面加载过程的回调函数如 `onPageFinished/onPageStarted`
-2. iOS 和 Android WebView 监控页面加载实时进度的回调函数如 `onProgressChanged`
+* iOS 和 Android WebView 监控页面加载过程的回调函数如 `onPageFinished/onPageStarted`
+* iOS 和 Android WebView 监控页面加载实时进度的回调函数如 `onProgressChanged`
 
 JS Bridge 跨多 APP 共用：通信机制的设计和实现（IPC/URL Scheme + 统一协议和接口标准 + WebView 和共享组件 SDK + 共享 Native 功能和服务）
 
@@ -21,9 +21,7 @@ Lynx：
 1. 依赖 & 元件 & API 替换
 
 - 依赖：`react` -> `@lynx-js/react`
-
 * 元件：`div` → `view`、`span` → `text`、`img` → `image`，样式兼容 Lynx
-
 - API：BOM/DOM 调用替换为对应 Lynx 调用，未实现功能通过原生模块和自定义元件自行扩展
 
 2. 条件编译：通过条件判断语句将代码写入对应线程，跟手动画、手势处理逻辑和标记为 main thread 的函数在主线程执行；事件处理函数、`effect` 副作用函数、`ref`  属性、`useImperativeHandle` 和标记为 background only 的函数在后台线程执行

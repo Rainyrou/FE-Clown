@@ -1,4 +1,14 @@
-1. `forEach`
+1. `Array.isArray`
+
+`unknown` 明确入参类型未知，强制研发通过显式判断类型后操作值
+
+```ts
+function isArray<T = unknown>(value: unknown): value is T[] {
+  return Object.prototype.toString.call(value) === "[object Array]";
+}
+```
+
+2. `forEach`
 
 ```js
 const _forEach = (arr, callback) => {
@@ -6,7 +16,7 @@ const _forEach = (arr, callback) => {
 };
 ```
 
-2. `map`
+3. `map`
 
 ```js
 const _map = (arr, callback) => {
@@ -16,7 +26,7 @@ const _map = (arr, callback) => {
 };
 ```
 
-3. `filter`
+4. `filter`
 
 ```js
 const _filter = (arr, callback) => {
@@ -38,7 +48,7 @@ console.log(evens); // [ 2, 4, 6 ]
 * `index`：当前元素的索引
 * `array`：当前正被处理的原始数组
 
-4. `reduce`
+5. `reduce`
 
 ```js
 const _reduce = (arr, callback, initialVal) => {
@@ -56,7 +66,7 @@ const sum = _reduce(nums, (a, b) => a + b, 0);
 console.log(sum); // 21
 ```
 
-5. `flat` 
+6. `flat` 
 
 递归：
 
@@ -93,7 +103,7 @@ const _flat = (arr) => {
 console.log(_flat([1, 2, 3, [4, [5]], 1, 2, 6, 7]));
 ```
 
-6. `push & unshift & pop`
+7. `push & unshift & pop`
 
 ```js
 const _push = (arr, ...nums) => [...arr, ...nums];
@@ -106,7 +116,7 @@ const _pop = (arr) => {
 };
 ```
 
-7. `append`
+8. `append`
 
 ```js
 const append = (nums, ...args) => {

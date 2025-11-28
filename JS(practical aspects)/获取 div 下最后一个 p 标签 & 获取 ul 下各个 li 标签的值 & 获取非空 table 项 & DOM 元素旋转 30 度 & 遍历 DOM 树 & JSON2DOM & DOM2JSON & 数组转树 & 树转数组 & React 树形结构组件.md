@@ -32,6 +32,23 @@ const noEmptyTables = getNoEmptyTables();
 console.log(noEmptyTables);
 ```
 
+DOM 元素旋转 30 度：
+
+```js
+document
+  .getElementById("element")
+  .animate([{ transform: "rotate(0deg)" }, { transform: "rotate(30deg)" }], {
+    duration: 1000,
+    fill: "forwards",
+  });
+```
+
+```js
+const element = document.getElementById("element");
+element.style.transition = "transform 0.5s ease";
+requestAnimationFrame(() => (element.style.transform = "rotate(30deg)"));
+```
+
 从根节点开始遍历 DOM 树，打印所有节点的 tagName：
 
 ```js

@@ -11,9 +11,9 @@
 1. any：放弃类型检查，相当于 JavaScript
 2. undefined：变量未初始化/函数无返回值/可选属性未传入，相当于 JavaScript undefined
 3. never：不可能状态，无法创建 `never` 类型实例，`never` 可赋值给任何类型，但无法反过来，`never` 与任何类型的联合类型，结果仍为该类型本身
-4. unknown：强制安全校验
+4. unknown：明确入参类型未知，强制研发通过显式判断类型后操作值
 
-`unknown`  报错本质为 TypeScript 类型系统对未验证类型的安全限制即违反以下规则：
+`unknown` 报错本质为 TypeScript 类型系统对未验证类型的安全限制即违反以下规则：
 
 - 赋值约束：`unknown`  可赋值给  `unknown/any`，无法赋值给其他类型
 - 类型约束：`unknown`  无法兼容非  `unknown/any`  类型的类型守卫
@@ -21,7 +21,7 @@
 
 解决方案：
 
-- 泛型约束 + 类型推断：在定义时通过泛型约束限制变量/函数类型，避免出现  `unknown`
-- 显式类型收窄：`typeof/instanceof/Array.isArray`、 `if-else/switch`  链式判断和自定义类型守卫收窄类型，让 TypeScript 编译器明确  `unknown`  的具体类型
+- 泛型约束 + 类型推断：在定义时通过泛型约束限制变量/函数类型，避免出现 `unknown`
+- 显式类型收窄：`typeof/instanceof/Array.isArray`、 `if-else/switch`  链式判断和自定义类型守卫收窄类型，让 TypeScript 编译器明确 `unknown` 的具体类型
 - 内置工具类型收窄
 - 类型断言：跳过 TypeScript 编译器的类型校验，直接将  `unknown`  指定为目标类型

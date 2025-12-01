@@ -1,6 +1,6 @@
 浏览器：一个宏任务 -> 所有微任务 -> requestAnimationFrame -> DOM 渲染 + CSS 计算 + 布局绘制 -> requestIdleCallback
 
-宏任务队列：`script` 代码块、`setTimeout` 和 `setInterval`
+宏任务队列：`script` 代码块、`setTimeout`、`setInterval` 和 `MessageChannel`
 微任务队列：`Promise` 回调、`async/await`、`process.nextTick`、`MutationObserver`
 
 Node.js：V8 引擎解析 JavaScript，libuv 库调用 Node.js API 将不同任务分配给不同线程以形成事件循环，通过异步方式将执行结果返回给 V8 引擎
@@ -12,7 +12,9 @@ Node.js：V8 引擎解析 JavaScript，libuv 库调用 Node.js API 将不同任�
 - 检查阶段：执行  `setImmediate`  调度的回调
 - 关闭回调阶段：执行关闭事件的回调
 
-帧为浏览器渲染流程的载体（渲染引擎），事件循环为 JavaScript 单线程的调度机制（JavaScript 引擎）
+事件循环为 JavaScript 单线程的调度机制（JavaScript 引擎），帧为浏览器渲染流程的载体（渲染引擎），页面流畅性由浏览器绘制帧率 FPS 决定，当每秒绘制帧数大于等于 60 时（1s / 60帧 = 16.67ms/帧），页面流畅
+
+微任务一直未执行完：微任务检查点必须清空微任务队列才退出，但持续生成新微任务让微任务队列非空，因此通过计数器和超时判断限制微任务无限生成 + 拆分微任务为宏任务，让事件循环退出当前微任务阶段 + 将优先级低的微任务逻辑置于 `requestIdleCallback` 中执行
 
 MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关系以树形结构形式存储，浏览器记录任何对 DOM 树的增删改操作并存储于内部的 Mutation Record 队列。在浏览器的事件循环中，在执行完当前宏任务后，`MutationObserver` 的回调函数作为微任务执行，其遍历内部的 Mutation Record 队列，处理记录的 DOM 变化，此种按需触发机制比持续遍历完整 DOM 树的轮询机制有更佳的性能，但其无法直接监听样式变化和事件的增删操作
 
@@ -35,13 +37,6 @@ MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关�
 | attributeName | 修改的属性名                                                               |
 | oldValue      | 变化前的值，当 `attributeOldValue` 或 `characterDataOldValue` 为 `true` 时 |
 
-页面流畅性由浏览器绘制帧率 FPS 决定，当每秒绘制帧数大于等于 60 时，页面流畅
-
-```
-1s / 60帧 = 16.67ms/帧
-```
-
-![[Pasted image 20241116091325.png]]
 
 主线程阻塞时 `setTimeout` 和 `setInterval` 的行为：定时器线程计时 + 回调入队，主线程执行回调，`setTimeout` 一次计时一次入队，主线程阻塞后延迟执行且无回调堆积，`setInterval` 重复计时多次入队，主线程阻塞后批量执行，若为同一 `setInterval` 源且尚未执行的任务则丢弃新任务
 

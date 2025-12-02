@@ -1,10 +1,30 @@
-JavaScript 设计之初是为浏览器提供轻量级页面交互功能，当时的 Web 页面无需复杂业务逻辑，单线程足以应对绝大多数业务场景，在多线程环境中，通过同步机制和锁等并发访问共享资源，但引入死锁和性能损耗等新问题，因此 JavaScript 在设计之初通过单线程形式简化前端开发，无需考虑多线程并发和数据一致性等问题。JavaScript 的执行环境通过事件循环机制支持异步编程且现代 JavaScript 通过 Web Worker 和 Service Worker 等方式模拟多线程处理，Web Worker、Service Worker 为浏览器中独立于主线程运行的线程，有其独立的上下文、全局对象、事件循环和生命周期，Web Worker 执行计算密集或长任务，Service Worker 实现离线支持、后台同步和推送通知等
+| 维度   | MessageChannel                                                               | BroadcastChannel                   |
+| ---- | ---------------------------------------------------------------------------- | ---------------------------------- |
+| 通信范式 | 双向点对点（专用管道）                                                                  | 单向广播式（公共频道）                        |
+| 通信范围 | 任意跨上下文（通过 postMessage 跨域）                                                    | 同源上下文（多标签页 /Iframe）                |
+| 传输方式 | 结构化克隆 + Transferable（零拷贝）                                                    | 结构化克隆                              |
+| 生命周期 | 手动关闭                                                                         | 自动关闭                               |
+| 性能开销 | 较小（维护管道）                                                                     | 较大（维护订阅列表）                         |
+| 使用场景 | 主线程与 Web Worker 数据交互（大数据计算/音视频处理）/父页面与跨域 Iframe 通信（通过端口管道替代全局 popostMessage） | 多标签页状态同步/同源 Iframe 集群的全局通知/全链路数据分发 |
 
-Node.js 线程：
 
-- JavaScript 主线程
-- 通过 libuv 库线程池处理阻塞 I/O 操作和 CPU 密集型计算，当事件完成后置于事件队列，JavaScript 主线程通过事件循环机制从事件队列取出已完成的事件并在主线程执行其回调
-- 通过  `worker_threads`  创建独立 JavaScript 线程
+Inline Frame 为 HTML 元素，其通过创建独立 DOM 和 JavaScript 环境，允许在某页面中显示其他页面内容，与原页面保持交互独立，若 iframe 与外部页面同源，则两者直接通过 JavaScript 访问彼此的全局变量、函数和 DOM 等，若 iframe 与外部页面跨域，通过 `postMessage` 和 `onmessage` 跨域通信
+
+```html
+<iframe src="https://example.com" width="600" height="400" title="example" sandbox="allow-scripts allow-same-origin"
+  loading="lazy"></iframe>
+```
+
+1. 通过  `sandbox`  属性限制 Iframe 行为
+
+- `allow-same-origin`：同源策略
+- `allow-scripts`：执行脚本
+- `allow-forms`：提交表单
+- `allow-popups`：打开新窗口
+
+2. 模块化开发
+3. 各个 Iframe 均创建其独立渲染进程，大量 Iframe 导致页面卡顿，不利于 SEO
+
 
 Web Worker：
 

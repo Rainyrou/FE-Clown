@@ -1,3 +1,10 @@
+多页面通信方式：
+
+* postMessage + BroadcastChannel/SharedWorker
+* localStorage/sessionStorage + storage 事件监听
+* IndexedDB + change 事件监听
+* Cookie + 轮询
+
 | 维度   | MessageChannel                                                               | BroadcastChannel                   |
 | ---- | ---------------------------------------------------------------------------- | ---------------------------------- |
 | 通信范式 | 双向点对点（专用管道）                                                                  | 单向广播式（公共频道）                        |

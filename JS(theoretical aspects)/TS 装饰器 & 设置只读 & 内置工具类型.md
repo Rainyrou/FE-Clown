@@ -76,6 +76,7 @@ type MyRequire<T> = { [P in keyof T]: T[P] };
 ```
 
 `Omit` 用于从类型 `T` 中移除指定属性 `K`，返回一个新类型，只包含不在 `K` 中的属性
+`extends` -> 类型约束 + 条件判断，`in` -> 遍历类型键
 
 ```ts
 type MyOmit<T, K extends keyof T> = {
@@ -94,7 +95,7 @@ type MyPick<T, K extends keyof T> = {
 `Record` 用于构造一个对象类型，其键源于联合类型 `K`，值为类型 `T`
 
 ```ts
-type MyRecord<K extends keyof any, T> = {
+type MyRecord<K extends keyof unknown, T> = {
   [P in K]: T;
 };
 ```
@@ -114,18 +115,18 @@ type MyExact<T, U> = T extends U ? T : never;
 `Parameters` 用于提取函数 `T` 的参数类型
 
 ```ts
-type MyParameters<T extends (...args: any[]) => any> = T extends (
-  ...any: infer U
-) => any
+type MyParameters<T extends (...args: unknown[]) => unknown> = T extends (
+  ...args: infer U
+) => unknown
   ? U
-  : any;
+  : never;
 ```
 
 `ReturnType` 用于提取函数 `T` 的返回类型
 
 ```ts
-type MyReturnType<T extends (...args: any[]) => any> = T extends (
-  ...args: any[]
+type MyReturnType<T extends (...args: unknown[]) => unknown> = T extends (
+  ...args: unknown[]
 ) => infer U
   ? U
   : never;
@@ -138,10 +139,10 @@ type Thenable<T> = {
   then: (onfulfilled: (arg: T) => unknown) => unknown;
 };
 
-type MyAwaited<T extends Thenable<any> | Promise<any>> = T extends Promise<
+type MyAwaited<T extends Thenable<unknown> | Promise<unknown>> = T extends Promise<
   infer Inner
 >
-  ? Inner extends Promise<any>
+  ? Inner extends Promise<unknown>
     ? MyAwaited<Inner>
     : Inner
   : T extends Thenable<infer U>

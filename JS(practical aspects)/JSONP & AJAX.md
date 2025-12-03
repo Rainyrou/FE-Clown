@@ -15,34 +15,31 @@ const jsonp = (url, params, callbackName) => {
 ```
 
 ```JavaScript
-const ajax = (url, options = {}) => {
+const ajax = (url, options) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    const { method = "GET", data, headers } = options;
-    xhr.open(method, url, true);
-    if (headers)
-      for (const key in headers) xhr.setRequestHeader(key, headers[key]);
+    const { method, headers, data } = options;
+    xhr.open(method, url, true); // 初始化请求，true 为异步执行
+    for (const key in headers) xhr.setRequestHeader(key, headers[key]);
+    if (method === "POST")
+      xhr.setRequestHeader("Content-Type", "application/json");
+    // 监听请求状态变化
     xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
-        let response;
+	  // 请求完成且成功
+      if (xhr.readyState === 4 && 200 <= xhr.status && xhr.status < 300) {
         try {
-          response = JSON.parse(xhr.responseText);
+          const response = JSON.parse(xhr.responseText);
+          resolve(response);
         } catch (err) {
-          response = xhr.responseText;
+          resolve(xhr.responseText);
         }
-        resolve(response);
       } else {
-        reject(new Error(`Request failed with status ${xhr.status}`));
+        reject(new Error(xhr.status));
       }
     };
     xhr.onerror = () => reject(new Error("NetWork error"));
     xhr.ontimeout = () => reject(new Error("Request timeout"));
-    if (data && (method === "POST" || method === "PUT")) {
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(JSON.stringify(data));
-    } else {
-      xhr.send();
-    }
+    xhr.send(data ? JSON.stringify(data) : null);
   });
 };
 ```

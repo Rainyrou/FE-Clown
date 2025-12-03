@@ -1,6 +1,7 @@
 1. `Array.isArray`
 
-`unknown` 明确入参类型未知，强制研发通过显式判断类型后操作值
+* `unknown` 明确入参类型未知，强制研发通过显式判断类型后操作值
+* `value is T[]` 类型守卫，返回 `true` 时将 `value` 的类型推断为 `T[]`,返回 `false` 时保持 `unknown` 类型
 
 ```ts
 function isArray<T = unknown>(value: unknown): value is T[] {

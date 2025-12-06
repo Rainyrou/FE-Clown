@@ -10,6 +10,14 @@ WebView 为 Mobile 端操作系统提供的嵌入式浏览器渲染引擎组件�
 
 JS Bridge 跨多 APP 共用：通信机制的设计和实现（IPC/URL Scheme + 统一协议和接口标准 + WebView 和共享组件 SDK + 共享 Native 功能和服务）
 
+React Native：React 的开发效率 + Native 的原生体验 + Virtual DOM 跨平台
+
+- 线程模型：JavaScript 线程通过 iOS JavaScriptCore 引擎或 Android V8 引擎执行 JavaScript 代码，生成 UI 组件树；Native 线程通过 iOS UIKit 和 Android View 等原生控件渲染用户界面并与操作系统和硬件交互
+- 通信架构：旧架构通过 Bridge 实现异步通信；新架构通过 JSI 实现同步通信，减少初始化 Bridge 和线程间通信的性能开销
+* 原生模块系统：通过  C++ 开发实现跨平台复用并提供更细粒度的内存管理与性能优化，通过 JavaScirpt API 为 JavaScript 层提供能力，让研发直接通过 JavaScirpt API 调用原生能力
+* 渲染器：基于 C++ 共享内核实现跨平台优化（如 Android 特有的 View Flattening 自动同步至 iOS），将 UI 层次结构存储为不可变树结构，实现跨线程并发更新、渲染任务优先级排序和中断恢复并支持 Suspense、Transitions 等并发 React 功能
+* 事件循环：为宏任务和微任务等浏览器特性提供兼容基础，缩小 React Native 与 React DOM 间差距
+
 Lynx：
 
 - ReactLynx 为 Lynx 官方提供的 React 实现，基于 Preact，提供与 React17 基本一致的 API 和行为，通过将 React 代码转换为 Lynx 引擎命令式 API 调用实现原生 UI 渲染，通过 Lynx 原生元件替代 HTML 标签，Lynx 全局对象对应 API 实现 Web 端对应功能，未实现功能通过原生模块和自定义元件自行扩展，Lynx 不依赖虚拟 DOM，将 UI 描述为 AST 并在其上执行 Diff，解析并计算 DOM 节点差异，通过高性能序列化协议将结果返回给 Native 端，在编译时折叠 JSX 常量以减少运行时开销

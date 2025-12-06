@@ -114,10 +114,9 @@ const obj = {
 
 const dfs = (obj, prefix = "", result = []) => {
   for (const key in obj) {
-    const cur = `${prefix}/${key}`,
-      value = obj[key];
-    if (Object.keys(value).length === 0) result.push(cur);
-    else dfs(value, cur, result);
+    const newKey = `${prefix}/${key}`;
+    if (Object.keys(obj[key]).length === 0) result.push(newKey);
+    else dfs(obj[key], newKey, result);
   }
   return result;
 };
@@ -155,15 +154,15 @@ console.log(JSON.stringify(dfs(obj), null, 2));
 const convert = (paths) => {
   const obj = {};
   for (const path of paths) {
-    const parts = path.split("/").filter(Boolean);
+    const keys = path.split("/").filter(Boolean);
     let cur = obj; // 重置当前层级指针至根对象
-    for (let i = 0; i < parts.length; ++i) {
-      const isLast = i === parts.length - 1;
+    for (let i = 0; i < keys.length; ++i) {
+      const isLast = i === keys.length - 1;
       if (isLast) {
-        cur[parts[i]] = {};
+        cur[keys[i]] = {};
       } else {
-        if (!cur[parts[i]]) cur[parts[i]] = {};
-        cur = cur[parts[i]]; // 指针移至下一层级
+        if (!cur[keys[i]]) cur[keys[i]] = {};
+        cur = cur[keys[i]]; // 指针移至下一层级
       }
     }
   }
@@ -183,17 +182,17 @@ console.log(JSON.stringify(convert(paths), null, 2));
 嵌套对象的路径取值：
 
 ```js
-const getValueByStr = (obj, str) => {
-  const keys = str.split(".");
+const getValue = (obj, path) => {
+  const keys = path.split(".");
   let cur = obj;
   for (const key of keys) {
-    if (cur && typeof cur === "object" && key in cur) cur = cur[key];
+    if (typeof cur === "object" && cur !== null && key in cur) cur = cur[key];
     else return undefined;
   }
   return cur;
 };
 
-const data = {
+const obj = {
   user: {
     name: "John Doe",
     address: {
@@ -207,9 +206,9 @@ const data = {
   },
 };
 
-console.log(getValueByStr(data, "user.name")); // John Doe
-console.log(getValueByStr(data, "user.address.city")); // New York
-console.log(getValueByStr(data, "user.contact.email")); // john.doe@example.com
-console.log(getValueByStr(data, "user.age")); // undefined
-console.log(getValueByStr(data, "user.address.country")); // undefined
+console.log(getValue(data, "user.name")); // John Doe
+console.log(getValue(data, "user.address.city")); // New York
+console.log(getValue(data, "user.contact.email")); // john.doe@example.com
+console.log(getValue(data, "user.age")); // undefined
+console.log(getValue(data, "user.address.country")); // undefined
 ```

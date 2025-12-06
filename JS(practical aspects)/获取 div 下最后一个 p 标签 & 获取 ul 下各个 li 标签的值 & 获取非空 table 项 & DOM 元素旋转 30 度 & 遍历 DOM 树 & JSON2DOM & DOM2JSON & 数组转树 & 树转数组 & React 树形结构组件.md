@@ -1,3 +1,6 @@
+- `querySelectorAll` 返回 NodeList（包含元素/文本/注释等节点）
+- `getElementById` 返回 HTML 标签对应的节点（元素节点/null）
+
 ```js
 document.querySelector("div > p:last-child");
 const tags = document.querySelector("div").getElementsByTagName("p");

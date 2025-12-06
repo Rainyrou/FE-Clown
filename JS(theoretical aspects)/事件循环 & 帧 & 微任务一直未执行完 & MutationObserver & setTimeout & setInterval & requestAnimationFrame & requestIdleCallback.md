@@ -47,3 +47,23 @@ MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关�
 `requestAnimationFrame` 同步浏览器刷新率，保证回调在浏览器下一次重绘前执行
 
 `requestIdleCallback` 在浏览器主线程空闲时（当前帧任务执行完后，在下一帧开始前的空闲阶段）执行低优先级的延迟任务如后台数据同步和日志记录
+
+```html
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <script>
+    setTimeout(() => console.log('setTimeout', document.body)) // setTimeout <body><div>111</div></body>
+    Promise.resolve().then(() => console.log('promise', document.body)) // null
+    console.log(document.body); // null
+  </script>
+</head>
+<body>
+  <div>111</div
+</body>
+</html>
+```
+
+`document.body` 为浏览器 DOM 已存在的核心属性，因此打印 `null` 而非 `undefined`

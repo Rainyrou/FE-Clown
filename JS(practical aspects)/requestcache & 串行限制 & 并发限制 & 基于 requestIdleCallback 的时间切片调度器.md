@@ -1,12 +1,11 @@
-实现 requestcache 函数，若为相同 URL 则直接返回缓存，超过限制则使用 LRU策略
+实现 requestcache 函数，若为相同 URL 则直接返回缓存，超过限制则使用 LRU 策略
 
 ```js
 class RequestCache {
   constructor(capacity) {
     this.map = new Map();
     this.capacity = capacity;
-  }
-
+	  }
   request(url) {
     if (this.map.has(url)) {
       const promise = this.map.get(url);
@@ -65,9 +64,9 @@ serialFetch(urls)
 ```js
 function createPipeline(...tasks) {
   return async function (initialVal) {
-    let result = initialVal;
-    for (const task of tasks) result = await task(result);
-    return result;
+    let ans = initialVal;
+    for (const task of tasks) ans = await task(ans);
+    return ans;
   };
 }
 
@@ -93,8 +92,7 @@ const mergePromise = async (promisesFn) => {
   return ans;
 };
 
-const timeout = (time) =>
-  new Promise((resolve) => setTimeout(() => resolve(), time));
+const timeout = (time) => new Promise((resolve) => setTimeout(resolve, time));
 const promise1 = () => timeout(2000).then(() => "promise1");
 const promise2 = () => timeout(1000).then(() => "promise2");
 const promise3 = () => timeout(3000).then(() => "promise3");
@@ -134,7 +132,7 @@ class Scheduler {
   }
 }
 
-const timeout = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
+const timeout = (time) => new Promise((resolve) => setTimeout(resolve, time));
 const scheduler = new Scheduler();
 const addTask = (time, order) =>
   scheduler.add(() => timeout(time)).then(() => console.log(order));

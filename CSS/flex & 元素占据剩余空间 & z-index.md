@@ -74,7 +74,7 @@ z-index：
 `z-index` 失效原因：
 
 1. 未设置 `position` 属性或设置其为 `static`：`z-index` 只对定位元素即非默认的 `static` 有效
-2. 创建新的堆叠上下文：当元素创建新的堆叠上下文后，其内部元素的 `z-index` 只在此上下文内有效，无法与外部元素的 `z-index` 进行比较
+2. 创建新的堆叠上下文：当元素创建新堆叠上下文后，其内部元素的 `z-index` 只在此上下文内有效，无法与外部元素的 `z-index` 进行比较
 
 - `position` 为 `fixed` 或 `sticky`
 - `position` 为 `absolute` 或 `relative` 且 `z-index` 不为 `auto`

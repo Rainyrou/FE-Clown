@@ -3,14 +3,14 @@
 ```js
 class Tracker {
   constructor() {
-    this.visited = {};
+    this.map = {};
   }
   set(url, date) {
-    if (!this.visited[date]) this.visited[date] = [];
-    this.visited[date].push(url);
+    if (!this.map[date]) this.map[date] = [];
+    this.map[date].push(url);
   }
   get(date) {
-    return this.visited[date];
+    return this.map[date];
   }
 }
 

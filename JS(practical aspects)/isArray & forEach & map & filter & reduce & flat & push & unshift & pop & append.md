@@ -104,7 +104,7 @@ const _flat = (arr) => {
 console.log(_flat([1, 2, 3, [4, [5]], 1, 2, 6, 7]));
 ```
 
-7. `push & unshift & pop`
+7. `push/unshift/pop`
 
 ```js
 const _push = (arr, ...nums) => [...arr, ...nums];
@@ -120,7 +120,7 @@ const _pop = (arr) => {
 8. `append`
 
 ```js
-const append = (nums, ...args) => {
+const _append = (nums, ...args) => {
   const arr = Array.isArray(nums) ? [...nums] : [];
   const filtered = args.filter((item) => item !== undefined && item !== null);
   return [...arr, ...filtered];

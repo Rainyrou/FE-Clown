@@ -13,7 +13,8 @@ const _instanceof = (target, fn) => {
 
 ```js
 const _new = function (fn, ...args) {
-  // 构造新的空对象，将其原型设置为构造函数的 `prototype`
+  // 创建空对象
+  // 并将其 [[Prototype]]（隐式原型）指向 fn.prototype（构造函数原型对象）
   const obj = Object.create(fn.prototype);
   const res = fn.apply(obj, args);
   return typeof res === "object" && res !== null ? res : obj;

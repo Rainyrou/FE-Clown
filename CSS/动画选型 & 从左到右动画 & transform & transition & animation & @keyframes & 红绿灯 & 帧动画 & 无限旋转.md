@@ -45,80 +45,86 @@
 
 ```css
 .traffic-light {
-    width: 100px;
-    height: 250px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    border-radius: 20px;
+  width: 100px;
+  height: 250px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  border-radius: 20px;
 }
 
 .light {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: gray;
-    opacity: 0.3;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: gray;
+  opacity: 0.3;
 }
 
 @keyframes red-light {
-    0% {
-        background-color: red;
-        opacity: 1;
-    }
+  0% {
+    background-color: red;
+    opacity: 1;
+  }
 
-    50% {
-        background-color: white;
-        opacity: 0.3;
-    }
+  50% {
+    background-color: white;
+    opacity: 0.3;
+  }
 
-    100% {
-        background-color: red;
-        opacity: 1;
-    }
+  100% {
+    background-color: red;
+    opacity: 1;
+  }
 }
 
 @keyframes green-light {
-    0% {
-        background-color: green;
-        opacity: 1;
-    }
-    50% {
-        background-color: white;
-        opacity: 0.3;
-    }
-    100% {
-        background-color: green;
-        opacity: 1;
-    }
+  0% {
+    background-color: green;
+    opacity: 1;
+  }
+
+  50% {
+    background-color: white;
+    opacity: 0.3;
+  }
+
+  100% {
+    background-color: green;
+    opacity: 1;
+  }
 }
 
 @keyframes yellow-light {
-    0% {
-        background-color: yellow;
-        opacity: 1;
-    }
-    50% {
-        background-color: white;
-        opacity: 0.3;
-    }
-    100% {
-        background-color: yellow;
-        opacity: 1;
-    }
+  0% {
+    background-color: yellow;
+    opacity: 1;
+  }
+
+  50% {
+    background-color: white;
+    opacity: 0.3;
+  }
+
+  100% {
+    background-color: yellow;
+    opacity: 1;
+  }
 }
 
 .red {
-    animation: red-light 6s infinite;
+  animation: red-light 6s infinite;
 }
+
 .green {
-    animation: green-light 6s infinite 2s;
+  animation: green-light 6s infinite 2s;
 }
+
 .yellow {
-    animation: yellow-light 6s infinite 4s;
+  animation: yellow-light 6s infinite 4s;
 }
 ```
 

@@ -1,6 +1,6 @@
 ###### 可不可以继承的 CSS 属性
 
-可继承的CSS 属性：
+可继承的 CSS 属性：
 
 - `color`
 - `visibility`
@@ -11,7 +11,7 @@
 - `letter-spacing`：字符间距
 - `word-spacing`：单词间距
 
-不可继承的CSS 属性：
+不可继承的 CSS 属性：
 
 - `position`
 - `height/width/padding/border/margin/z-index`
@@ -20,8 +20,8 @@
 
 ###### line-height
 
-`line-height: 1.5` 基于当前元素的 `font-size` 计算，随当前字体自动缩放，子元素继承比例系数，根据自身的 `font-size` 动态计算
-`line-height: 150%` 基于父元素的 `font-size` 计算，子元素父元素计算后的固定像素值
+`line-height: 1.5` 基于当前元素的  `font-size`  计算，随当前字体自动缩放，子元素继承比例系数，根据自身的  `font-size`  动态计算
+`line-height: 150%` 基于父元素的  `font-size`  计算，子元素父元素计算后的固定像素值
 
 ```css
 .parent {
@@ -70,6 +70,7 @@
 6. 用户界面：
 
 - 视口单位：`vw`、`vh`、`vmin`、`vmax`
+
 * 大小调整：`resize`
 * 盒子大小：`box-sizing`
 * 用户选择：`user-select`
@@ -102,4 +103,3 @@
 - 透明度：`opacity`
 
 11. 媒体查询
-

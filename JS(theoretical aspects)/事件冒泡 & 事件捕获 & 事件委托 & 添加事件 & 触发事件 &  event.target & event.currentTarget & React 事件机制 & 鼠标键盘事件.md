@@ -4,9 +4,9 @@
 事件捕获：当某 DOM 元素触发事件时，事件从最外层的父元素开始向下逐层传递，直到目标元素
 事件委托：通过事件冒泡机制将事件监听器直接绑定于父元素，无需为各个子元素单独绑定
 
-- `focus`、`blur`、`load`、`unload` 等事件属于"非冒泡事件"，不支持事件冒泡和事件捕获，事件触发仅作用于目标元素
+* 所有事件均支持事件捕获阶，`load/unload/error/abort/focus/blur/scroll/resize` 等不支持事件冒泡
 - 通过 `event.stopPropagation` 阻止事件冒泡
-- 默认为事件冒泡机制，通过设置 `addEventListener` 的第三个参数为 `true` 在事件捕获阶段处理事件
+- 默认为事件冒泡，通过设置 `addEventListener` 的第三个参数为 `true` 在事件捕获阶段处理事件
 
 添加事件：
 

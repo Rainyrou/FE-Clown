@@ -1,20 +1,3 @@
-多页面通信方式：
-
-* postMessage + BroadcastChannel/SharedWorker
-* localStorage/sessionStorage + storage 事件监听
-* IndexedDB + change 事件监听
-* Cookie + 轮询
-
-| 维度   | MessageChannel                                                               | BroadcastChannel                   |
-| ---- | ---------------------------------------------------------------------------- | ---------------------------------- |
-| 通信范式 | 双向点对点（专用管道）                                                                  | 单向广播式（公共频道）                        |
-| 通信范围 | 任意跨上下文（通过 postMessage 跨域）                                                    | 同源上下文（多标签页 /Iframe）                |
-| 传输方式 | 结构化克隆 + Transferable（零拷贝）                                                    | 结构化克隆                              |
-| 生命周期 | 手动关闭                                                                         | 自动关闭                               |
-| 性能开销 | 较小（维护管道）                                                                     | 较大（维护订阅列表）                         |
-| 使用场景 | 主线程与 Web Worker 数据交互（大数据计算/音视频处理）/父页面与跨域 Iframe 通信（通过端口管道替代全局 popostMessage） | 多标签页状态同步/同源 Iframe 集群的全局通知/全链路数据分发 |
-
-
 Inline Frame 为 HTML 元素，其通过创建独立 DOM 和 JavaScript 环境，允许在某页面中显示其他页面内容，与原页面保持交互独立，若 iframe 与外部页面同源，则两者直接通过 JavaScript 访问彼此的全局变量、函数和 DOM 等，若 iframe 与外部页面跨域，通过 `postMessage` 和 `onmessage` 跨域通信
 
 ```html
@@ -32,7 +15,6 @@ Inline Frame 为 HTML 元素，其通过创建独立 DOM 和 JavaScript 环境�
 2. 模块化开发
 3. 各个 Iframe 均创建其独立渲染进程，大量 Iframe 导致页面卡顿，不利于 SEO
 
-
 Web Worker：
 
 1. 线程安全：Web Worker 为浏览器中独立于主线程运行的线程，有其独立的上下文、全局对象、事件循环和生命周期，无法直接访问和操作 DOM、`window`  对象或主线程中的全局变量
@@ -49,9 +31,9 @@ Web Worker 本地开发：
 
 Service Worker：
 
-1. 生命周期 & 请求拦截 & 缓存策略：Service Worker 基于 Web Worker 模型，用于实现离线支持、后台同步和推送通知等，其为浏览器中独立于主线程运行的线程（通过 postMessage 通信），无 DOM 访问权限，有其独立的事件循环和生命周期，包括安装、等待、激活和销毁，浏览器在主线程中通过 `navigator.serviceWorker.register` 注册 Service Worker 并持久化存储，在安装阶段 Service Worker 触发  `install`  事件以预缓存关键资源，新版本安装完后进入等待阶段，直到旧版本控制的页面全部关闭，可通过  `self.skipWaiting`  强制激活，在控制权转移时触发  `activate`  事件以清理旧缓存并升级版本，而后 Service Worker 通过监听  `fetch`  事件拦截同作用域内的所有请求，通过 Cache API 存储静态资源或预缓存数据，当拦截到请求时，可直接返回缓存中的响应或发送请求并缓存新响应或通过自定义策略如网络优先、缓存优先或离线回退等以响应请求，这种拦截—缓存—返回的机制使得页面在网络不佳或离线的情况下仍正常运行
-2. 唤醒机制：Service Worker 通过事件监听器如 `fetch`、`push` 和 `sync` 等响应异步事件，当事件触发时，Service Worker 被唤醒，处理完后等待下一事件
-3. 安全机制：Service Worker 脚本必须与页面同源，通过  `Service-Worker-Allowed`  头部扩展其作用域，而在生产环境必须使用 HTTPS 以防止 XSS 攻击
+* 生命周期 & 请求拦截 & 缓存策略：Service Worker 基于 Web Worker 模型，用于实现离线支持、后台同步和推送通知等，其为浏览器中独立于主线程运行的线程（通过 postMessage 通信），无 DOM 访问权限，有其独立的事件循环和生命周期，包括安装、等待、激活和销毁，浏览器在主线程中通过 `navigator.serviceWorker.register` 注册 Service Worker 并持久化存储，在安装阶段 Service Worker 触发  `install`  事件以预缓存关键资源，新版本安装完后进入等待阶段，直到旧版本控制的页面全部关闭，可通过  `self.skipWaiting`  强制激活，在控制权转移时触发  `activate`  事件以清理旧缓存并升级版本，而后 Service Worker 通过监听  `fetch`  事件拦截同作用域内的所有请求，通过 Cache API 存储静态资源或预缓存数据，当拦截到请求时，可直接返回缓存中的响应或发送请求并缓存新响应或通过自定义策略如网络优先、缓存优先或离线回退等以响应请求，这种拦截—缓存—返回的机制使得页面在网络不佳或离线的情况下仍正常运行
+* 唤醒机制：Service Worker 通过事件监听器如 `fetch`、`push` 和 `sync` 等响应异步事件，当事件触发时，Service Worker 被唤醒，处理完后等待下一事件
+* 安全机制：Service Worker 脚本必须与页面同源，通过  `Service-Worker-Allowed`  头部扩展其作用域，而在生产环境必须使用 HTTPS 以防止 XSS 攻击
 
 WebSocket：基于 TCP，默认端口为 80 和 443，其不受同源策略限制，提供持久化双向实时通信通道，通过二进制帧格式传输数据
 
@@ -60,7 +42,7 @@ WebSocket：基于 TCP，默认端口为 80 和 443，其不受同源策略限�
 - 心跳机制：由客户端和服务端某一方主动发送 Ping 帧以检测连接是否有效，而接收方接收到 Ping 帧后返回内容完全相同的 Pong 帧，若发送方未接收到 Pong 帧，则判断连接失效，主动关闭连接
 - 重连机制：指数退避重连 + 随机抖动 + 会话状态恢复 + 重连超时终止
 
-在页面加购、手机结算的场景下，保持数据一致且不刷新界面：购物车数据存储于服务端，而客户端仅作为视图/缓存，任何客户端上的增删改操作实时向服务端发送请求，更新对应数据，而服务端数据更新后，向所有活跃的客户端发送数据变化的请求，客户端接收到请求后，更新本地购物车数据，为保持多端实时同步，通过 WebSocket 提供持久化双向实时通信通道，通过 JWT/Cookie/Session 确保不同设备访问同一用户的购物车数据并通过本地存储监听或内存状态管理实现数据实时更新
+实时数据同步 + 跨设备状态管理：数据实际存储于后端，前端增删改查并通过 WebSocket 连接实时发送请求给后端以更新相应数据，后端数据更新后，监听数据变化的所有前端更新本地数据，通过 JWT/Cookie/Session 确保同一用户在不同机型设备下的状态一致
 
 Server-Sent Events：单向实时通信，客户端通过 EventSource 接口向服务端发送 GET 请求，请求头部字段 `Accept: text/event-stream`，服务端接收到请求后持续保持连接状态并向客户端主动推送数据，返回响应头部字段 `Content-Type: text/event-stream + Connection: keep-alive + Cache-Control: no-cache + Transfer-Encoding: chunked`
 

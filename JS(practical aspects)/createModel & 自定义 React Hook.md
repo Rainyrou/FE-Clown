@@ -111,28 +111,35 @@ export const useStableCallback = (callback) => {
 
 5. 手写 `useFetch`：
 
+* 竞态为发送的请求和返回的响应顺序不一一对应（后发先返）导致旧请求结果覆盖新请求结果
+* `AbortController` 在发送新请求时中断旧请求，从网络层面过滤无效响应
+* `requestId` 版本号确保最新请求的响应更新状态，从逻辑层面过滤无效响应
+
 ```js
 export const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const requestId = useRef(0);
   useEffect(() => {
     const controller = new AbortController();
+    const curId = ++requestId.current;
     const fetchData = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, { signal: controller.signal });
         if (!response.ok) throw new Error(response.status);
         const result = await response.json();
-        setData(result);
+        if (curId === requestId.current) setData(result);
       } catch (error) {
-        setError(error);
+        if (curId === requestId.current && error.name !== "AbortError")
+          setError(error);
       } finally {
-        setLoading(true);
+        if (curId === requestId.current) setLoading(false);
       }
     };
-    url && fetchData();
+    fetchData();
     return () => controller.abort();
   }, [url]);
   return { data, loading, error };

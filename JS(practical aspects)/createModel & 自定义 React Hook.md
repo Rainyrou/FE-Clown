@@ -112,8 +112,8 @@ export const useStableCallback = (callback) => {
 5. 手写 `useFetch`：
 
 * 竞态为发送的请求和返回的响应顺序不一一对应（后发先返）导致旧请求结果覆盖新请求结果
-* `AbortController` 在发送新请求时中断旧请求，从网络层面过滤无效响应
-* `requestId` 版本号确保最新请求的响应更新状态，从逻辑层面过滤无效响应
+* 在发送新请求时取消旧请求
+* 各个请求生成版本号，前端存储最新版本号，返回响应时校验版本号有效性，确保只有最新请求的响应更新数据
 
 ```js
 export const useFetch = (url) => {

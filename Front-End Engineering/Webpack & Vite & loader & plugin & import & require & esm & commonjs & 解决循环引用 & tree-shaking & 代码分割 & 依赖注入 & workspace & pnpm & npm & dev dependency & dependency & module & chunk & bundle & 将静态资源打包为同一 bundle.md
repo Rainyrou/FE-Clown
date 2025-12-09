@@ -29,8 +29,8 @@ Plugin：基于 Tapable 的 Webpack 事件钩子系统，在构建的各个阶�
 
 自定义 Plugin：
 
-- 编写一个 JavaScript 命名函数或类
-- 在其原型上定义一个 `apply` 方法
+- 编写 JavaScript 命名函数或类
+- 在其原型上定义 `apply` 方法
 - 指定挂载的 Webpack 事件钩子
 - 处理 Webpack 内部实例的特定数据
 - 功能完成后调用 Webpack 提供的回调
@@ -58,35 +58,23 @@ ES Module 导入的为原模块的动态绑定引用，而非原模块的拷贝�
 ES Module：`import` 和 `export` 模块导入导出语法（浏览器 -> `<script type="module">`，Node.js -> `.mjs` 扩展名/在 `package.json` 设置 `"type": "module"`），在编译时执行（静态分析），同步异步加载模块
 CommonJS：`require` 和 `module.exports` 模块导入导出语法（Node.js 原生支持），在运行时执行，同步加载模块
 
-解决循环引用：
+解决循环引用（循环依赖）：
 
-- 循环引用（循环依赖）：两个及以上模块相互引用，形成闭环。直接循环依赖如模块 A 引入模块 B，模块 B 引入模块 A；间接循环依赖链路更长如模块 A 引入模块 B，模块 B 引入模块 C，模块 C 引入模块 A​，无论哪种表现形式，本质为模块间相互引用导致未初始化即被使用（执行顺序不确定性，先有鸡还是先有蛋）
-- Webpack：从入口点开始解析文件，通过 AST import/require 语句，递归解析所有依赖项并构建包含所有模块及其依赖关系的依赖图，对于 CommonJS，Webpack 运行时注入的 webpack_require 模拟 CommonJS 模块加载机制处理循环依赖（模块缓存检测、部分执行等），返回已执行部分的 exports 对象；对于 ES Module，Webpack 通过静态分析处理循环依赖（模块缓存检测、实时绑定、静态提升等）
-- Vite：基于原生支持和最小化干预的策略，扫描入口文件，分析所有 `import`  语句，递归收集依赖列表，以 Esbuild 打包 CommonJS/UMD 为 ES Module（模块缓存检测、实时绑定、静态提升等）
+- 定义：两个及以上模块相互引用形成闭环，本质为模块未初始化即相互引用（执行顺序的不确定性）
+- Webpack：在编译阶段确定模块的依赖关系并构建模块依赖图，CommonJS 通过 webpack_require 模拟加载（模块缓存检测、部分执行等），返回已执行的 exports；ES Module 通过静态分析（缓存检测、实时绑定、静态提升等）
+- Vite：在编译阶段确定模块的依赖关系并构建模块依赖图，以 Esbuild 打包 CommonJS/UMD 为 ES Module，通过静态分析（缓存检测、实时绑定、静态提升等）
 
-Tree-Shaking：ES Module 的依赖关系在编译时是确定的，支持静态分析即在不执行代码的情况下分析模块的导入导出以判断哪些部分是可达的，哪些部分是死代码（无法到达 -> 在某些条件下如 `return` 语句后永远无法执行的代码 + 无用计算结果如未被使用的函数返回值 + 只写不读的变量），满足 Tree-Shaking 的条件，通过解析模块的导入导出，识别模块间的依赖关系并构建模块依赖图，遍历所有模块并以 `usedExports` 标记未被引用的模块导出，在构建时移除未被使用的 JavaScript 代码，减少构建产物大小
+Tree-Shaking：ES Module 通过分析模块导入导出，在编译阶段确定模块的依赖关系并构建模块依赖图，通过静态分析遍历所有模块并标记未引用模块，在构建阶段移除无用代码
 
-局限性：
+动态导入的 Tree-Shaking 实现方式：ES Module + 无副作用代码标注 + 通过 `optimization.splitChunks/rollupOptions.manualChunks` 为各个模块生成独立 Chunk
 
-- 无法分析动态导入和 CommonJS 的依赖关系
-- 无法移除有副作用的模块
+代码分割：
 
-动态导入实现 Tree-Shaking：
+- 入口分割：根据模块依赖图识别多页面入口点，为各个入口点生成独立 Chunk
+- 动态导入：构建工具静态分析 `import` 语法，根据模块间的依赖关系生成独立 Chunk
+- 共享模块：通过 `optimization.splitChunks/rollupOptions.manualChunks` 提取共享模块为公共 Chunk，配置"长缓存 + MD5 哈希"，后续直接复用缓存
 
-- 强制使用 ES Module + 强制无副作用代码标注（配置  `sideEffects: false`）
-- 路径静态化：模板字符串固定前缀，通过 Webpack `optimization.splitChunks` 和 Vite `rollupOptions.manualChunks` 预解析所有可能的目标模块，将各个模块打包为独立 Chunk 且静态识别并移除 Chunk 内未被引用的成员
-- 编译&运行阶段 Tree-Shaking
-
-代码分割：构建工具通过静态分析构建包含所有模块及其依赖关系的依赖图，判断模块的拆分可行性、模块依赖关系、共享属性和首屏必要性，根据模块依赖图差异化拆分策略：
-
-1. 入口分割：基于模块依赖图判断多页面的入口点，为各个入口点生成独立 Chunk，Chunk 只包含该入口点所需依赖模块
-2. 共享模块：通过 Webpack `optimization.splitChunks` 和 Vite `rollupOptions.manualChunks` 根据模块依赖图提取多Chunk的共享模块为独立公共 Chunk，公共 Chunk 配置"长缓存 + MD5 哈希" ，Chunk 加载完毕后浏览器解析执行此 JavaScript ，导出其内容并存储于浏览器全局缓存，再次调用 `import` 直接返回缓存结果
-3. 动态 `import` 编译后的代码：
-
-- 编译阶段：构建工具静态分析 `import` 语法，将其引用的模块拆分为独立 Chunk，主 Chunk 只保留其加载器代码（Chunk URL、加载状态和模块缓存容器）
-- 运行阶段：执行 `import` 时加载器动态创建有 `async` 属性的 `<script>` 标签以请求 Chunk，若该 Chunk 已加载则复用同一 Promise
-
-依赖注入：实现控制反转，组件只需声明依赖，而无需关心依赖实现细节，而容器提供依赖，记录"依赖标识（Token）→ 依赖创建方式（Provider）"的映射关系，通过分析获取模块间的依赖关系，构建模块依赖图并拓扑排序，通过 Provider 创建实例，根据生命周期规则（单例/多例）缓存依赖实例，容器通过 Token 查找解析后的依赖实例，再通过组件暴露的注入点（属性、构造函数参数、函数参数、配置声明等）传递实例至组件中
+依赖注入：组件声明依赖而无需关心实现细节，容器通过 Token-Provider 映射创建并缓存依赖实例，通过静态分析构建模块依赖图保证创建顺序，最终将实例注入组件
 
 Workspace：
 

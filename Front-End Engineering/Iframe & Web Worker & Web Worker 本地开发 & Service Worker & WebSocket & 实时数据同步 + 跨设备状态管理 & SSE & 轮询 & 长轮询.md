@@ -13,7 +13,7 @@ Inline Frame 为 HTML 元素，其通过创建独立 DOM 和 JavaScript 环境�
 - `allow-popups`：打开新窗口
 
 2. 模块化开发
-3. 各个 Iframe 均创建其独立渲染进程，大量 Iframe 导致页面卡顿，不利于 SEO
+3. 各个 Iframe 有其独立渲染进程，导致页面卡顿
 
 Web Worker：
 
@@ -23,7 +23,7 @@ Web Worker：
 创建 -> 调用  `new Worker(url)`  实例化，浏览器下载并执行指定脚本
 销毁 -> 主线程调用  `worker.terminate` 强制销毁或页面关闭时自动销毁
 
-3. 消息通信：主线程与 Web Worker 通过  `postMessage` 和 `onmessage`  双向通信，浏览器使用结构化克隆算法深拷贝数据
+3. 消息通信：主线程与 Web Worker 通过  `postMessage` 和 `onmessage`  双向通信，浏览器通过结构化克隆算法深拷贝数据
 
 Web Worker 本地开发：
 

@@ -25,16 +25,17 @@ const ajax = (url, options) => {
       xhr.setRequestHeader("Content-Type", "application/json");
     // 监听请求状态变化
     xhr.onreadystatechange = () => {
-	  // 请求完成且成功
-      if (xhr.readyState === 4 && 200 <= xhr.status && xhr.status < 300) {
-        try {
-          const response = JSON.parse(xhr.responseText);
-          resolve(response);
-        } catch (err) {
-          resolve(xhr.responseText);
+      if (xhr.readyState === 4) {
+        if (200 <= xhr.status && xhr.status < 300) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            return resolve(response);
+          } catch (err) {
+            return resolve(xhr.responseText);
+          }
+        } else {
+          return reject(new Error(xhr.status));
         }
-      } else {
-        reject(new Error(xhr.status));
       }
     };
     xhr.onerror = () => reject(new Error("NetWork error"));

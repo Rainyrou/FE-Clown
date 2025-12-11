@@ -54,4 +54,4 @@ Document Object Model：与平台和语言无关的标准接口规范，为 HTML
 * 文档类型节点（nodeType=10）：文档类型，节点名称为 doctype 名称
 * 文档片段节点（nodeType=11）​​
 
-VDOM：虚拟 DOM 为解决浏览器性能问题而生，其为树形结构的 JavaScript 对象即在 JavaScript 模拟 DOM 树，状态更新于虚拟 DOM 上，在内存中操作 JavaScript 对象比在浏览器上高效，将虚拟 DOM 映射为真实 DOM，再由浏览器渲染，通过 Diff 算法比较新旧虚拟 DOM 树中节点的差异并根据差异对真实 DOM 进行最小量更新。虚拟 DOM 抽象浏览器渲染过程，不再局限于浏览器 DOM，真正实现跨平台能力
+VDOM：虚拟 DOM 为解决浏览器性能问题而生，其为树形结构的 JavaScript 对象即在 JavaScript 模拟 DOM 树，状态更新于虚拟 DOM 上，在内存中操作 JavaScript 对象比在浏览器上高效，将虚拟 DOM 映射为真实 DOM，再由浏览器渲染，通过 Diff 算法比较新旧虚拟 DOM 树中节点的差异并根据差异对真实 DOM 进行最小量更新，虚拟 DOM 抽象浏览器渲染过程，不再局限于浏览器 DOM，真正实现跨平台能力

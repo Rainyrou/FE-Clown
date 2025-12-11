@@ -121,6 +121,7 @@ export const useFetch = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const requestId = useRef(0);
+  
   useEffect(() => {
     const controller = new AbortController();
     const curId = ++requestId.current;

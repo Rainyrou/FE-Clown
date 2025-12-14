@@ -10,10 +10,16 @@ for (var i = 0; i < 3; i++) {
 ```
 
 ```js
-for (var i = 0; i < 5; i++) setTimeout(() => console.log(i), 1000); // 5 5 5 5 5（立即输出）
+for (var i = 0; i < 3; i++) {
+  var a = i;
+  let b = i;
+  setTimeout(() => console.log(i, a, b), 1000);
+}
+// 1 秒后批量执行
+// 3 2 0
+// 3 2 1
+// 3 2 2
 ```
-
-`var` 声明的变量有函数作用域，变量 `i` 实际创建于 `for` 循环外部，所有 `setTimeout` 实例引用同一变量，其不阻塞主线程，立即执行下一` for` 循环，`setTimeout` 回调同时添加至任务队列，其延迟计时从 `setTimeout` 调用时开始，由于 `for` 循环微秒级的执行速度，5 个 `setTimeout` 的延迟计时几乎同步开始，1 秒后被批量取出执行，因此一次性输出五个 5 而非间隔 1 秒输出一个
 
 ```js
 var a = 1;

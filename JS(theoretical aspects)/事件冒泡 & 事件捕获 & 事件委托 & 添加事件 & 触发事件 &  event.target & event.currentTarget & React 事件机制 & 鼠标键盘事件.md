@@ -31,4 +31,4 @@ React 事件机制：
 - 执行顺序：onmousedown -> onmouseup -> onclick + keydown -> keypress（已废弃）-> keyup
 - 按钮状态：onmousedown（鼠标按下）+ onmouseup（鼠标松开）+ onclick（鼠标点击事件完成）+ ondblclick（双击）+ contextmenu（右键点击显示菜单）
 - 指针位置：mousemove（鼠标指针在元素上移动）+ mouseover（鼠标指针进入元素及其子元素）+ onmouseout（鼠标指针离开元素及其子元素）+ onmouseenter（鼠标指针进入元素及其子元素，不冒泡）+ onmouseleave（鼠标指针离开元素及其子元素，不冒泡）
-- 物理按键状态：keydown（按键按下） + keyup（按键松开） + input（表单元素发生变化）
+- 物理按键状态：keydown（按键按下） + keyup（按键松开） + input（表单元素变化）

@@ -38,7 +38,7 @@ Service Worker：
 WebSocket：基于 TCP，默认端口为 80 和 443，其不受同源策略限制，提供持久化双向实时通信通道，通过二进制帧格式传输数据
 
 - TCP 可靠传输
-- WebSocket 协议层增强：建立连接只需客户端和服务端一次 HTTP 握手，而后通过 WebSocket 连接通信，客户端发送  `Upgrade: websocket` + `Sec-WebSocket-Key`  请求头部，服务器返回  `101 Switching Protocols` + 加密后的  `Sec-WebSocket-Accept`  响应头部，发送方发送关闭帧和关闭码，接收方返回 ACK 报文后关闭连接
+- WebSocket 协议层增强：建立连接只需客户端和服务端一次 HTTP 握手，而后通过 WebSocket 连接通信，客户端发送  `Upgrade: websocket` + `Sec-WebSocket-Key`  请求头部，服务端返回  `101 Switching Protocols` + 加密后的  `Sec-WebSocket-Accept`  响应头部，发送方发送关闭帧和关闭码，接收方返回 ACK 报文后关闭连接
 - 心跳机制：由客户端和服务端某一方主动发送 Ping 帧以检测连接是否有效，而接收方接收到 Ping 帧后返回内容完全相同的 Pong 帧，若发送方未接收到 Pong 帧，则判断连接失效，主动关闭连接
 - 重连机制：指数退避重连 + 随机抖动 + 会话状态恢复 + 重连超时终止
 

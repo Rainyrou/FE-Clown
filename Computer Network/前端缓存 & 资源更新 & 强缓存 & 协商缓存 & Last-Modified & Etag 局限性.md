@@ -25,12 +25,12 @@
 
 1. `Cache-Control`
 
-- `max-age=<seconds>`：设置资源在本地的缓存期限
-- `must-revalidate`: 缓存过期后，必须向服务端验证有效性
-- `no-cache`：不使用本地缓存，每次请求均需向服务端验证有效性
-- `no-store`：禁止任何形式的缓存
-- `public`：响应可被任何缓存节点存储
-- `private`：响应仅限于单用户，无法被共享缓存存储
+- `max-age=<seconds>`：强缓存期限
+- `must-revalidate`: 强缓存资源过期后，必须向服务端重新验证资源的有效性
+- `no-store`：禁用所有缓存
+- `no-cache`：禁用强缓存，使用协商缓存
+- `public`：公共缓存
+- `private`：私有缓存
 
 2. Expires/Max-age
 

@@ -45,6 +45,45 @@ const ajax = (url, options) => {
 };
 ```
 
+```js
+import axios from "axios";
+
+const service = axios.create({ baseURL: "/api" });
+let refreshTokenPromise = null;
+
+service.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+  return config;
+});
+
+service.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    const { config, response } = err;
+    if (response.status === 403 && !config._retry) {
+      config._retry = true;
+      refreshTokenPromise =
+        refreshTokenPromise ||
+        axios
+          .post("/refreshToken", {
+            refreshToken: localStorage.getItem("refreshToken"),
+          })
+          .then((res) => {
+            localStorage.setItem("token", res.data.token);
+            return res.data.token;
+          })
+          .finally(() => (refreshTokenPromise = null));
+      const newToken = await refreshTokenPromise;
+      config.headers.Authorization = `Bearer ${newToken}`;
+      return service(config);
+    }
+    return Promise.reject(err);
+  }
+);
+
+export default service;
+```
+
 
 
 

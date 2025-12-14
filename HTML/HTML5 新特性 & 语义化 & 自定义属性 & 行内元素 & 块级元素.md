@@ -1,4 +1,4 @@
-表单增强：input 类型（`time` 时间选择器 + `date` 日期选择器 + `color` 颜色选择器 + `number` 数字输入框 + `url` URL 输入框 + `tel` 电话号码输入框 + `email` 电子邮件输入框）、表单属性（`required` 输入字段必填 + `multiple` 可选多值 + `placeholder` 输入为空时显示的文字 + `autocomplete` 控制输入是否自动完成 + `autofocus` 控制输入是否自动聚焦）
+表单增强：input 类型（`time` 时间选择器 + `date` 日期选择器 + `color` 颜色选择器 + `number` 数字输入框 + `url` URL 输入框 + `tel` 电话号码输入框 + `email` 电子邮件输入框）、表单属性（`required` 字段必填 + `multiple` 是否多值 + `placeholder` 输入为空时显示的文字 + `autocomplete` 输入是否自动完成 + `autofocus` 输入是否自动聚焦）
 多媒体支持：`<audio>` 音频 + `<video>` 视频 + `<source>` 多媒体资源路径
 Canvas & SVG
 Drag & Drop API

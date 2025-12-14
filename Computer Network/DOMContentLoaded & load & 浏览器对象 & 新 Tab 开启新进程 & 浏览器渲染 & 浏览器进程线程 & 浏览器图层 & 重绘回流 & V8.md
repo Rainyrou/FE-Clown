@@ -45,14 +45,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
 - 主线程串行处理解析任务，HTML 解析器流式解析 HTML 字节流，将 HTML 标签拆分为 Token 并通过 DOM 构造器逐 Token 生成 DOM 树
 - CSS 解析器解析 CSS 字节流，将其转换为结构化 CSS Token，再生成 CSS Object Model 树，样式引擎根据用户代理样式 -> 用户样式 -> 作者样式的优先级合并样式，通过 BloomFilter 过滤不匹配的 CSS 选择器分支，通过 Hash 过滤器查找匹配的 CSS 规则，最终根据继承规则、层叠上下文和特异性生成各个 DOM 节点的计算样式
-- DOM 树和 CSS Object Model 树结合生成 Layout 树，具体来说，遍历 DOM 树过滤不可见 DOM 节点，为可见 DOM 节点创建 LayoutObject 并将 CSS Object Model 树的计算样式附着于 LayoutObject 上
+- DOM 树和 CSS Object Model 树结合生成 Layout 树，具体来说，遍历 DOM 树为可见 DOM 节点创建 LayoutObject 并将 CSS Object Model 树的计算样式附着于 LayoutObject 上
 - 浏览器遍历 Layout 树，基于盒模型布局算法，以包含块为单位，自上而下从左往右递归计算为各个 LayoutObject 的几何属性，Float/Position/Flex/Grid 等布局触发专属算法分支如 Flex 布局的主轴/交叉轴空间分配和 Grid 的网格轨道计算
 - 布局计算基于脏值传播机制，若某 LayoutObject 的几何属性变化则标记其为脏节点并递归标记所有依赖它的父子节点，重新计算脏节点的页面布局
 - 主线程遍历 Layout 树执行绘制操作，根据绘制顺序将各个 LayoutObject 转换为绘制指令，生成绘制记录
 - 基于层叠上下文将 Layout 树拆分为绘制层，同一绘制层内的绘制指令根据顺序执行，不同绘制层的绘制相互独立
 - 主线程将绘制记录和绘制层信息提交给合成器线程，合成器线程执行图层化，将绘制层拆分为默认图层和复合图层，构建图层树并计算各个图层的变换矩阵
 - 光栅化线程通过分块光栅化策略将各个图层拆分为 256x256/512x512 瓦片，仅光栅化视口内和即将进入视口的瓦片，将绘制记录转换为像素数据，默认图层按需光栅化，复合图层的光栅化结果持久存储于 GPU 显存
-- GPU 线程接收光栅化后的像素纹理，通过合成器管线执行图层合成，根据 z-index 顺序混合各复合图层纹理，应用变换和滤镜，最终生成帧缓冲区的像素数据，再通过显示控制器输出至屏幕
+- GPU 线程接收光栅化后的像素纹理，通过合成器管线执行图层合成，基于层叠上下文混合各复合图层纹理，应用变换和滤镜，最终生成帧缓冲区的像素数据，再通过显示控制器输出至屏幕
 - 主线程的渲染任务遵循「JavaScript 执行 → 样式计算 → 布局绘制 → 图层合成」的单帧调度逻辑，任一环节耗时超过 16.6ms 触发丢帧；DOM/CSSOM 为非线程安全数据结构，主线程串行处理其修改/读取操作以避免竞态问题，而定时器/网络请求/GPU 任务由定时器/异步 HTTP 请求/合成器线程处理，完成后通过事件队列通知主线程更新
 
 RenderLayer 渲染层（普通图层）：浏览器渲染流程中的第一层级，与 DOM 和 LayoutObject 一一对应，决定元素的层叠关系即 z 轴空间，其在 CPU 执行布局计算、绘制和合成等操作，通过根元素、定位属性、`opacity`、`transform`、`filter`、`mask`、`mix-blend-mode` 和 `overflow: hidden` 等触发层叠上下文
@@ -79,11 +79,11 @@ b. 设置 `div.style.top` = 新值：这一变化被加入到渲染队列，但�
 
 ###### 解决方案
 
-- 避免频繁读取触发重绘回流的 CSS 属性，可将其缓存
+- 避免频繁读写触发重绘回流的 CSS 属性，可将其缓存
 - 避免在循环中直接操作 CSS 或通过 `DocumentFragment` 批量更新
-- 修改 CSS 类属性而非直接修改 `style` 属性
-- 避免使用 `table` 布局
+- 修改 CSS 类属性而非修改 `style` 属性
 - 通过 `transform`、`opacity` 和 `requestAnimationFrame` 进行动画
+- 避免使用 `table` 布局
 
 浏览器为多进程的，操作系统为其进程分配 CPU 和内存等使其运行，每打开一个 Tab 页即创建一个独立的浏览器进程（在 Chrome 的 More tools 中打开任务管理器即可看到进程列表，由于 Chrome 的优化机制 Tab 页和进程一一对应的情况并不绝对如合并多个空白 Tab 页），多进程可避免单页面或第三方插件崩溃影响整个浏览器，同时充分利用多核 CPU
 

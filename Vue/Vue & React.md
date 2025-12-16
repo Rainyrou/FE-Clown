@@ -1,20 +1,9 @@
-```
-// Template & JSX
-// Vux/Pinia/Context/Redux
-// Vue CLI/Vite/Create React App
-// 组件通信
-// 生命周期
-// 性能优化
-// 响应式 + Diff
-```
-
 Vue.js & React.js：JavaScript 库
 
 1. **Template & JSX**
 
-- Vue 通过基于 HTML 的模板语法提供数据驱动的视图层框架，允许我们声明式地将 DOM 绑定到底层 Vue 实例数据
-
-* JSX 为 React 中类似 XML 的语法扩展，使得在 JavaScript 代码中可编写类似 HTML 的代码，更接近函数式编程，其提供简单直观的方式以声明 UI（语法糖），通过 Babel 转换为 JavaScript，通过 `React.createElement` 生成虚拟 DOM，通过 `ReactDOM.render` 将虚拟 DOM 转换为真实 DOM 并插入到页面中，其中 Fiber 架构调度和管理虚拟 DOM 更新，Diff 算法比较新旧虚拟 DOM 树中节点的差异并根据差异对真实 DOM 进行最小量更新
+- Vue 通过模板语法提供数据驱动的视图框架，声明式将 DOM 绑定至底层 Vue 实例
+* JSX 为类似 XML 的语法扩展，函数式编程，通过 Babel 转换为 JavaScript，通过 `React.createElement` 生成虚拟 DOM，通过 `ReactDOM.render` 将虚拟 DOM 转换为真实 DOM 并插入到页面中
 
 2. **响应式**：
 
@@ -66,7 +55,7 @@ effect(() => console.log(`count is: ${state.count}`));
 state.count++;
 ```
 
-- React  响应式基于 State 和 Props，侧重于单向数据流和不可变数据，手动 `setState`  显式触发更新，更新粒度为组件级别，默认重新渲染完整组件树，通过 `pureComponent` 和 `shouldComponentUpdate` 等方式进行性能优化
+- React  响应式基于 State 和 Props，侧重于单向数据流和不可变数据，手动 `setState` 显式触发更新，更新粒度为组件级别，默认重新渲染完整组件树，通过 `pureComponent` 和 `shouldComponentUpdate` 等方式进行性能优化
 * Fiber 架构
 
 3. **Diff 算法**：

@@ -70,7 +70,6 @@ ctx.scale(scale, scale);
 初期在浏览器以 Web 开发形式编写 UI、业务逻辑和接口联调等，无需启动模拟器或连接真机
 
 - Chrome 选择 iPhone SE 宽度 375 直接与设计稿 1：1 对照
-
 * 通过 React Devtool 查看页面内部 State、Store 和 Hooks 等数据
 * 在 Chrome Network 调试 Tab 进行接口联调
 

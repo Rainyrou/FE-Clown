@@ -2,75 +2,20 @@
 - 多请求并发提交
 
 ```js
-const getFormData = (formElement) => {
-  const formData = {};
-  const inputs = formElement.querySelector("[name]");
-  inputs.forEach((input) => {
-    const { name, type, value, checked } = input;
-    if (type === "checkbox") {
-      if (!formData[name]) formData[name] = [];
-      if (checked) formData[name].push(value);
-    } else if (type === "radio" && checked) {
-      formData[name] = value;
-    } else {
-      formData[name] = value;
-    }
-  });
-  return formData;
-};
-
-const getAllFormData = (formSelector) => {
-  const allForms = document.querySelectorAll(formSelector);
-  const batchData = [];
-  allForms.forEach((form) => {
-    if (!validateForm) {
-      console.warn(`${form} fail`);
-      return;
-    }
-    batchData.push(getFormData(form));
-  });
-  return batchData;
-};
-
-const validateForm = (form) => {
-  const requiredInputs = form.querySelectorAll("[required]");
-  for (const input of requiredInputs) {
-    if (!input.trim()) {
-      alert(`${input.placeholder}`);
-      return false;
-    }
-  }
-  return true;
-};
-
-const batchSubmitForms = async (formSelector, url) => {
-  const batchData = getAllFormData(formSelector);
-  if (batchData.length === 0) return;
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(batchData),
-    });
-    const result = await response.json();
-    if (response.ok) {
-      alert("sumbit success");
-      document.querySelectorAll(formSelector).forEach((form) => form.reset());
-    } else {
-      alert(result.message);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-document
-  .getElementById("submit")
-  .addEventListener("click", () =>
-    batchSubmitForms(".batch-form", "/api/batch-save")
+const batchSubmit = (url, dataList) => {
+  return Promise.all(
+    dataList.map((item) =>
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item),
+      }).then((res) => res.json())
+    )
   );
+};
+
+const formsData = [{ id: 1 }, { id: 2 }, { id: 3 }];
+batchSubmit("/api/save", formsData).then((results) => console.log(results));
 ```
 
 上传图片接口返回 url，待批量上传后渲染至页面：

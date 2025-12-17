@@ -3,8 +3,8 @@
 1. `$router`：全局路由实例对象，包含所有路由的属性和方法，通过 `this.$router` 访问
 2. `$route`：当前路由实例对象，包含当前路由的属性和方法，通过 `this.$route` 访问
 3. `router.addRoute` -> 添加路由 `router.removeRoute` -> 删除路由
-4. Hash 模式：默认模式，通过 URL hash 即 `#` 后的部分模拟完整 URL，当 URL hash 变化时页面不触发重载，通过 `window.addEventListener` 监听 `hashchange` 事件实时捕获 URL hash 变化，当 hash 变化时，`hashchange` 事件触发，Vue Router 解析提取当前hash值，根据路径匹配算法和路由规则将路径映射至当前路由对象，在回调中执行相应的路由跳转逻辑
-5. History 模式：无 `#` 的传统 URL，服务端解析完整路径，其基于浏览器 `pushState`、`replaceState` 和 `popstate` API，通过 `window.addEventListener` 监听 `popstate` 事件，在 `pushState` 或 `replaceState` 调用时不触发 `popstate`，手动更新路路由，而当浏览器前进/后退或调用 `history.back/forward/go` 时，`popstate` 事件触发，服务端重写 URL 规则以支持 SPA，确保所有路由均指向同一入口文件
+4. Hash 模式：默认模式，通过 URL hash 即 `#` 后的部分模拟完整 URL，当 URL hash 变化时页面不刷新，通过事件监听器监听 `hashchange` 事件实时捕获 hash 变化，Vue Router 解析提取当前 hash 值，根据路径匹配算法和路由规则将路径映射至当前路由对象，在回调中执行路由跳转逻辑
+5. History 模式：传统 URL，服务端解析完整路径，其基于浏览器 `popstate/pushState/replaceState`，通过事件监听器监听 `popstate` 事件，服务端配置 URL 规则以支持 SPA，确保所有路由指向同一入口文件
 
 `nginx.conf`
 

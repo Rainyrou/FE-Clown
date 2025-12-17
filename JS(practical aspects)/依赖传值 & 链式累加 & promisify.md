@@ -1,3 +1,31 @@
+依赖传值：
+
+```js
+const items = [
+  { id: "task1", deps: [], callback: (i) => i + 1 },
+  { id: "task2", deps: ["task1", "task3"], callback: (i) => i + 2 },
+  { id: "task3", deps: ["task1"], callback: (i) => i + 3 },
+  { id: "task4", deps: ["task1", "task2", "task3"], callback: (i) => i + 4 },
+];
+
+const runTasks = (items) => {
+  const taskMap = new Map();
+  for (const item of items) taskMap.set(item.id, item);
+  const cache = {};
+  const resolve = (id) => {
+    if (id in cache) return cache[id];
+    const task = taskMap.get(id);
+    const depResults = task.deps.map(resolve);
+    const input = depResults.length > 0 ? Math.max(...depResults) : 0;
+    return (cache[id] = task.callback(input));
+  };
+  for (const item of items) resolve(item.id);
+  return cache;
+};
+
+console.log(runTasks(items)); // { task1: 1, task2: 6, task3: 4, task4: 10 }
+```
+
 ###### 链式累加
 
 变式一：

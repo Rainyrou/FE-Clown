@@ -9,7 +9,7 @@ SSO：
 
 JWT：JSON 对象，其包含用户信息，客户端通过 URL、POST 或 HTTP header 等方式携带 JWT 以实现无状态化，服务端无需存储和重复查询数据库，其由 Header + Payload + Signature 构成，以 `.` 分隔：
 
-- Header 由令牌类型 `type` 和加密算法构成
+- Header 由令牌类型和加密算法构成
 - Payload 包含用户实体和其他数据声明集
 - Signature 由 Header 和 Payload 加密生成
 
@@ -19,7 +19,7 @@ Refresh Token：在 Access Token 失效后获取新 Access Token，有效期较�
 - 用户首次登录，服务端认证成功后发送 Access Token 和 Refresh Token 给客户端
 - 客户端通过 Access Token 访问目标资源，若 Access Token 失效则通过 Refresh Token 获取新 Access Token，再通过 Access Token 访问同一资源，若 Refresh Token 失效则用户需重新登录以获取新 Access Token 和 Refresh Token
 
-Token 失效：双 token 机制 + 过期时间 + 黑名单 + 与特定 IP&设备绑定
+Token 失效：双 token 机制 + 过期时间 + 黑名单 + 与特定 IP & 设备绑定
 
 服务端将 Cookie 发送给客户端，客户端存储 Cookie 且同源请求自动携带 Cookie，服务端据此判断用户身份，客户端会话对应唯一 SESSION ID，服务端将用户数据存储于 SESSION ID 对应的文件中，客户端请求携带 SESSION ID，服务端据此判断用户身份；业界通用方案为将 SESSION ID 存储于 Cookie
 

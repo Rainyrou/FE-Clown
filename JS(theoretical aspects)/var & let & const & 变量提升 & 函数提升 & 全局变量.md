@@ -4,21 +4,12 @@
 
 ```js
 for (var i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i++), 0); // 3 4 5
+  var a = i;
+  setTimeout(() => console.log(a), 1000); // 1 秒后批量执行 2 2 2
+  setTimeout((i) => console.log(i), 1000); // 1 秒后批量执行 undefined undefined undefined
+  setTimeout(() => console.log(i++), 1000); // 1 秒后批量执行 3 4 5
   console.log(i); // 0 1 2
 }
-```
-
-```js
-for (var i = 0; i < 3; i++) {
-  var a = i;
-  let b = i;
-  setTimeout(() => console.log(i, a, b), 1000);
-}
-// 1 秒后批量执行
-// 3 2 0
-// 3 2 1
-// 3 2 2
 ```
 
 ```js
@@ -29,8 +20,6 @@ function f() {
 }
 f(); // undefined
 ```
-
-在函数内部，`var` 声明的变量被提升至其所在作用域的顶部，但只提升声明，不提升赋值，因此在打印 a 时，局部变量已存在，其值为 `undefined` 且局部变量已覆盖全局变量
 
 ```js
 function test() {
@@ -46,11 +35,10 @@ function test() {
   }, 3000);
 }
 test();
-alert(0);
-// 0 2 3
+alert(0); // 0 2 3
 ```
 
-函数无显隐  `return`  语句则执行完毕后默认返回  `undefined`
+函数无显隐返回语句则默认返回 `undefined`
 
 ```js
 let a = 1;

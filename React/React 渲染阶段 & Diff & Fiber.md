@@ -29,3 +29,43 @@ Fiber：
 - 时间切片：通过 `MessageChannel`  实现时间切片，每次只执行单个 Fiber 节点的计算，剩余任务置于下一时间分片，若高优先级任务进入任务队列，调度器立即中断当前执行的低优先级任务（通过 current tree + workInProgress tree 保存执行状态，记录当前节点指针），切换至高优先级任务执行
 - 任务恢复：被中断的低优先级任务重新进入队列，待高优先级任务执行完毕后恢复（从记录的节点指针继续遍历）；若长时间未执行低优先级任务，则自动升级其优先级
 - 构建 Fiber 树：各个 React 元素对应一至多个 Fiber 节点，Fiber 节点包含父子兄弟指针，将递归遍历转换为迭代遍历，React 为各个 Fiber 节点标记 Effect 类型并拼接为副作用链表；基于双缓冲机制，从 Fiber 根节点开始逐节点构建 workInProgress 树
+
+* 首次渲染 `App → A → B → C → D` → `useEffect` 执行 → `state = 1` → 重新渲染 `App → A → B → C → D`
+* `console.log` 属于渲染阶段，useEffect 属于提交阶段，因此副作用逻辑晚于 App/A/B/C/D 的打印
+
+```js
+function A() {
+  console.log("A");
+  return <B />;
+}
+
+function B() {
+  console.log("B");
+  return <C />;
+}
+
+function C() {
+  console.log("C");
+  return null;
+}
+
+function D() {
+  console.log("D");
+  return null;
+}
+
+function App() {
+  const [state, setState] = useState(0);
+  useEffect(() => setState((state) => state + 1), []);
+  console.log("App");
+  return (
+    <div>
+      <A state={state} />
+      <D />
+    </div>
+  );
+}
+
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);
+```

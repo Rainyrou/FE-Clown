@@ -47,6 +47,22 @@ const formatToThousands = (num) => {
 console.log(formatToThousands(123456789.123456789));
 ```
 
+字母段中间数字替换：
+
+```js
+const convert = (str) => {
+  return str.replace(/([a-zA-Z]+)/g, (all, match) => {
+    const len = match.length;
+    if (len > 2) return match[0] + (len - 2) + match[len - 1];
+    return match;
+  });
+};
+
+console.log(convert("--_abcd_--")); // --_a2d_--
+console.log(convert("--_cd_--")); // --_cd_--
+console.log(convert("_-abcd-__-efg-__-hijkl-_")); // _-a2d-__-e1g-__-h3l-_
+```
+
 判断手机号：
 
 ```js

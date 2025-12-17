@@ -85,7 +85,7 @@ export const useStateWithCallback = (initialValue) => {
 };
 ```
 
-3. 手写 `usePrevious` 以保存上一状态的值：以实现函数引用稳定和函数内部逻辑最新
+3. 手写 `usePrevious` 以保存上一状态的值
 
 ```js
 export const usePrevious = (value) => {
@@ -120,10 +120,10 @@ export const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const controller = new AbortController();
   const requestId = useRef(0);
   
   useEffect(() => {
-    const controller = new AbortController();
     const curId = ++requestId.current;
     const fetchData = async () => {
       setLoading(true);
@@ -232,20 +232,15 @@ export const useHover = () => {
 ```js
 export const useBottonLock = (wait = 5000) => {
   const [isLocked, setIsLocked] = useState(false);
-  const [shouldTimer, setShouldTimer] = useState(false);
   useEffect(() => {
-    if (!shouldTimer) return;
-    const timer = setTimeout(() => {
-      setIsLocked(false);
-      setShouldTimer(false);
-    }, wait);
+    if (!isLocked) return;
+    const timer = setTimeout(() => setIsLocked(false), wait);
     return () => clearTimeout(timer);
-  }, [shouldTimer, wait]);
+  }, [isLocked, wait]);
   const handleClick = (fn) => {
     if (isLocked) return;
-    fn && fn();
+    fn();
     setIsLocked(true);
-    setShouldTimer(true);
   };
   return [isLocked, handleClick];
 };
@@ -273,13 +268,12 @@ export const useCounter = (initialVal = 0, step = 1, interval = 1000) => {
     }
   };
 
-  const reset = () => setCount(initialVal);
+  const reset = () => {
+    setCount(initialVal);
+    stop();
+  };
 
-  useEffect(() => {
-    return () => {
-      if (timeRef.current) clearInterval(timeRef.current);
-    };
-  }, []);
+  useEffect(() => stop, []);
 
   return { count, start, stop, reset };
 };

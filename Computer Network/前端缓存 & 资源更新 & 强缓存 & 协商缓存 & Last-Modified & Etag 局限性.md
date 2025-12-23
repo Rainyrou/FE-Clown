@@ -4,17 +4,16 @@
 - Disk Cache：体积较大或很少访问的资源存储在硬盘中，持续时间长，但读取速度慢
 
 2. 强缓存 & 协商缓存
-3. LocalStorage & SessionStorage & Cookie & Session
+3. LocalStorage & SessionStorage & IndexedDB & Cookie & Session
 4. Service Worker
-5. IndexedDB：在浏览器中存储大量结构化数据的 API
+5. Redis
 6. 网关缓存如 Nginx 和 CDN
-7. Redis
 
 资源更新：线上静态资源（内容哈希 + 强缓存）已更新但浏览器页面尚未更新，可能为线上资源实际未更新成功或浏览器页面缓存资源
 
 * 刷新即用户驱动浏览器调整缓存策略，缓存失效不等于缓存删除，磁盘缓存不因刷新被清除，仅为本次请求是否复用该缓存
 * 手动刷新页面 F5：跳过强缓存，强制触发协商缓存，浏览器请求携带 `Cache-Control:max-age=0` 询问服务端资源是否更新
-* 强制刷新页面 CTRL + F5：跳过强缓存 + 协商缓存，浏览器请求携带 `Cache-Control:no-cache` 向服务端请求新资源
+* 强制刷新页面 CTRL + F5：跳过强缓存 + 协商缓存，浏览器请求携带 `Cache-Control:no-store` 向服务端请求新资源
 * 地址栏回车/前进后退：优先命中强缓存，强缓存未命中再走协商缓存
 - 通过 `[contenthash]` 命名文件，当文件内容变化时，`[contenthash]` 变化导致请求 URL 变化，浏览器直接请求新资源
 * 在服务端或 CDN 实现版本控制，根据请求的版本标识符重定向至对应资源

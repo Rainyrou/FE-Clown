@@ -1,4 +1,4 @@
-WebView 为 Mobile 端操作系统提供的嵌入式浏览器渲染引擎组件，其封装移动设备内置的高性能浏览器内核如 iOS WebKit，Android Chromium，其不提供地址栏、导航栏和书签管理器，在功能上为由 Native 代码创建和控制、用于展示 Web 内容的容器视口，类比页面的  `<iframe>`  标签，但权限和集成度远高于后者，WebView 运行于受控沙箱，Native 代码运行于操作系统，WebView 和 Native 共用原生方法，通过 JSBridge 异步通信
+WebView 为手机端操作系统提供的嵌入式浏览器渲染引擎组件，其封装移动设备内置的高性能浏览器内核如 iOS WebKit，Android Chromium，其不提供地址栏、导航栏和书签管理器，在功能上为由 Native 代码创建和控制、用于展示 Web 内容的容器视口，类比页面的  `<iframe>`  标签，但权限和集成度远高于后者，WebView 运行于受控沙箱，Native 代码运行于操作系统，WebView 和 Native 共用原生方法，通过 JSBridge 异步通信
 
 - JavaScript 通过触发 URL Scheme 或执行由 Native 注入的全局对象上的方法向 Native 发送请求，Native 端的消息分发器通过 Wrapper/Decorator 拦截请求，解析 URL Scheme 或全局对象的参数和方法并执行相应 Native 代码
 - Native 端通过调用 WebView API 如 `evaluateJavascript` 向 JavaScript 发送请求，通过 Native 端 iOS Method Swizzling 或 Android 动态代理/Hook 技术封装  `evaluateJavaScript`  方法或 JavaScript 端重写全局函数/监听全局事件拦截请求，统一消息格式并执行对应 JavaScript 代码

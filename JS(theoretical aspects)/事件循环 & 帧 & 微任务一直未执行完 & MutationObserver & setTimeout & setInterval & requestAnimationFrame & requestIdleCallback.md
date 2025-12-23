@@ -48,6 +48,8 @@ MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关�
 
 `requestIdleCallback` 在浏览器主线程空闲时（当前帧任务执行完后，在下一帧开始前的空闲阶段）执行低优先级的延迟任务如后台数据同步和日志记录
 
+`document.body` 为浏览器 DOM 已存在的核心属性，因此打印 `null` 而非 `undefined`
+
 ```html
 <html lang="en">
 <head>
@@ -66,4 +68,31 @@ MutationObserver 用于监听 DOM 变化，浏览器 DOM 节点通过父子关�
 </html>
 ```
 
-`document.body` 为浏览器 DOM 已存在的核心属性，因此打印 `null` 而非 `undefined`
+| 代码  | 错误情况             | 输出                            |
+| --- | ---------------- | ----------------------------- |
+| 第一段 | 回调内 `catch` 捕获错误 | 打印错误栈                         |
+| 第二段 | 无任何 `catch` 捕获错误 | 打印错误栈 + Node.js 抛出未捕获错误（进程终止） |
+
+```js
+try {
+  setTimeout(() => {
+    try {
+      throw new Error("error info");
+    } catch (error) {
+      console.error(error);
+    }
+  }, 0);
+} catch (error) {
+  console.error(error);
+}
+
+try {
+  setTimeout(() => {
+    throw new Error("error info");
+  }, 0);
+} catch (error) {
+  console.error(error);
+}
+```
+
+
